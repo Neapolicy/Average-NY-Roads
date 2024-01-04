@@ -4,7 +4,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
 public class Player extends JLabel implements KeyListener{
-    private String direction = "up";
+    private String direction = "up"; // might scrap if it gets too complicated, but you basically have to look at the pothole in order to fix it
     public Player(ImageIcon icon) {
         super(icon);
 

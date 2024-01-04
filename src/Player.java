@@ -8,9 +8,10 @@ import java.awt.event.MouseListener;
 public class Player extends JLabel implements KeyListener, MouseListener {
     private String direction = "up"; // might scrap if it gets too complicated, but you basically have to look at the pothole in order to fix it
     public Player(ImageIcon icon) {
-        super(icon);
+        this.setIcon(icon);
 
         Dimension size = Toolkit.getDefaultToolkit().getScreenSize();
+
         this.setBounds((int) size.getWidth()/2, (int) size.getHeight()/2, 50, 50);
         this.setBackground(Color.ORANGE);
         this.setOpaque(true);

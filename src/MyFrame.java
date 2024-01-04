@@ -2,24 +2,24 @@ import javax.swing.*;
 
 public class MyFrame extends JFrame {
     private Player player;
+    private JFrame frame = new JFrame();
+    private ImageIcon icon = new ImageIcon("player.jpg");
 
     public MyFrame() {
-        this.setDefaultCloseOperation(EXIT_ON_CLOSE);
-        this.setLayout(null);
-
-        ImageIcon icon = new ImageIcon("your_image_file_path_here.jpg");
+        frame.setDefaultCloseOperation(EXIT_ON_CLOSE);
+        frame.setLayout(null);
 
         player = new Player(icon);
 
-        this.setExtendedState(JFrame.MAXIMIZED_BOTH);
-        this.setUndecorated(false);
-        this.addKeyListener(player);
-        this.addMouseListener(player);
+        frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
+        frame.setUndecorated(false);
+        frame.addKeyListener(player);
+        frame.addMouseListener(player);
 
-        this.setFocusable(true);
+        frame.setFocusable(true);
 
-        this.add(player); //find a way to somehow add the traffic cone AAAAAA
-        this.setVisible(true);
+        frame.add(player); //find a way to somehow add the traffic cone AAAAAA
+        frame.setVisible(true);
     }
 
 }

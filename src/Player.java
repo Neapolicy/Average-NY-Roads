@@ -6,63 +6,81 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
 public class Player extends JLabel implements KeyListener, MouseListener {
-    private String direction = "up"; // might scrap if it gets too complicated, but you basically have to look at the pothole in order to fix it
-    public Player(ImageIcon icon) {
-        Image image = icon.getImage(); // transform it
-        Image newimg = image.getScaledInstance(50, 50,  java.awt.Image.SCALE_SMOOTH); // scale it the smooth way
-        icon = new ImageIcon(newimg);  // transform it back
+    private String direction = "up";
 
+    public Player(ImageIcon icon) {
+        Image image = icon.getImage();
+        Image newimg = image.getScaledInstance(50, 50, Image.SCALE_SMOOTH);
+        icon = new ImageIcon(newimg);
         this.setIcon(icon);
 
         Dimension size = Toolkit.getDefaultToolkit().getScreenSize();
-
-        this.setBounds((int) size.getWidth()/2, (int) size.getHeight()/2, icon.getIconWidth(), icon.getIconHeight());
+        this.setBounds((int) size.getWidth() / 2, (int) size.getHeight() / 2, icon.getIconWidth(), icon.getIconHeight());
         this.setOpaque(true);
     }
 
     @Override
-    public void keyTyped(KeyEvent e) {} // Handle keyTyped event if needed
+    public void keyTyped(KeyEvent e) {
+    }
 
     @Override
     public void keyPressed(KeyEvent e) {
-        var keyCode = e.getKeyChar();
-        if (keyCode == 'w') {
-            direction = "up";
-            this.setLocation(this.getX(), this.getY() - 30);
-        }
-        if (keyCode == 'a') {
-            direction = "left";
-            this.setLocation(this.getX() - 30, this.getY());
-        }
-        if (keyCode == 's') {
-            direction = "down";
-            this.setLocation(this.getX(), this.getY() + 30);
-        }
-        if (keyCode == 'd') {
-            direction = "right";
-            this.setLocation(this.getX() + 30, this.getY());
-        }
+        char keyCode = e.getKeyChar();
+        movePlayer(keyCode);
     }
 
-    public void keyReleased(KeyEvent e) {}// Handle keyReleased event if needed
+    private void movePlayer(char keyCode) {
+        int step = 30;
 
-    public void mouseClicked(MouseEvent arg0) {
-        if (arg0.getButton() == MouseEvent.BUTTON1)
-        {
-            ImageIcon icon = new ImageIcon("player.jpg");
-            TrafficCone cone = new TrafficCone(icon, this.getX(), this.getY(), direction);
+        switch (keyCode) {
+            case 'w':
+                direction = "up";
+                this.setLocation(this.getX(), this.getY() - step);
+                break;
+            case 'a':
+                direction = "left";
+                this.setLocation(this.getX() - step, this.getY());
+                break;
+            case 's':
+                direction = "down";
+                this.setLocation(this.getX(), this.getY() + step);
+                break;
+            case 'd':
+                direction = "right";
+                this.setLocation(this.getX() + step, this.getY());
+                break;
         }
-        if (arg0.getButton() == MouseEvent.BUTTON3)
-        {
+    }
+    public String getDirection(){
+        return direction;
+    }
+    @Override
+    public void keyReleased(KeyEvent e) {
+    }
+
+    @Override
+    public void mouseClicked(MouseEvent e) {
+        if (e.getButton() == MouseEvent.BUTTON1) {
+            TrafficCone.conePlaced = true;
+
+        } else if (e.getButton() == MouseEvent.BUTTON3) {
             TrafficCone.conePlaced = false;
         }
     }
-    public void mouseExited(MouseEvent arg0) {}
 
-    public void mouseEntered(MouseEvent arg0) {}
+    @Override
+    public void mouseExited(MouseEvent e) {
+    }
 
-    public void mousePressed(MouseEvent arg0) {}
+    @Override
+    public void mouseEntered(MouseEvent e) {
+    }
 
-    public void mouseReleased(MouseEvent arg0) {}
+    @Override
+    public void mousePressed(MouseEvent e) {
+    }
 
+    @Override
+    public void mouseReleased(MouseEvent e) {
+    }
 }

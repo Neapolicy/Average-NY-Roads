@@ -1,24 +1,23 @@
+// TrafficCone.java
 import javax.swing.*;
 import java.awt.*;
 
-public class TrafficCone extends JLabel{
+public class TrafficCone extends JLabel {
     public static boolean conePlaced = false;
 
-    public TrafficCone(ImageIcon icon, int x, int y, String direction)
-    {
-        Image image = icon.getImage(); // transform it
-        Image newimg = image.getScaledInstance(50, 50,  java.awt.Image.SCALE_SMOOTH); // scale it the smooth way
-        icon = new ImageIcon(newimg);  // transform it back
+    public TrafficCone(ImageIcon icon, int x, int y, String direction) {
+        Image image = icon.getImage();
+        Image newimg = image.getScaledInstance(50, 50, Image.SCALE_SMOOTH);
+        icon = new ImageIcon(newimg);
 
         this.setIcon(icon);
-        if (!conePlaced)
-        {
-            switch (direction)
-            {
-                case "up" -> this.setBounds(x, y - 50, 50, 50);
-                case "down" -> this.setBounds(x, y + 50, 50, 50);
-                case "left" -> this.setBounds(x - 50, y, 50, 50);
-                case "right" -> this.setBounds(x + 50, y, 50, 50);
+        if (!conePlaced) {
+            int coneSize = 50;
+            switch (direction) {
+                case "up" -> this.setBounds(x, y - coneSize, coneSize, coneSize);
+                case "down" -> this.setBounds(x, y + coneSize, coneSize, coneSize);
+                case "left" -> this.setBounds(x - coneSize, y, coneSize, coneSize);
+                case "right" -> this.setBounds(x + coneSize, y, coneSize, coneSize);
             }
             this.setBackground(Color.ORANGE);
             this.setOpaque(true);

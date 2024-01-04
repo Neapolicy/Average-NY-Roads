@@ -34,7 +34,6 @@ public class Player extends JLabel implements KeyListener{
         if (keyCode == 'd') {
             this.setLocation(this.getX() + 30, this.getY());
         }
-
     }
 
     @Override

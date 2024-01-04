@@ -6,7 +6,11 @@ public class TrafficCone extends JLabel{
 
     public TrafficCone(ImageIcon icon, int x, int y, String direction)
     {
-        super(icon);
+        Image image = icon.getImage(); // transform it
+        Image newimg = image.getScaledInstance(50, 50,  java.awt.Image.SCALE_SMOOTH); // scale it the smooth way
+        icon = new ImageIcon(newimg);  // transform it back
+
+        this.setIcon(icon);
         if (!conePlaced)
         {
             switch (direction)

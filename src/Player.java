@@ -8,12 +8,15 @@ import java.awt.event.MouseListener;
 public class Player extends JLabel implements KeyListener, MouseListener {
     private String direction = "up"; // might scrap if it gets too complicated, but you basically have to look at the pothole in order to fix it
     public Player(ImageIcon icon) {
+        Image image = icon.getImage(); // transform it
+        Image newimg = image.getScaledInstance(50, 50,  java.awt.Image.SCALE_SMOOTH); // scale it the smooth way
+        icon = new ImageIcon(newimg);  // transform it back
+
         this.setIcon(icon);
 
         Dimension size = Toolkit.getDefaultToolkit().getScreenSize();
 
-        this.setBounds((int) size.getWidth()/2, (int) size.getHeight()/2, 50, 50);
-        this.setBackground(Color.ORANGE);
+        this.setBounds((int) size.getWidth()/2, (int) size.getHeight()/2, icon.getIconWidth(), icon.getIconHeight());
         this.setOpaque(true);
     }
 
@@ -46,7 +49,7 @@ public class Player extends JLabel implements KeyListener, MouseListener {
     public void mouseClicked(MouseEvent arg0) {
         if (arg0.getButton() == MouseEvent.BUTTON1)
         {
-            ImageIcon icon = new ImageIcon("your_image_file_path_here.jpg");
+            ImageIcon icon = new ImageIcon("player.jpg");
             TrafficCone cone = new TrafficCone(icon, this.getX(), this.getY(), direction);
         }
         if (arg0.getButton() == MouseEvent.BUTTON3)

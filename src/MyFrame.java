@@ -3,7 +3,7 @@ import javax.swing.*;
 public class MyFrame extends JFrame {
     private Player player;
 
-    protected MyFrame() {
+    public MyFrame() {
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
         this.setLayout(null);
 

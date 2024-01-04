@@ -1,8 +1,9 @@
 import javax.swing.*;
+
 public class MyFrame extends JFrame {
     private Player player;
 
-    public MyFrame() {
+    protected MyFrame() {
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
         this.setLayout(null);
 
@@ -13,10 +14,12 @@ public class MyFrame extends JFrame {
         this.setExtendedState(JFrame.MAXIMIZED_BOTH);
         this.setUndecorated(false);
         this.addKeyListener(player);
+        this.addMouseListener(player);
 
         this.setFocusable(true);
 
-        this.add(player);
+        this.add(player); //find a way to somehow add the traffic cone AAAAAA
         this.setVisible(true);
     }
+
 }

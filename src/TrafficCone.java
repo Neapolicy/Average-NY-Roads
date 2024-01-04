@@ -3,7 +3,7 @@ import javax.swing.*;
 import java.awt.*;
 
 public class TrafficCone extends JLabel {
-    public static boolean conePlaced = false;
+    public static boolean conePlaced = true;
 
     public TrafficCone(ImageIcon icon, int x, int y, String direction) {
         Image image = icon.getImage();

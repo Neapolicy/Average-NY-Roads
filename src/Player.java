@@ -21,25 +21,20 @@ public class Player extends JLabel implements KeyListener{
 
     @Override
     public void keyPressed(KeyEvent e) {
-        int keyCode = e.getKeyChar();
-        switch (keyCode) {
-            case 'w':
-                direction = "up";
-                this.setLocation(this.getX(), this.getY() - 30);
-                break;
-            case 'a':
-                direction = "left";
-                this.setLocation(this.getX() - 30, this.getY());
-                break;
-            case 's':
-                direction = "down";
-                this.setLocation(this.getX(), this.getY() + 30);
-                break;
-            case 'd':
-                direction = "right";
-                this.setLocation(this.getX() + 30, this.getY());
-                break;
+        var keyCode = e.getKeyChar();
+        if (keyCode == 'w') {
+            this.setLocation(this.getX(), this.getY() - 30);
         }
+        if (keyCode == 'a') {
+            this.setLocation(this.getX() - 30, this.getY());
+        }
+        if (keyCode == 's') {
+            this.setLocation(this.getX(), this.getY() + 30);
+        }
+        if (keyCode == 'd') {
+            this.setLocation(this.getX() + 30, this.getY());
+        }
+
     }
 
     @Override

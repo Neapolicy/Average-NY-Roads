@@ -51,7 +51,7 @@ public class MyFrame extends JFrame { //make this in charge on handling of placi
         this.setTitle("I don't even know if JFrame works anymore..");
 
         try {
-            icon = new ImageIcon(ImageIO.read(new File("Images/Player/player.png")));
+            icon = new ImageIcon(ImageIO.read(new File("ImageFiles/Images/player.png")));
             Image image = icon.getImage();
             Image newimg = image.getScaledInstance(50, 50, Image.SCALE_SMOOTH);
             icon = new ImageIcon(newimg);
@@ -87,9 +87,7 @@ public class MyFrame extends JFrame { //make this in charge on handling of placi
         graphics = image.getGraphics();
         g.drawImage(image, 0, 0, this);
 
-        playerHitbox.draw(g);
-        playerHitbox.makeClear(g);
-        carHitbox.draw(g);
+        carHitbox.draw(g); //draws the car box
 
         g.drawImage(icon.getImage(), player.getX(), player.getY(), this);
     }
@@ -106,7 +104,7 @@ public class MyFrame extends JFrame { //make this in charge on handling of placi
         public void keyPressed(KeyEvent e) {
             playerHitbox.keyPressed(e);
             checkCollision();
-            repaint();
+            /*repaint();*/
         }
     }
 }

@@ -33,23 +33,24 @@ public class Player extends JLabel implements KeyListener, MouseListener {
         int step = 30;
 
         switch (keyCode) {
-            case 'w':
+            case 'w' -> {
                 direction = "up";
                 this.setLocation(this.getX(), this.getY() - step);
-                break;
-            case 'a':
+            }
+            case 'a' -> {
                 direction = "left";
                 this.setLocation(this.getX() - step, this.getY());
-                break;
-            case 's':
+            }
+            case 's' -> {
                 direction = "down";
                 this.setLocation(this.getX(), this.getY() + step);
-                break;
-            case 'd':
+            }
+            case 'd' -> {
                 direction = "right";
                 this.setLocation(this.getX() + step, this.getY());
-                break;
+            }
         }
+        System.out.println(this.getX());
     }
 
     public String getDirection() {
@@ -86,7 +87,7 @@ public class Player extends JLabel implements KeyListener, MouseListener {
     }
 
     public void createCone() {
-        ImageIcon coneIcon = new ImageIcon("Images/Player/player.png");
+        ImageIcon coneIcon = new ImageIcon("ImageFiles/Images/road_block.png");
         TrafficCone cone = new TrafficCone(coneIcon, this.getX(), this.getY(), this.getDirection());
     }
 }

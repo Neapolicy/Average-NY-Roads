@@ -1,17 +1,21 @@
 // TrafficCone.java
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
+import java.io.File;
+import java.io.IOException;
 
 public class TrafficCone extends JLabel {
     public static boolean conePlaced = false;
     private Box coneHitbox;
 
-    public TrafficCone(ImageIcon icon, int x, int y, String direction) {
+    public TrafficCone(int x, int y, String direction) throws IOException {
+        ImageIcon icon = new ImageIcon(ImageIO.read(new File("ImageFiles/Images/road_block.png")));
         Image image = icon.getImage();
         Image newimg = image.getScaledInstance(50, 50, Image.SCALE_SMOOTH);
         icon = new ImageIcon(newimg);
+        setIcon(icon);
 
-        this.setIcon(icon);
         if (!conePlaced) {
             int coneSize = 50;
             switch (direction) {
@@ -20,7 +24,7 @@ public class TrafficCone extends JLabel {
                 case "left" -> this.setBounds(x - coneSize, y, coneSize, coneSize);
                 case "right" -> this.setBounds(x + coneSize, y, coneSize, coneSize);
             }
-            this.setBackground(Color.ORANGE);
+            this.setBackground(Color.BLACK);
             this.setOpaque(true);
             conePlaced = true;
         }

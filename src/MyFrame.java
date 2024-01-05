@@ -3,6 +3,7 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -14,8 +15,8 @@ public class MyFrame extends JFrame { //make this in charge on handling of placi
     private Box playerHitbox;
     private Box carHitbox;
     private boolean collision;
-    private ImageIcon icon;;
     private TrafficCone cone;
+    private ArrayList<Car> cars = new ArrayList<>();
 
 /*    public MyFrame() {
         SwingUtilities.invokeLater(() ->{
@@ -50,21 +51,11 @@ public class MyFrame extends JFrame { //make this in charge on handling of placi
         this.setLayout(null);
         this.setTitle("I don't even know if JFrame works anymore..");
 
-        try {
-            icon = new ImageIcon(ImageIO.read(new File("ImageFiles/Images/player.png")));
-            Image image = icon.getImage();
-            Image newimg = image.getScaledInstance(50, 50, Image.SCALE_SMOOTH);
-            icon = new ImageIcon(newimg);
-        } catch (IOException e) {
-            e.printStackTrace();
-            System.err.println("Error loading player.png");
-        }
-
-
-        player = new Player(icon);
-        cone = new TrafficCone(icon, player.getX(), player.getY(), "down");
+        player = new Player();
+        cone = new TrafficCone(player.getX(), player.getY(), "down");
         playerHitbox = new Box(player.getX(), player.getY(), 50, 50, Color.ORANGE);
-        carHitbox = new Box(player.getX(), player.getY() - 100, 50, 50, Color.RED);
+        cars.add(new Car(1000, 300));
+        carHitbox = new Box(cars.get(0).getX(), cars.get(0).getY(), cars.get(0).getWidth(), cars.get(0).getHeight(), Color.RED);
 
         this.setUndecorated(false);
         this.addKeyListener(player);
@@ -77,20 +68,23 @@ public class MyFrame extends JFrame { //make this in charge on handling of placi
 
         this.add(player); //find a way to somehow add the traffic cone AAAAAA
         this.add(cone);
+        this.add(cars.get(0));
 
         this.setVisible(true);
-    }
-
-
-    public void paint(Graphics g) {
         image = createImage(this.getWidth(), this.getHeight());
         graphics = image.getGraphics();
-        g.drawImage(image, 0, 0, this);
-
-        carHitbox.draw(g); //draws the car box
-
-        g.drawImage(icon.getImage(), player.getX(), player.getY(), this);
     }
+
+
+/*    public void paint(Graphics g) {
+     *//*   image = createImage(this.getWidth(), this.getHeight());
+        graphics = image.getGraphics();
+        g.drawImage(image, 0, 0, this);*//*
+
+*//*
+        carHitbox.draw(g); //draws the car box
+*//*
+    }*/
     public void checkCollision() { //refer to the hitbox instead
         if (playerHitbox.intersects(carHitbox))
         {
@@ -108,3 +102,4 @@ public class MyFrame extends JFrame { //make this in charge on handling of placi
         }
     }
 }
+// i am questioning on whether i should rewrite this entire program altogether

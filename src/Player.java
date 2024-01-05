@@ -1,18 +1,22 @@
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.io.File;
+import java.io.IOException;
 
 public class Player extends JLabel implements KeyListener, MouseListener {
     private String direction = "up";
 
-    public Player(ImageIcon icon) {
+    public Player() throws IOException {
+        ImageIcon icon = new ImageIcon(ImageIO.read(new File("ImageFiles/Images/player.png")));
         Image image = icon.getImage();
         Image newimg = image.getScaledInstance(50, 50, Image.SCALE_SMOOTH);
         icon = new ImageIcon(newimg);
-        this.setIcon(icon);
+        setIcon(icon);
 
         Dimension size = Toolkit.getDefaultToolkit().getScreenSize();
         this.setBounds((int) size.getWidth() / 2, (int) size.getHeight() / 2, icon.getIconWidth(), icon.getIconHeight());
@@ -50,7 +54,7 @@ public class Player extends JLabel implements KeyListener, MouseListener {
                 this.setLocation(this.getX() + step, this.getY());
             }
         }
-        System.out.println(this.getX());
+        /*System.out.println(this.getX());*/
     }
 
     public String getDirection() {
@@ -64,7 +68,7 @@ public class Player extends JLabel implements KeyListener, MouseListener {
     @Override
     public void mouseClicked(MouseEvent e) {
         if (e.getButton() == MouseEvent.BUTTON1) {
-            createCone();
+            TrafficCone.conePlaced = true;
         } else if (e.getButton() == MouseEvent.BUTTON3) {
             TrafficCone.conePlaced = false;
         }
@@ -86,8 +90,4 @@ public class Player extends JLabel implements KeyListener, MouseListener {
     public void mouseReleased(MouseEvent e) {
     }
 
-    public void createCone() {
-        ImageIcon coneIcon = new ImageIcon("ImageFiles/Images/road_block.png");
-        TrafficCone cone = new TrafficCone(coneIcon, this.getX(), this.getY(), this.getDirection());
-    }
 }

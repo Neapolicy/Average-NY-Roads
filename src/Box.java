@@ -27,7 +27,7 @@ public class Box extends Rectangle {
             case 's' -> this.setLocation((int) this.getX(), (int) (this.getY() + step));
             case 'd' -> this.setLocation((int) (this.getX() + step), (int) this.getY());
         }
-        System.out.println(this.getX());
+        /*System.out.println(this.getX());*/
     }
     public void draw(Graphics g)
     {

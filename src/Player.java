@@ -51,9 +51,11 @@ public class Player extends JLabel implements KeyListener, MouseListener {
                 break;
         }
     }
-    public String getDirection(){
+
+    public String getDirection() {
         return direction;
     }
+
     @Override
     public void keyReleased(KeyEvent e) {
     }
@@ -61,8 +63,7 @@ public class Player extends JLabel implements KeyListener, MouseListener {
     @Override
     public void mouseClicked(MouseEvent e) {
         if (e.getButton() == MouseEvent.BUTTON1) {
-            TrafficCone.conePlaced = true;
-
+            createCone();
         } else if (e.getButton() == MouseEvent.BUTTON3) {
             TrafficCone.conePlaced = false;
         }
@@ -82,5 +83,10 @@ public class Player extends JLabel implements KeyListener, MouseListener {
 
     @Override
     public void mouseReleased(MouseEvent e) {
+    }
+
+    public void createCone() {
+        ImageIcon coneIcon = new ImageIcon("Images/Player/player.png");
+        TrafficCone cone = new TrafficCone(coneIcon, this.getX(), this.getY(), this.getDirection());
     }
 }

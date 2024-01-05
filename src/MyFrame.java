@@ -48,9 +48,13 @@ public class MyFrame extends JFrame { //make this in charge on handling of placi
     public MyFrame() throws IOException {
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
         this.setLayout(null);
+        this.setTitle("I don't even know if JFrame works anymore..");
 
         try {
             icon = new ImageIcon(ImageIO.read(new File("Images/Player/player.png")));
+            Image image = icon.getImage();
+            Image newimg = image.getScaledInstance(50, 50, Image.SCALE_SMOOTH);
+            icon = new ImageIcon(newimg);
         } catch (IOException e) {
             e.printStackTrace();
             System.err.println("Error loading player.png");
@@ -69,7 +73,6 @@ public class MyFrame extends JFrame { //make this in charge on handling of placi
 
         this.setFocusable(true);
 
-        this.setContentPane(new JLabel(icon));
         this.setExtendedState(JFrame.MAXIMIZED_BOTH);
 
         this.add(player); //find a way to somehow add the traffic cone AAAAAA
@@ -85,7 +88,10 @@ public class MyFrame extends JFrame { //make this in charge on handling of placi
         g.drawImage(image, 0, 0, this);
 
         playerHitbox.draw(g);
+        playerHitbox.makeClear(g);
         carHitbox.draw(g);
+
+        g.drawImage(icon.getImage(), player.getX(), player.getY(), this);
     }
     public void checkCollision() { //refer to the hitbox instead
         if (playerHitbox.intersects(carHitbox))

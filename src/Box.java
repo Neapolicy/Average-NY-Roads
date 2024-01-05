@@ -1,4 +1,3 @@
-import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 
@@ -41,5 +40,11 @@ public class Box extends Rectangle {
     {
         g.setColor(this.color);
         g.fillRect(this.x, this.y, this.width, this.height);
+    }
+
+    public void makeClear(Graphics g)
+    {
+        color = new Color(Color.TRANSLUCENT);
+        g.setColor(this.color);
     }
 }

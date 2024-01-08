@@ -85,14 +85,46 @@ public class MyFrame extends JFrame implements Runnable{ //make this in charge o
         repaint();
     }*/
     public void checkCollision() { //refer to the hitbox instead
-        for (int i = 0; i < cars.size(); i++)
-            if (player.getPlayerHitbox().intersects(cars.get(i).getCarHitbox()))
-            {
+        for (Car car : cars)
+            if (player.getPlayerHitbox().intersects(car.getCarHitbox())) {
                 collision = true;
-                System.out.println("HEY");
+                switch(player.getDirection())
+                {
+                    case "up":
+                        player.setLocation(player.getX(), player.getY() + 35);
+                        player.getPlayerHitbox().setLocation(player.getX(), player.getY());
+                    case "down":
+                        player.setLocation(player.getX(), player.getY() - 35);
+                        player.getPlayerHitbox().setLocation(player.getX(), player.getY());
+                    case "left":
+                        player.setLocation(player.getX() + 35, player.getY());
+                        player.getPlayerHitbox().setLocation(player.getX(), player.getY());
+                    case "right":
+                        player.setLocation(player.getX() - 30, player.getY());
+                        player.getPlayerHitbox().setLocation(player.getX(), player.getY());
+                }
+                /*System.out.println(player.getDirection());*/
+                /*System.out.println("HEY");*/
             }
-        for (int i = 0; i < cars.size(); i++)
-            if (player.getPlayerHitbox().intersects(cone.getConeHitbox())) System.out.println("HEYA");
+        if (player.getPlayerHitbox().intersects(cone.getConeHitbox()))
+        {
+            /*switch(player.getDirection())
+            {
+                case "up":
+                    player.setLocation(player.getX(), player.getY() + 60);
+                    player.getPlayerHitbox().setLocation(player.getX(), player.getY());
+                case "down":
+                    player.setLocation(player.getX(), player.getY() - 30);
+                    player.getPlayerHitbox().setLocation(player.getX(), player.getY());
+                case "left":
+                    player.setLocation(player.getX() + 60, player.getY());
+                    player.getPlayerHitbox().setLocation(player.getX(), player.getY());
+                case "right":
+                    player.setLocation(player.getX() - 30, player.getY());
+                    player.getPlayerHitbox().setLocation(player.getX(), player.getY());
+            }*/
+            /*System.out.println(player.getDirection());*/
+        }
     }
 
     @Override

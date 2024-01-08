@@ -100,5 +100,4 @@ public class Player extends JLabel implements KeyListener, MouseListener {
     {
         return playerHitbox;
     }
-
 }

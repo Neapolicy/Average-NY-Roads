@@ -42,24 +42,22 @@ public class Player extends JLabel implements KeyListener, MouseListener {
             case 'w' -> {
                 direction = "up";
                 this.setLocation(this.getX(), this.getY() - step);
-                playerHitbox.setLocation(this.getX(), this.getY() - step);
+                playerHitbox.setLocation(this.getX(), this.getY());
             }
             case 'a' -> {
                 direction = "left";
                 this.setLocation(this.getX() - step, this.getY());
-                playerHitbox.setLocation(this.getX() - step, this.getY());
-                System.out.println(playerHitbox.getX());
-                System.out.println(this.getX());
+                playerHitbox.setLocation(this.getX(), this.getY());
             }
             case 's' -> {
                 direction = "down";
                 this.setLocation(this.getX(), this.getY() + step);
-                playerHitbox.setLocation(this.getX(), this.getY() + step);
+                playerHitbox.setLocation(this.getX(), this.getY());
             }
             case 'd' -> {
                 direction = "right";
                 this.setLocation(this.getX() + step, this.getY());
-                playerHitbox.setLocation(this.getX() + step, this.getY());
+                playerHitbox.setLocation(this.getX(), this.getY());
             }
         }
         /*System.out.println(this.getX());*/

@@ -4,6 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 
 public class TrafficCone extends JLabel {
     public static boolean conePlaced = false;
@@ -26,7 +27,14 @@ public class TrafficCone extends JLabel {
             }
             this.setBackground(Color.BLACK);
             this.setOpaque(true);
+            coneHitbox = (new Box(this.getX(), this.getY(), this.getWidth(), this.getHeight(), Color.RED));
             conePlaced = true;
         }
     }
+
+    public Box getConeHitbox()
+    {
+        return coneHitbox;
+    }
+
 }

@@ -97,6 +97,7 @@ public class MyFrame extends JFrame implements Runnable{ //make this in charge o
             }
         for (int i = 0; i < cars.size(); i++)
             if (player.getPlayerHitbox().intersects(coneHitbox.get(i))) System.out.println("HEYA");
+        System.out.println("HEY");
     }
 
     @Override

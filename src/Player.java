@@ -48,6 +48,8 @@ public class Player extends JLabel implements KeyListener, MouseListener {
                 direction = "left";
                 this.setLocation(this.getX() - step, this.getY());
                 playerHitbox.setLocation(this.getX() - step, this.getY());
+                System.out.println(playerHitbox.getX());
+                System.out.println(this.getX());
             }
             case 's' -> {
                 direction = "down";

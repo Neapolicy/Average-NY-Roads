@@ -8,16 +8,16 @@ import java.util.ArrayList;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 
-public class MyFrame extends JFrame { //make this in charge on handling of placing images
+public class MyFrame extends JFrame implements Runnable{ //make this in charge on handling of placing images
     private Player player;
     private Image image;
     private Graphics graphics;
     private Box playerHitbox;
-    private Box carHitbox;
-    private Box coneHitbox;
     private boolean collision; //if collide with car game over is true
     private TrafficCone cone; //might make this an arraylist??
     private ArrayList<Car> cars = new ArrayList<>();
+    private ArrayList<Box> coneHitbox = new ArrayList<>();
+    private ArrayList<Box> carHitbox = new ArrayList<>();
 
 /*    public MyFrame() {
         SwingUtilities.invokeLater(() ->{
@@ -53,15 +53,13 @@ public class MyFrame extends JFrame { //make this in charge on handling of placi
         this.setTitle("I don't even know if JFrame works anymore..");
 
         player = new Player();
-        /*cone = new TrafficCone(player.getX(), player.getY(), player.getDirection());*/
+        cone = new TrafficCone(player.getX(), player.getY(), player.getDirection());
         cars.add(new Car(1000, 300));
-        playerHitbox = new Box(player.getX(), player.getY(), 50, 50, Color.ORANGE);
-        carHitbox = new Box(cars.get(0).getX(), cars.get(0).getY(), cars.get(0).getWidth(), cars.get(0).getHeight(), Color.RED);
-        /*coneHitbox = new Box(cone.getX(), cone.getY(), cone.getWidth(), cone.getHeight(), Color.RED);*/
+        carHitbox.add(new Box(cars.get(0).getX(), cars.get(0).getY(), cars.get(0).getWidth(), cars.get(0).getHeight(), Color.RED));
+        coneHitbox.add(new Box(cone.getX(), cone.getY(), cone.getWidth(), cone.getHeight(), Color.RED));
 
         this.setUndecorated(false);
         this.addKeyListener(player);
-        this.addKeyListener(new AL());
         this.addMouseListener(player);
 
         this.setFocusable(true);
@@ -69,12 +67,15 @@ public class MyFrame extends JFrame { //make this in charge on handling of placi
         this.setExtendedState(JFrame.MAXIMIZED_BOTH);
 
         this.add(player); //find a way to somehow add the traffic cone AAAAAA
-        /*this.add(cone);*/
         this.add(cars.get(0));
 
         this.setVisible(true);
+        this.add(cone);
+        /*cone.setVisible(false);*/
         image = createImage(this.getWidth(), this.getHeight());
         graphics = image.getGraphics();
+        Thread thread = new Thread(this);
+        thread.start();
     }
 
 
@@ -88,23 +89,19 @@ public class MyFrame extends JFrame { //make this in charge on handling of placi
 *//*
     }*/
     public void checkCollision() { //refer to the hitbox instead
-        if (playerHitbox.intersects(carHitbox))
-        {
-            collision = true;
-            System.out.println("HEY");
-        }
-/*
-        if (playerHitbox.intersects(coneHitbox)) System.out.println("HEYA");
-*/
+        for (int i = 0; i < cars.size(); i++)
+            if (player.getPlayerHitbox().intersects(carHitbox.get(i)))
+            {
+                collision = true;
+                System.out.println("HEY");
+            }
+        for (int i = 0; i < cars.size(); i++)
+            if (player.getPlayerHitbox().intersects(coneHitbox.get(i))) System.out.println("HEYA");
     }
 
-    public class AL extends KeyAdapter {
-        @Override
-        public void keyPressed(KeyEvent e) {
-            playerHitbox.keyPressed(e);
-            checkCollision();
-            /*repaint();*/
-        }
+    @Override
+    public void run() {
+        checkCollision();
     }
 }
 // i am questioning on whether i should rewrite this entire program altogether

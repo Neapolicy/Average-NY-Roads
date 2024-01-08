@@ -6,7 +6,7 @@ import java.io.IOException;
 
 public class Car extends JLabel{
     public Car(int x, int y) throws IOException {
-        ImageIcon icon = new ImageIcon(ImageIO.read(new File("ImageFiles/Images/road_block.png")));
+        ImageIcon icon = new ImageIcon(ImageIO.read(new File("ImageFiles/Images/car1.png")));
         Image image = icon.getImage();
         Image newimg = image.getScaledInstance(80, 125, Image.SCALE_SMOOTH);
         icon = new ImageIcon(newimg);

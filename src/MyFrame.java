@@ -53,11 +53,11 @@ public class MyFrame extends JFrame { //make this in charge on handling of placi
         this.setTitle("I don't even know if JFrame works anymore..");
 
         player = new Player();
-        cone = new TrafficCone(player.getX(), player.getY(), player.getDirection());
+        /*cone = new TrafficCone(player.getX(), player.getY(), player.getDirection());*/
         cars.add(new Car(1000, 300));
         playerHitbox = new Box(player.getX(), player.getY(), 50, 50, Color.ORANGE);
         carHitbox = new Box(cars.get(0).getX(), cars.get(0).getY(), cars.get(0).getWidth(), cars.get(0).getHeight(), Color.RED);
-        coneHitbox = new Box(cone.getX(), cone.getY(), cone.getWidth(), cone.getHeight(), Color.RED);
+        /*coneHitbox = new Box(cone.getX(), cone.getY(), cone.getWidth(), cone.getHeight(), Color.RED);*/
 
         this.setUndecorated(false);
         this.addKeyListener(player);
@@ -69,7 +69,7 @@ public class MyFrame extends JFrame { //make this in charge on handling of placi
         this.setExtendedState(JFrame.MAXIMIZED_BOTH);
 
         this.add(player); //find a way to somehow add the traffic cone AAAAAA
-        this.add(cone);
+        /*this.add(cone);*/
         this.add(cars.get(0));
 
         this.setVisible(true);
@@ -90,10 +90,12 @@ public class MyFrame extends JFrame { //make this in charge on handling of placi
     public void checkCollision() { //refer to the hitbox instead
         if (playerHitbox.intersects(carHitbox))
         {
-            /*remove(cone);*/
+            collision = true;
             System.out.println("HEY");
         }
+/*
         if (playerHitbox.intersects(coneHitbox)) System.out.println("HEYA");
+*/
     }
 
     public class AL extends KeyAdapter {

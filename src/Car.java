@@ -12,7 +12,6 @@ public class Car extends JLabel{
         icon = new ImageIcon(newimg);
         setIcon(icon);
 
-        Dimension size = Toolkit.getDefaultToolkit().getScreenSize();
         this.setBounds(x, y, icon.getIconWidth(), icon.getIconHeight());
         this.setOpaque(true);
     }

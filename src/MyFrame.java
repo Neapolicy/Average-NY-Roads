@@ -14,8 +14,9 @@ public class MyFrame extends JFrame { //make this in charge on handling of placi
     private Graphics graphics;
     private Box playerHitbox;
     private Box carHitbox;
-    private boolean collision;
-    private TrafficCone cone;
+    private Box coneHitbox;
+    private boolean collision; //if collide with car game over is true
+    private TrafficCone cone; //might make this an arraylist??
     private ArrayList<Car> cars = new ArrayList<>();
 
 /*    public MyFrame() {
@@ -52,10 +53,11 @@ public class MyFrame extends JFrame { //make this in charge on handling of placi
         this.setTitle("I don't even know if JFrame works anymore..");
 
         player = new Player();
-        cone = new TrafficCone(player.getX(), player.getY(), "down");
-        playerHitbox = new Box(player.getX(), player.getY(), 50, 50, Color.ORANGE);
+        cone = new TrafficCone(player.getX(), player.getY(), player.getDirection());
         cars.add(new Car(1000, 300));
+        playerHitbox = new Box(player.getX(), player.getY(), 50, 50, Color.ORANGE);
         carHitbox = new Box(cars.get(0).getX(), cars.get(0).getY(), cars.get(0).getWidth(), cars.get(0).getHeight(), Color.RED);
+        coneHitbox = new Box(cone.getX(), cone.getY(), cone.getWidth(), cone.getHeight(), Color.RED);
 
         this.setUndecorated(false);
         this.addKeyListener(player);
@@ -91,6 +93,7 @@ public class MyFrame extends JFrame { //make this in charge on handling of placi
             /*remove(cone);*/
             System.out.println("HEY");
         }
+        if (playerHitbox.intersects(coneHitbox)) System.out.println("HEYA");
     }
 
     public class AL extends KeyAdapter {

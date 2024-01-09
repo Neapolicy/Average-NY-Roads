@@ -10,8 +10,7 @@ import java.io.IOException;
 
 public class Player extends JLabel implements KeyListener, MouseListener {
     private String direction = "up";
-    private Box playerHitbox;
-
+    private Box playerHitbox; //https://stackoverflow.com/questions/40252221/java-how-to-use-an-object-from-one-mouselistener-to-another-class cheque it out idk
     public Player() throws IOException {
         ImageIcon icon = new ImageIcon(ImageIO.read(new File("ImageFiles/Images/player.png")));
         Image image = icon.getImage();

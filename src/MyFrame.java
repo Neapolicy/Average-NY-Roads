@@ -10,10 +10,6 @@ import javax.swing.*;
 
 public class MyFrame extends JFrame implements Runnable{ //make this in charge on handling of placing images
     private Player player;
-    private Image image;
-    private Graphics graphics;
-    private Box playerHitbox;
-    private boolean collision; //if collide with car game over is true
     private TrafficCone cone; //might make this an arraylist??
     private ArrayList<Car> cars = new ArrayList<>();
 
@@ -68,8 +64,6 @@ public class MyFrame extends JFrame implements Runnable{ //make this in charge o
         this.setVisible(true);
         this.add(cone);
         /*cone.setVisible(false);*/
-        image = createImage(this.getWidth(), this.getHeight());
-        graphics = image.getGraphics();
         Thread thread = new Thread(this);
         thread.start();
     }
@@ -87,7 +81,6 @@ public class MyFrame extends JFrame implements Runnable{ //make this in charge o
     public void checkCollision() { //refer to the hitbox instead
         for (Car car : cars)
             if (player.getPlayerHitbox().intersects(car.getCarHitbox())) {
-                collision = true;
                 switch(player.getDirection())
                 {
                     case "up":
@@ -103,6 +96,7 @@ public class MyFrame extends JFrame implements Runnable{ //make this in charge o
                         player.setLocation(player.getX() - 30, player.getY());
                         player.getPlayerHitbox().setLocation(player.getX(), player.getY());
                 }
+                loseScreen();
                 /*System.out.println(player.getDirection());*/
                 /*System.out.println("HEY");*/
             }
@@ -125,6 +119,11 @@ public class MyFrame extends JFrame implements Runnable{ //make this in charge o
             }*/
             /*System.out.println(player.getDirection());*/
         }
+    }
+
+    public void loseScreen()
+    {
+        //idk make a game over screen or smtg
     }
 
     @Override

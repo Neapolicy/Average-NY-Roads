@@ -9,7 +9,6 @@ public class Car extends JLabel implements Runnable{
     private Box carHitbox;
     private String direction = "right";
     private Sound sound = new Sound();
-    private int speed;
     public Car(int x, int y) throws IOException {
         ImageIcon icon = new ImageIcon(ImageIO.read(new File("ImageFiles/Images/car1.png")));
         Image image = icon.getImage();

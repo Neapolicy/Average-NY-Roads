@@ -13,6 +13,7 @@ public class Sound implements Runnable
 {
     private String fileLocation;
     private boolean loopable;
+    // https://stackoverflow.com/questions/23255162/looping-audio-on-separate-thread-in-java <- ripped from there, and modified a bit
     public void play(String fileName, boolean loopable) //make sure to use the full file name maybe?
     {
         this.loopable = loopable;

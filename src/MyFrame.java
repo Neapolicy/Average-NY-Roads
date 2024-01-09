@@ -41,7 +41,7 @@ public class MyFrame extends JFrame implements Runnable{ //make this in charge o
         });
     }*/
 
-    public MyFrame() throws IOException {
+    public MyFrame() throws IOException { //https://stackoverflow.com/questions/2141019/how-can-i-check-if-something-leaves-the-screen-jframe car leaves screen idfk
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
         this.setLayout(null);
         this.setTitle("I don't even know if JFrame works anymore..");

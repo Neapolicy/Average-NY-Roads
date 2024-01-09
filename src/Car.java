@@ -11,7 +11,7 @@ public class Car extends JLabel implements Runnable{
     public Car(int x, int y) throws IOException {
         ImageIcon icon = new ImageIcon(ImageIO.read(new File("ImageFiles/Images/car1.png")));
         Image image = icon.getImage();
-        Image newimg = image.getScaledInstance(80, 125, Image.SCALE_SMOOTH);
+        Image newimg = image.getScaledInstance(125, 80, Image.SCALE_SMOOTH);
         icon = new ImageIcon(newimg);
         setIcon(icon);
 

@@ -5,7 +5,7 @@ public class Main
     public static void main(String[] args) throws IOException {
         new MyFrame();
         /*Sound sound = new Sound();
-        sound.play("Gun_Fire");
+        sound.play("Gun_Fire", true);
         System.out.println("lol");*/
     }
 }

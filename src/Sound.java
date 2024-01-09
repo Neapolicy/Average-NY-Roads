@@ -12,16 +12,24 @@ import javax.sound.sampled.SourceDataLine;
 public class Sound implements Runnable
 {
     private String fileLocation;
-    public void play(String fileName) //make sure to use the full file name maybe?
+    private boolean loopable;
+    public void play(String fileName, boolean loopable) //make sure to use the full file name maybe?
     {
+        this.loopable = loopable;
         fileLocation = "SFX/Sounds/" + fileName + ".wav";
-        Thread t = new Thread(this);
-        t.start();
+        Thread t1 = new Thread(this);
+        t1.start();
     }
     @Override
-    public void run()
+    public void run() //plays once
     {
-        playSound(fileLocation);
+        if (!loopable) playSound(fileLocation);
+        else {
+            //noinspection InfiniteLoopStatement
+            while (true) {
+                playSound(fileLocation);
+            }
+        }
     }
 
     private void playSound(String fileName)

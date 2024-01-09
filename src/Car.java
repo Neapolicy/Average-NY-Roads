@@ -8,6 +8,8 @@ import java.util.Random;
 public class Car extends JLabel implements Runnable{
     private Box carHitbox;
     private String direction = "right";
+    private Sound sound = new Sound();
+    private int speed;
     public Car(int x, int y) throws IOException {
         ImageIcon icon = new ImageIcon(ImageIO.read(new File("ImageFiles/Images/car1.png")));
         Image image = icon.getImage();
@@ -20,6 +22,7 @@ public class Car extends JLabel implements Runnable{
         carHitbox = (new Box(this.getX(), this.getY(), this.getWidth(), this.getHeight(), Color.RED));
         Thread thread = new Thread(this);
         thread.start();
+        sound.play("Gun_Fire", true);
     }
 
     private void moveCar()

@@ -26,7 +26,7 @@ public class Car extends JLabel implements Runnable{
 
     private void moveCar()
     {
-        int step = 30;
+        int step = 10;
 
         if (direction.equals("right")) {
             this.setLocation(this.getX() - step, this.getY());
@@ -46,7 +46,7 @@ public class Car extends JLabel implements Runnable{
         {
             moveCar();
             try {
-                Thread.sleep(100);
+                Thread.sleep(10);
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }

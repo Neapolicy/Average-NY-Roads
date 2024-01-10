@@ -10,13 +10,15 @@ public class TrafficCone extends JLabel {
     public static boolean conePlaced = false;
     private Box coneHitbox;
 
-    public TrafficCone(int x, int y, String direction) throws IOException {
+    public TrafficCone() throws IOException {
         ImageIcon icon = new ImageIcon(ImageIO.read(new File("ImageFiles/Images/road_block.png")));
         Image image = icon.getImage();
         Image newimg = image.getScaledInstance(50, 50, Image.SCALE_SMOOTH);
         icon = new ImageIcon(newimg);
         setIcon(icon);
+        }
 
+    public void setLocation(int x, int y, String direction) {
         if (!conePlaced) {
             int coneSize = 50;
             switch (direction) {

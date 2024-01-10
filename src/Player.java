@@ -11,6 +11,7 @@ import java.io.IOException;
 public class Player extends JLabel implements KeyListener, MouseListener {
     private String direction = "up";
     private Box playerHitbox; //https://stackoverflow.com/questions/40252221/java-how-to-use-an-object-from-one-mouselistener-to-another-class cheque it out idk
+    private TrafficCone cone;
     public Player() throws IOException {
         ImageIcon icon = new ImageIcon(ImageIO.read(new File("ImageFiles/Images/player.png")));
         Image image = icon.getImage();
@@ -72,11 +73,16 @@ public class Player extends JLabel implements KeyListener, MouseListener {
 
     @Override
     public void mouseClicked(MouseEvent e) {
-        if (e.getButton() == MouseEvent.BUTTON1) {
+/*        if (e.getButton() == MouseEvent.BUTTON1) {
+            try {
+                cone = new TrafficCone(this.getX(), this.getY(), direction);
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
+            }
             TrafficCone.conePlaced = true;
         } else if (e.getButton() == MouseEvent.BUTTON3) {
             TrafficCone.conePlaced = false;
-        }
+        }*/
     }
 
     @Override

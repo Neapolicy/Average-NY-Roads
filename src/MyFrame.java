@@ -1,6 +1,8 @@
 import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -8,10 +10,11 @@ import java.util.ArrayList;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 
-public class MyFrame extends JFrame implements Runnable{ //make this in charge on handling of placing images
+public class MyFrame extends JFrame implements Runnable, MouseListener { //make this in charge on handling of placing images
     private Player player;
     private TrafficCone cone; //might make this an arraylist??
     private ArrayList<Car> cars = new ArrayList<>();
+    private JFrame frame = new JFrame();
 
 /*    public MyFrame() {
         SwingUtilities.invokeLater(() ->{
@@ -42,47 +45,39 @@ public class MyFrame extends JFrame implements Runnable{ //make this in charge o
     }*/
 
     public MyFrame() throws IOException { //https://stackoverflow.com/questions/2141019/how-can-i-check-if-something-leaves-the-screen-jframe car leaves screen idfk
-        this.setDefaultCloseOperation(EXIT_ON_CLOSE);
-        this.setLayout(null);
-        this.setTitle("I don't even know if JFrame works anymore..");
+        frame.setDefaultCloseOperation(EXIT_ON_CLOSE);
+        frame.setLayout(null);
+        frame.setTitle("I don't even know if JFrame works anymore..");
 
-        player = new Player();
-        cone = new TrafficCone(player.getX(), player.getY(), player.getDirection());
         cars.add(new Car(1000, 300));
+        player = new Player();
+        cone = new TrafficCone();
 
-        this.setUndecorated(false);
-        this.addKeyListener(player);
-        this.addMouseListener(player);
+        frame.setUndecorated(false);
+        frame.addKeyListener(player);
+        frame.addMouseListener(this);
 
-        this.setFocusable(true);
+        frame.setFocusable(true);
 
-        this.setExtendedState(JFrame.MAXIMIZED_BOTH);
+        frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
 
-        this.add(player); //find a way to somehow add the traffic cone AAAAAA
-        this.add(cars.get(0));
-
-        this.setVisible(true);
-        this.add(cone);
-        /*cone.setVisible(false);*/
+        frame.setVisible(true);
+        add();
         Thread thread = new Thread(this);
         thread.start();
     }
 
+    public void add()
+    {
+        frame.add(player); //find a way to somehow add the traffic cone AAAAAA
+        frame.add(cars.get(0));
+        frame.add(cone);
+    }
 
-/*    public void paint(Graphics g) {
-        image = createImage(this.getWidth(), this.getHeight());
-        graphics = image.getGraphics();
-        g.drawImage(image, 0, 0, this);
-
-
-        player.getPlayerHitbox().draw(g); //draws the car box
-        repaint();
-    }*/
     public void checkCollision() { //refer to the hitbox instead
         for (Car car : cars)
             if (player.getPlayerHitbox().intersects(car.getCarHitbox())) {
-                switch(player.getDirection())
-                {
+                switch (player.getDirection()) {
                     case "up":
                         player.setLocation(player.getX(), player.getY() + 35);
                         player.getPlayerHitbox().setLocation(player.getX(), player.getY());
@@ -100,39 +95,66 @@ public class MyFrame extends JFrame implements Runnable{ //make this in charge o
                 /*System.out.println(player.getDirection());*/
                 /*System.out.println("HEY");*/
             }
-        if (player.getPlayerHitbox().intersects(cone.getConeHitbox()))
-        {
-            /*switch(player.getDirection())
-            {
-                case "up":
-                    player.setLocation(player.getX(), player.getY() + 60);
-                    player.getPlayerHitbox().setLocation(player.getX(), player.getY());
-                case "down":
-                    player.setLocation(player.getX(), player.getY() - 30);
-                    player.getPlayerHitbox().setLocation(player.getX(), player.getY());
-                case "left":
-                    player.setLocation(player.getX() + 60, player.getY());
-                    player.getPlayerHitbox().setLocation(player.getX(), player.getY());
-                case "right":
-                    player.setLocation(player.getX() - 30, player.getY());
-                    player.getPlayerHitbox().setLocation(player.getX(), player.getY());
-            }*/
-            /*System.out.println(player.getDirection());*/
+        if (TrafficCone.conePlaced) {
+            if (player.getPlayerHitbox().intersects(cone.getConeHitbox())) {
+                switch (player.getDirection()) {
+                    case "up":
+                        player.setLocation(player.getX(), player.getY() + 60);
+                        player.getPlayerHitbox().setLocation(player.getX(), player.getY());
+                    case "down":
+                        player.setLocation(player.getX(), player.getY() - 30);
+                        player.getPlayerHitbox().setLocation(player.getX(), player.getY());
+                    case "left":
+                        player.setLocation(player.getX() + 60, player.getY());
+                        player.getPlayerHitbox().setLocation(player.getX(), player.getY());
+                    case "right":
+                        player.setLocation(player.getX() - 30, player.getY());
+                        player.getPlayerHitbox().setLocation(player.getX(), player.getY());
+                }
+            }
         }
     }
 
-    public void loseScreen()
-    {
+    public void loseScreen() {
         //idk make a game over screen or smtg
     }
 
     @Override
     public void run() {
         //noinspection InfiniteLoopStatement
-        while (true)
-        {
+        while (true) {
             checkCollision();
         }
+    }
+
+    @Override
+    public void mouseClicked(MouseEvent e) {
+        if (e.getButton() == MouseEvent.BUTTON1) {
+            cone.setLocation(player.getX(), player.getY(), player.getDirection());
+            TrafficCone.conePlaced = true;
+        } else if (e.getButton() == MouseEvent.BUTTON3) {
+            TrafficCone.conePlaced = false;
+        }
+    }
+
+    @Override
+    public void mousePressed(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseReleased(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseEntered(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseExited(MouseEvent e) {
+
     }
 }
 // i am questioning on whether i should rewrite this entire program altogether

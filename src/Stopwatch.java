@@ -1,8 +1,9 @@
 public class Stopwatch implements Runnable { //just tracks the time ig
     private long startTime = System.currentTimeMillis();
-    private long elapsedTime;
-    private long elapsedSeconds;
-    private long secondsDisplay;
+    private int elapsedTime;
+    private int elapsedSeconds;
+    private int timePassed = 1;
+    private int gameTime;
     private Thread t;
     public Stopwatch()
     {
@@ -16,11 +17,15 @@ public class Stopwatch implements Runnable { //just tracks the time ig
         {
             elapsedTime = System.currentTimeMillis() - startTime; // this needs to do one per second, bc right now this does it like 10000 times per second, so it lags
             elapsedSeconds = elapsedTime / 1000;
-            secondsDisplay = elapsedSeconds % 60;
+            if (elapsedSeconds == timePassed)
+            {
+                timePassed++;
+                gameTime = (int) elapsedSeconds;
+            }
         }
     }
 
-    public long getElapsedSeconds() {return elapsedSeconds;}
+    public long gettimePassed() {return timePassed;}
 
     @Override
     public void run() {

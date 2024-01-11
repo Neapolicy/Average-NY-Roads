@@ -124,6 +124,18 @@ public class MyFrame extends JFrame implements Runnable, MouseListener { //make 
         //noinspection InfiniteLoopStatement
         while (true) {
             checkCollision();
+            checkCarPositions();
+        }
+    }
+
+    public void checkCarPositions()
+    {
+        for (int i = 0; i < cars.size(); i++)
+        {
+            if (cars.get(i).getX() < 1500) {
+                frame.remove(cars.get(i));
+                cars.remove(cars.get(i));
+            }
         }
     }
 

@@ -26,8 +26,7 @@ public class Sound implements Runnable
     {
         if (!loopable) playSound(fileLocation);
         else {
-            //noinspection InfiniteLoopStatement
-            while (true) {
+            while (loopable) {
                 playSound(fileLocation);
             }
         }

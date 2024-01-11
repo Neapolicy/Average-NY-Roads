@@ -7,7 +7,6 @@ import java.util.Random;
 
 public class Car extends JLabel implements Runnable{
     private Box carHitbox;
-    private String direction = "right";
     private Sound sound = new Sound();
     public Car(int x, int y) throws IOException {
         ImageIcon icon = new ImageIcon(ImageIO.read(new File("ImageFiles/Images/car1.png")));
@@ -26,12 +25,10 @@ public class Car extends JLabel implements Runnable{
 
     private void moveCar()
     {
-        int step = 10;
+        int step = 0;
 
-        if (direction.equals("right")) {
-            this.setLocation(this.getX() - step, this.getY());
-            carHitbox.setLocation(this.getX(), this.getY());
-        }
+        this.setLocation(this.getX() - step, this.getY());
+        carHitbox.setLocation(this.getX(), this.getY());
     }
 
     public Box getCarHitbox()

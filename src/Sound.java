@@ -5,7 +5,6 @@ import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.DataLine;
-import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.SourceDataLine;
 
 
@@ -14,12 +13,13 @@ public class Sound implements Runnable
     private String fileLocation;
     private boolean loopable;
     private SourceDataLine line;
+    private Thread t1;
     // https://stackoverflow.com/questions/23255162/looping-audio-on-separate-thread-in-java <- ripped from there, and modified a bit
     public void play(String fileName, boolean loopable) //make sure to use the full file name maybe?
     {
         this.loopable = loopable;
         fileLocation = "SFX/Sounds/" + fileName + ".wav";
-        Thread t1 = new Thread(this);
+        t1 = new Thread(this);
         t1.start();
     }
     @Override
@@ -81,4 +81,6 @@ public class Sound implements Runnable
     }
 
     public void setLoopable(boolean b) {loopable = b;}
+
+    public void killThread() {t1.interrupt();}
 }

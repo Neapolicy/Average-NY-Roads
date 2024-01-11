@@ -3,12 +3,12 @@ import javax.swing.*;
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
-import java.util.Random;
 
 public class Car extends JLabel implements Runnable{
     private Box carHitbox;
     private Sound sound = new Sound();
-    private int step = 10;
+    private int step = 1;
+    private Thread thread;
     public Car(int x, int y) throws IOException {
         ImageIcon icon = new ImageIcon(ImageIO.read(new File("ImageFiles/Images/car1.png")));
         Image image = icon.getImage();
@@ -20,15 +20,13 @@ public class Car extends JLabel implements Runnable{
         this.setOpaque(true);
         carHitbox = (new Box(this.getX(), this.getY(), this.getWidth(), this.getHeight(), Color.RED));
         sound.play("Gun_Fire", true);
-        Thread thread = new Thread(this);
+        thread = new Thread(this);
         thread.start();
     }
 
 
     private void moveCar()
     {
-        step = 10;
-
         this.setLocation(this.getX() - step, this.getY());
         carHitbox.setLocation(this.getX(), this.getY());
     }
@@ -50,7 +48,20 @@ public class Car extends JLabel implements Runnable{
             }
         }
         sound.setLoopable(false);
+        killThreads();
     }
+
+    public void killSound(){sound.setLoopable(false);}
+
+    public void killThreads() {
+        sound.killThread();
+        killThread();
+        thread.interrupt();
+    }
+
+    public void killThread(){thread.interrupt();}
+
+    public int getStep() {return step;}
 
     public void setSpeed(int speed)
     {

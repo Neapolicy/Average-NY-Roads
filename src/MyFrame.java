@@ -1,22 +1,21 @@
 import java.awt.*;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
 
 public class MyFrame extends JFrame implements Runnable, MouseListener { //make this in charge on handling of placing images
     private Player player;
     private TrafficCone cone; //might make this an arraylist??
     private ArrayList<Car> cars = new ArrayList<>();
+    private int timesGenerated;
     private JFrame frame = new JFrame();
     private Dimension size = Toolkit.getDefaultToolkit().getScreenSize();
-    private boolean gameOver;
+    public static boolean gameOver;
+    private Thread thread;
+    private Stopwatch s = new Stopwatch();
 
     public MyFrame() throws IOException { //https://stackoverflow.com/questions/2141019/how-can-i-check-if-something-leaves-the-screen-jframe car leaves screen idfk
         frame.setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -37,33 +36,27 @@ public class MyFrame extends JFrame implements Runnable, MouseListener { //make 
 
         frame.setVisible(true);
         add();
-        Thread thread = new Thread(this);
+        thread = new Thread(this);
         thread.start();
     }
 
     public void add() {
         frame.add(player); //find a way to somehow add the traffic cone AAAAAA
-        frame.add(cars.get(0));
+        for (Car car : cars) frame.add(car);
         frame.add(cone);
+    }
+
+    public void addCars() throws IOException //creates new cars
+    {
+        for (int i = 0; i < timesGenerated; i++) cars.add(new Car(1000, 300));
+        timesGenerated = 0;
+        for (Car car : cars) frame.add(car);
     }
 
     public void checkCollision() { //refer to the hitbox instead
         for (Car car : cars)
             if (player.getPlayerHitbox().intersects(car.getCarHitbox())) {
-                switch (player.getDirection()) {
-                    case "up":
-                        player.setLocation(player.getX(), player.getY() + 35);
-                        player.getPlayerHitbox().setLocation(player.getX(), player.getY());
-                    case "down":
-                        player.setLocation(player.getX(), player.getY() - 35);
-                        player.getPlayerHitbox().setLocation(player.getX(), player.getY());
-                    case "left":
-                        player.setLocation(player.getX() + 35, player.getY());
-                        player.getPlayerHitbox().setLocation(player.getX(), player.getY());
-                    case "right":
-                        player.setLocation(player.getX() - 30, player.getY());
-                        player.getPlayerHitbox().setLocation(player.getX(), player.getY());
-                }
+                car.killSound();
                 loseScreen();
             }
     }
@@ -72,12 +65,11 @@ public class MyFrame extends JFrame implements Runnable, MouseListener { //make 
         for (Car car : cars)
             if (cone.getConeHitbox().intersects(car.getCarHitbox())) {
                 car.setSpeed(0);
-            }
-            else
-            {
-                car.setSpeed(10);
+            } else {
+                car.setSpeed(car.getStep());
             }
     }
+
     public void conePlacement() {
         if (TrafficCone.conePlaced) {
             if (player.getPlayerHitbox().intersects(cone.getConeHitbox())) {
@@ -100,25 +92,28 @@ public class MyFrame extends JFrame implements Runnable, MouseListener { //make 
     }
 
     public void loseScreen() {
+        gameOver = true;
         frame.removeKeyListener(player);
         frame.removeMouseListener(this);
-        for (int i = 0; i < cars.size(); i++) { //removes all cars
-            frame.remove(cars.get(i));
-            cars.remove(cars.get(i));
-        }
-        frame.remove(cone);
+        frame.removeAll();
+        thread.interrupt();
+        s.killThread();
     }
 
     @Override
     public void run() {
-        //noinspection InfiniteLoopStatement
-        while (true) {
+        do {
             checkCollision();
             conePlacement();
             checkCarPositions();
             checkPlayerPosition();
             roadBlock();
-        }
+            try {
+                addCars();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        } while (!Thread.currentThread().isInterrupted());
     }
 
     public void checkCarPositions() {

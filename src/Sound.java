@@ -13,6 +13,7 @@ public class Sound implements Runnable
 {
     private String fileLocation;
     private boolean loopable;
+    private SourceDataLine line;
     // https://stackoverflow.com/questions/23255162/looping-audio-on-separate-thread-in-java <- ripped from there, and modified a bit
     public void play(String fileName, boolean loopable) //make sure to use the full file name maybe?
     {
@@ -46,7 +47,6 @@ public class Sound implements Runnable
         }
         assert audioInputStream != null;
         AudioFormat audioFormat = audioInputStream.getFormat();
-        SourceDataLine line = null;
         DataLine.Info info = new DataLine.Info(SourceDataLine.class, audioFormat);
         try
         {
@@ -79,4 +79,6 @@ public class Sound implements Runnable
         line.drain();
         line.close();
     }
+
+    public void setLoopable(boolean b) {loopable = b;}
 }

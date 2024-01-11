@@ -8,7 +8,7 @@ import java.awt.event.MouseListener;
 import java.io.File;
 import java.io.IOException;
 
-public class Player extends JLabel implements KeyListener, MouseListener {
+public class Player extends JLabel implements KeyListener {
     private String direction = "up";
     private Box playerHitbox; //https://stackoverflow.com/questions/40252221/java-how-to-use-an-object-from-one-mouselistener-to-another-class cheque it out idk
     public Player() throws IOException {
@@ -32,6 +32,11 @@ public class Player extends JLabel implements KeyListener, MouseListener {
     public void keyPressed(KeyEvent e) {
         char keyCode = e.getKeyChar();
         movePlayer(keyCode);
+    }
+
+    @Override
+    public void keyReleased(KeyEvent e) {
+
     }
 
     private void movePlayer(char keyCode) {
@@ -66,39 +71,6 @@ public class Player extends JLabel implements KeyListener, MouseListener {
         return direction;
     }
 
-    @Override
-    public void keyReleased(KeyEvent e) {
-    }
-
-    @Override
-    public void mouseClicked(MouseEvent e) {
-/*        if (e.getButton() == MouseEvent.BUTTON1) {
-            try {
-                cone = new TrafficCone(this.getX(), this.getY(), direction);
-            } catch (IOException ex) {
-                throw new RuntimeException(ex);
-            }
-            TrafficCone.conePlaced = true;
-        } else if (e.getButton() == MouseEvent.BUTTON3) {
-            TrafficCone.conePlaced = false;
-        }*/
-    }
-
-    @Override
-    public void mouseExited(MouseEvent e) {
-    }
-
-    @Override
-    public void mouseEntered(MouseEvent e) {
-    }
-
-    @Override
-    public void mousePressed(MouseEvent e) {
-    }
-
-    @Override
-    public void mouseReleased(MouseEvent e) {
-    }
 
     public Box getPlayerHitbox()
     {

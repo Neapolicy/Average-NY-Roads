@@ -15,34 +15,8 @@ public class MyFrame extends JFrame implements Runnable, MouseListener { //make 
     private TrafficCone cone; //might make this an arraylist??
     private ArrayList<Car> cars = new ArrayList<>();
     private JFrame frame = new JFrame();
-
-/*    public MyFrame() {
-        SwingUtilities.invokeLater(() ->{
-            this.setDefaultCloseOperation(EXIT_ON_CLOSE);
-            this.setExtendedState(JFrame.MAXIMIZED_BOTH);
-
-            ImageIcon icon;
-            try {
-                icon = new ImageIcon(ImageIO.read(new File("Images/Player/player.png")));
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-            player = new Player(icon);
-            this.addKeyListener(player);
-            this.addMouseListener(player);
-            this.setFocusable(true);
-
-            *//*playerHitbox = new Box(300, 300, 50, 50, Color.BLACK);*//*
-            this.add(player);
-            revalidate();
-            repaint();
-
-            *//*this.addKeyListener(new AL());*//*
-
-            this.setContentPane(new JLabel(icon));
-            this.setVisible(true);
-        });
-    }*/
+    private Dimension size = Toolkit.getDefaultToolkit().getScreenSize();
+    private boolean gameOver;
 
     public MyFrame() throws IOException { //https://stackoverflow.com/questions/2141019/how-can-i-check-if-something-leaves-the-screen-jframe car leaves screen idfk
         frame.setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -67,8 +41,7 @@ public class MyFrame extends JFrame implements Runnable, MouseListener { //make 
         thread.start();
     }
 
-    public void add()
-    {
+    public void add() {
         frame.add(player); //find a way to somehow add the traffic cone AAAAAA
         frame.add(cars.get(0));
         frame.add(cone);
@@ -92,9 +65,20 @@ public class MyFrame extends JFrame implements Runnable, MouseListener { //make 
                         player.getPlayerHitbox().setLocation(player.getX(), player.getY());
                 }
                 loseScreen();
-                /*System.out.println(player.getDirection());*/
-                /*System.out.println("HEY");*/
             }
+    }
+
+    public void roadBlock() { //refer to the hitbox instead
+        for (Car car : cars)
+            if (cone.getConeHitbox().intersects(car.getCarHitbox())) {
+                car.setSpeed(0);
+            }
+            else
+            {
+                car.setSpeed(10);
+            }
+    }
+    public void conePlacement() {
         if (TrafficCone.conePlaced) {
             if (player.getPlayerHitbox().intersects(cone.getConeHitbox())) {
                 switch (player.getDirection()) {
@@ -116,7 +100,13 @@ public class MyFrame extends JFrame implements Runnable, MouseListener { //make 
     }
 
     public void loseScreen() {
-        //idk make a game over screen or smtg
+        frame.removeKeyListener(player);
+        frame.removeMouseListener(this);
+        for (int i = 0; i < cars.size(); i++) { //removes all cars
+            frame.remove(cars.get(i));
+            cars.remove(cars.get(i));
+        }
+        frame.remove(cone);
     }
 
     @Override
@@ -124,19 +114,27 @@ public class MyFrame extends JFrame implements Runnable, MouseListener { //make 
         //noinspection InfiniteLoopStatement
         while (true) {
             checkCollision();
+            conePlacement();
             checkCarPositions();
+            checkPlayerPosition();
+            roadBlock();
         }
     }
 
-    public void checkCarPositions()
-    {
-        for (int i = 0; i < cars.size(); i++)
-        {
-            if (cars.get(i).getX() < 1500) {
+    public void checkCarPositions() {
+        for (int i = 0; i < cars.size(); i++) {
+            if (cars.get(i).getX() <= Main.offScreen) {
                 frame.remove(cars.get(i));
                 cars.remove(cars.get(i));
             }
         }
+    }
+
+    public void checkPlayerPosition() {
+        if (player.getX() < 0) player.setLocation(0, player.getY());
+        if (player.getX() > size.getWidth() - 100) player.setLocation((int) size.getWidth() - 100, player.getY());
+        if (player.getY() < 0) player.setLocation(player.getX(), 0);
+        if (player.getY() > size.getHeight() - 150) player.setLocation(player.getX(), (int) size.getHeight() - 150);
     }
 
     @Override
@@ -144,7 +142,8 @@ public class MyFrame extends JFrame implements Runnable, MouseListener { //make 
         if (e.getButton() == MouseEvent.BUTTON1) {
             cone.setLocation(player.getX(), player.getY(), player.getDirection());
             TrafficCone.conePlaced = true;
-        } else if (e.getButton() == MouseEvent.BUTTON3) {
+        }
+        if (e.getButton() == MouseEvent.BUTTON3) {
             TrafficCone.conePlaced = false;
         }
     }

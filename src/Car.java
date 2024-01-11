@@ -8,6 +8,7 @@ import java.util.Random;
 public class Car extends JLabel implements Runnable{
     private Box carHitbox;
     private Sound sound = new Sound();
+    private int step = 10;
     public Car(int x, int y) throws IOException {
         ImageIcon icon = new ImageIcon(ImageIO.read(new File("ImageFiles/Images/car1.png")));
         Image image = icon.getImage();
@@ -18,14 +19,15 @@ public class Car extends JLabel implements Runnable{
         this.setBounds(x, y, icon.getIconWidth(), icon.getIconHeight());
         this.setOpaque(true);
         carHitbox = (new Box(this.getX(), this.getY(), this.getWidth(), this.getHeight(), Color.RED));
+        sound.play("Gun_Fire", true);
         Thread thread = new Thread(this);
         thread.start();
-        sound.play("Gun_Fire", true);
     }
+
 
     private void moveCar()
     {
-        int step = 0;
+        step = 10;
 
         this.setLocation(this.getX() - step, this.getY());
         carHitbox.setLocation(this.getX(), this.getY());
@@ -37,9 +39,8 @@ public class Car extends JLabel implements Runnable{
     }
 
     @Override
-    public void run() {
-        //noinspection InfiniteLoopStatement
-        while (true)
+    public void run() { //controls car movement
+        while (this.getX() > Main.offScreen)
         {
             moveCar();
             try {
@@ -48,5 +49,11 @@ public class Car extends JLabel implements Runnable{
                 throw new RuntimeException(e);
             }
         }
+        sound.setLoopable(false);
+    }
+
+    public void setSpeed(int speed)
+    {
+        step = speed;
     }
 }

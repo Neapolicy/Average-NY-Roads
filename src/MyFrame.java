@@ -48,9 +48,12 @@ public class MyFrame extends JFrame implements Runnable, MouseListener { //make 
 
     public void addCars() throws IOException //creates new cars
     {
-        for (int i = 0; i < timesGenerated; i++) cars.add(new Car(1000, 300));
-        timesGenerated = 0;
-        for (Car car : cars) frame.add(car);
+        if (s.getElapsedSeconds() % 10 == 0)
+        {
+            for (int i = 0; i < timesGenerated; i++) cars.add(new Car(1000, 300));
+            timesGenerated = 0;
+            for (Car car : cars) frame.add(car);
+        }
     }
 
     public void checkCollision() { //refer to the hitbox instead

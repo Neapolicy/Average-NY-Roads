@@ -27,7 +27,6 @@ public class MyFrame extends JFrame implements Runnable, MouseListener { //make 
 
         cars.add(new Car((int) size.getWidth(), 300));
         player = new Player();
-        cone = new TrafficCone();
 
         frame.setUndecorated(false);
         frame.addKeyListener(player);
@@ -46,7 +45,6 @@ public class MyFrame extends JFrame implements Runnable, MouseListener { //make 
     public void add() {
         frame.add(player); //find a way to somehow add the traffic cone AAAAAA
         for (Car car : cars) frame.add(car);
-        frame.add(cone);
     }
 
     public void addCars() throws IOException, InterruptedException //creates new cars
@@ -60,7 +58,7 @@ public class MyFrame extends JFrame implements Runnable, MouseListener { //make 
         }
     }
 
-    public void checkCollision() { //refer to the hitbox instead
+    public void checkCollision() throws IOException { //refer to the hitbox instead
         for (Car car : cars)
             if (player.getPlayerHitbox().intersects(car.getCarHitbox())) {
                 car.killSound(false);
@@ -70,16 +68,17 @@ public class MyFrame extends JFrame implements Runnable, MouseListener { //make 
 
     public void roadBlock() throws InterruptedException { //refer to the hitbox instead
         for (Car car : cars)
-            if (cone.getConeHitbox().intersects(car.getCarHitbox())) {
-                car.killSound(false);
-                car.setSpeed(0);
+            if (cone != null)
+                if (cone.getConeHitbox().intersects(car.getCarHitbox())) {
+                    car.killSound(false);
+                    car.setSpeed(0);
             } else {
                 car.setSpeed(1);// allows car to play audio again once no longer blocked by cone
             }
     }
 
     public void conePlacement() {
-        if (TrafficCone.conePlaced) {
+        if (TrafficCone.conesPlaced == 1) {
             if (player.getPlayerHitbox().intersects(cone.getConeHitbox())) {
                 switch (player.getDirection()) {
                     case "up":
@@ -99,13 +98,19 @@ public class MyFrame extends JFrame implements Runnable, MouseListener { //make 
         }
     }
 
-    public void loseScreen() {
+    public void loseScreen() throws IOException {
         gameOver = true;
         frame.removeKeyListener(player);
         frame.removeMouseListener(this);
         frame.removeAll();
+        refresh();
         thread.interrupt();
         s.killThread();
+    }
+
+    private void refresh() throws IOException {
+        frame.validate();
+        frame.repaint();
     }
 
     @Override
@@ -114,7 +119,11 @@ public class MyFrame extends JFrame implements Runnable, MouseListener { //make 
             long startTime = System.nanoTime();
 
             //do stuff per frame below
-            checkCollision();
+            try {
+                checkCollision();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
             conePlacement();
             checkCarPositions();
             checkPlayerPosition();
@@ -162,11 +171,23 @@ public class MyFrame extends JFrame implements Runnable, MouseListener { //make 
     @Override
     public void mouseClicked(MouseEvent e) {
         if (e.getButton() == MouseEvent.BUTTON1) {
-            cone.setLocation(player.getX(), player.getY(), player.getDirection());
-            TrafficCone.conePlaced = true;
+            try {
+                cone = new TrafficCone();
+                cone.setLocation(player.getX(), player.getY(), player.getDirection());
+                frame.add(cone);
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
+            }
+            TrafficCone.conesPlaced++;
         }
         if (e.getButton() == MouseEvent.BUTTON3) {
-            TrafficCone.conePlaced = false;
+            frame.remove(cone);
+            TrafficCone.conesPlaced--;
+        }
+        try {
+            refresh();
+        } catch (IOException ex) {
+            throw new RuntimeException(ex);
         }
     }
 

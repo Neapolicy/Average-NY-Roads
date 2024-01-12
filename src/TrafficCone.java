@@ -6,7 +6,7 @@ import java.io.File;
 import java.io.IOException;
 
 public class TrafficCone extends JLabel {
-    public static boolean conePlaced = false;
+    public static int conesPlaced;
     private Box coneHitbox;
 
     public TrafficCone() throws IOException {
@@ -19,7 +19,7 @@ public class TrafficCone extends JLabel {
         }
 
     public void setLocation(int x, int y, String direction) {
-        if (!conePlaced) {
+        if (conesPlaced < 1) {
             int coneSize = 50;
             switch (direction) {
                 case "up" -> this.setBounds(x, y - coneSize, coneSize, coneSize);
@@ -30,13 +30,12 @@ public class TrafficCone extends JLabel {
             this.setBackground(Color.BLACK);
             this.setOpaque(true);
             coneHitbox = (new Box(this.getX(), this.getY(), this.getWidth(), this.getHeight(), Color.RED));
-            conePlaced = true;
         }
+        capConesPlaced();
     }
 
-    public Box getConeHitbox()
-    {
-        return coneHitbox;
-    }
+    public void capConesPlaced(){if (conesPlaced > 1) conesPlaced = 1;}
+
+    public Box getConeHitbox() {return coneHitbox;}
 
 }

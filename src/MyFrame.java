@@ -168,8 +168,12 @@ public class MyFrame extends JFrame implements Runnable, MouseListener { //make 
     }
 
     public void stunPlayer() throws InterruptedException { //make a second thread exclusively to handle this
-        removeKeyListener(player);
-        addKeyListener(player);
+        Thread t2 = new Thread(this);
+        t2.start();
+        public void run() {
+            removeKeyListener(player);
+            addKeyListener(player);
+        }
     }
 
     @Override
@@ -214,4 +218,3 @@ public class MyFrame extends JFrame implements Runnable, MouseListener { //make 
 
     }
 }
-// i am questioning on whether i should rewrite this entire program altogether

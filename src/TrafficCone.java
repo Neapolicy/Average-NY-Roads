@@ -34,7 +34,10 @@ public class TrafficCone extends JLabel {
         capConesPlaced();
     }
 
-    public void capConesPlaced(){if (conesPlaced > 1) conesPlaced = 1;}
+    public void capConesPlaced(){
+        if (conesPlaced > 1) conesPlaced = 1;
+        else if (conesPlaced < 0) conesPlaced = 0;
+    }
 
     public Box getConeHitbox() {return coneHitbox;}
 

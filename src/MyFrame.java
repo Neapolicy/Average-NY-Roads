@@ -73,7 +73,7 @@ public class MyFrame extends JFrame implements Runnable, MouseListener { //make 
                     car.killSound(false);
                     car.setSpeed(0);
             } else {
-                car.setSpeed(1);// allows car to play audio again once no longer blocked by cone
+                car.setSpeed(10);// allows car to play audio again once no longer blocked by cone
             }
     }
 
@@ -127,16 +127,15 @@ public class MyFrame extends JFrame implements Runnable, MouseListener { //make 
             conePlacement();
             checkCarPositions();
             checkPlayerPosition();
-            try {
-                roadBlock();
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
-            }
+
             try {
                 addCars();
+                roadBlock();
+                refresh();
             } catch (IOException | InterruptedException e) {
                 throw new RuntimeException(e);
             }
+
 
             long totalTime = System.nanoTime() - startTime;
 
@@ -168,26 +167,30 @@ public class MyFrame extends JFrame implements Runnable, MouseListener { //make 
         if (player.getY() > size.getHeight() - 150) player.setLocation(player.getX(), (int) size.getHeight() - 150);
     }
 
+    public void stunPlayer() throws InterruptedException { //make a second thread exclusively to handle this
+        removeKeyListener(player);
+        addKeyListener(player);
+    }
+
     @Override
     public void mouseClicked(MouseEvent e) {
         if (e.getButton() == MouseEvent.BUTTON1) {
             try {
                 cone = new TrafficCone();
+                stunPlayer();
                 cone.setLocation(player.getX(), player.getY(), player.getDirection());
                 frame.add(cone);
-            } catch (IOException ex) {
+            } catch (IOException | InterruptedException ex) {
                 throw new RuntimeException(ex);
             }
             TrafficCone.conesPlaced++;
         }
         if (e.getButton() == MouseEvent.BUTTON3) {
-            frame.remove(cone);
-            TrafficCone.conesPlaced--;
-        }
-        try {
-            refresh();
-        } catch (IOException ex) {
-            throw new RuntimeException(ex);
+            if (cone != null)
+            {
+                frame.remove(cone);
+                TrafficCone.conesPlaced--;
+            }
         }
     }
 

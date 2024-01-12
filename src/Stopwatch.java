@@ -9,10 +9,13 @@ public class Stopwatch implements Runnable { //just tracks the time ig
         t.start();
     }
 
-    public void startTimer()
-    {
+    public long getTimePassed() {return gameTime;}
+
+    @Override
+    public void run() {
         while (!Thread.currentThread().isInterrupted())
         {
+            long startTimer = System.nanoTime();
 
             int elapsedTime = (int) (System.currentTimeMillis() - startTime); // this needs to do one per second, bc right now this does it like 10000 times per second, so it lags
             int elapsedSeconds = elapsedTime / 1000;
@@ -21,14 +24,17 @@ public class Stopwatch implements Runnable { //just tracks the time ig
                 timePassed++;
                 gameTime = elapsedSeconds;
             }
+
+            long totalTime = System.nanoTime() - startTimer;
+
+            if (totalTime < MyFrame.targetTime) {
+                try {
+                    Thread.sleep((MyFrame.targetTime - totalTime) / 1000000);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+            }
         }
-    }
-
-    public long getTimePassed() {return gameTime;}
-
-    @Override
-    public void run() {
-        startTimer();
     }
 
     public void killThread(){t.interrupt();}

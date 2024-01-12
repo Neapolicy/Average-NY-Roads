@@ -5,7 +5,6 @@ public class Main
     public static int offScreen = -100;
     public static void main(String[] args) throws IOException {
         new MyFrame();
-        /*new Stopwatch();*/
     }
 }
 

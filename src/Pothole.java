@@ -1,2 +1,2 @@
-public class Pothole {
+public class Pothole { //shouldnt be that hard hopefully??
 }

@@ -6,6 +6,7 @@ import java.io.IOException;
 
 public class Car extends JLabel implements Runnable{
     private Box carHitbox;
+    private boolean isBlocked = true;
     private Sound sound = new Sound();
     private int step = 10;
     private Thread thread;
@@ -23,7 +24,6 @@ public class Car extends JLabel implements Runnable{
         thread = new Thread(this);
         thread.start();
     }
-
 
     private void moveCar()
     {
@@ -73,9 +73,6 @@ public class Car extends JLabel implements Runnable{
     }
 
     public void killThread(){thread.interrupt();}
-
-    public int getStep() {return step;}
-
     public void setSpeed(int speed)
     {
         step = speed;

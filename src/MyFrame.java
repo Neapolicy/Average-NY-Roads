@@ -68,14 +68,13 @@ public class MyFrame extends JFrame implements Runnable, MouseListener { //make 
             }
     }
 
-    public void roadBlock() { //refer to the hitbox instead
+    public void roadBlock() throws InterruptedException { //refer to the hitbox instead
         for (Car car : cars)
             if (cone.getConeHitbox().intersects(car.getCarHitbox())) {
                 car.killSound(false);
                 car.setSpeed(0);
             } else {
-                car.setSpeed(1);
-                car.killSound(true); // allows car to play audio again once no longer blocked by cone
+                car.setSpeed(1);// allows car to play audio again once no longer blocked by cone
             }
     }
 
@@ -119,7 +118,11 @@ public class MyFrame extends JFrame implements Runnable, MouseListener { //make 
             conePlacement();
             checkCarPositions();
             checkPlayerPosition();
-            roadBlock();
+            try {
+                roadBlock();
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
             try {
                 addCars();
             } catch (IOException | InterruptedException e) {

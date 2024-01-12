@@ -28,7 +28,18 @@ public class Sound implements Runnable
         if (!loopable) playSound(fileLocation);
         else {
             while (loopable) {
+                long startTime = System.nanoTime();
+
                 playSound(fileLocation);
+                long totalTime = System.nanoTime() - startTime;
+
+                if (totalTime < MyFrame.targetTime) {
+                    try {
+                        Thread.sleep((MyFrame.targetTime - totalTime) / 1000000);
+                    } catch (InterruptedException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
             }
         }
     }

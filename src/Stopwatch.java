@@ -13,6 +13,7 @@ public class Stopwatch implements Runnable { //just tracks the time ig
     {
         while (!Thread.currentThread().isInterrupted())
         {
+
             int elapsedTime = (int) (System.currentTimeMillis() - startTime); // this needs to do one per second, bc right now this does it like 10000 times per second, so it lags
             int elapsedSeconds = elapsedTime / 1000;
             if (elapsedSeconds == timePassed)

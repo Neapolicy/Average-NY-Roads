@@ -7,22 +7,25 @@ import java.util.ArrayList;
 import javax.swing.*;
 
 public class MyFrame extends JFrame implements Runnable, MouseListener { //make this in charge on handling of placing images
+    public static int targetFPS = 30;
+    public static int targetTime = 1000000000 / targetFPS;
+    public static boolean gameOver;
     private Player player;
     private TrafficCone cone; //might make this an arraylist??
     private ArrayList<Car> cars = new ArrayList<>();
     private int timesGenerated;
     private JFrame frame = new JFrame();
     private Dimension size = Toolkit.getDefaultToolkit().getScreenSize();
-    public static boolean gameOver;
     private Thread thread;
     private Stopwatch s = new Stopwatch();
+    private Sound sound = new Sound();
 
     public MyFrame() throws IOException { //https://stackoverflow.com/questions/2141019/how-can-i-check-if-something-leaves-the-screen-jframe car leaves screen idfk
         frame.setDefaultCloseOperation(EXIT_ON_CLOSE);
         frame.setLayout(null);
         frame.setTitle("I don't even know if JFrame works anymore..");
 
-        cars.add(new Car(1000, 300));
+        cars.add(new Car((int) size.getWidth(), 300));
         player = new Player();
         cone = new TrafficCone();
 
@@ -60,7 +63,7 @@ public class MyFrame extends JFrame implements Runnable, MouseListener { //make 
     public void checkCollision() { //refer to the hitbox instead
         for (Car car : cars)
             if (player.getPlayerHitbox().intersects(car.getCarHitbox())) {
-                car.killSound();
+                car.killSound(false);
                 loseScreen();
             }
     }
@@ -68,9 +71,11 @@ public class MyFrame extends JFrame implements Runnable, MouseListener { //make 
     public void roadBlock() { //refer to the hitbox instead
         for (Car car : cars)
             if (cone.getConeHitbox().intersects(car.getCarHitbox())) {
+                car.killSound(false);
                 car.setSpeed(0);
             } else {
-                car.setSpeed(car.getStep());
+                car.setSpeed(1);
+                car.killSound(true); // allows car to play audio again once no longer blocked by cone
             }
     }
 
@@ -106,7 +111,10 @@ public class MyFrame extends JFrame implements Runnable, MouseListener { //make 
 
     @Override
     public void run() {
-        do {
+        while (!Thread.currentThread().isInterrupted()) {
+            long startTime = System.nanoTime();
+
+            //do stuff per frame below
             checkCollision();
             conePlacement();
             checkCarPositions();
@@ -117,7 +125,19 @@ public class MyFrame extends JFrame implements Runnable, MouseListener { //make 
             } catch (IOException | InterruptedException e) {
                 throw new RuntimeException(e);
             }
-        } while (!Thread.currentThread().isInterrupted());
+
+            long totalTime = System.nanoTime() - startTime;
+
+            if (totalTime < targetTime) {
+                try {
+                    Thread.sleep((targetTime - totalTime) / 1000000);
+                } catch (InterruptedException e) {
+                    for (Car car : cars)
+                        car.killSound(false);
+                    throw new RuntimeException(e);
+                }
+            }
+        }
     }
 
     public void checkCarPositions() {

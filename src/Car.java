@@ -7,7 +7,7 @@ import java.io.IOException;
 public class Car extends JLabel implements Runnable{
     private Box carHitbox;
     private Sound sound = new Sound();
-    private int step = 1;
+    private int step = 10;
     private Thread thread;
     public Car(int x, int y) throws IOException {
         ImageIcon icon = new ImageIcon(ImageIO.read(new File("ImageFiles/Images/car1.png")));
@@ -19,7 +19,7 @@ public class Car extends JLabel implements Runnable{
         this.setBounds(x, y, icon.getIconWidth(), icon.getIconHeight());
         this.setOpaque(true);
         carHitbox = (new Box(this.getX(), this.getY(), this.getWidth(), this.getHeight(), Color.RED));
-        sound.play("Gun_Fire", true);
+        sound.play("car_move", true);
         thread = new Thread(this);
         thread.start();
     }
@@ -29,6 +29,7 @@ public class Car extends JLabel implements Runnable{
     {
         this.setLocation(this.getX() - step, this.getY());
         carHitbox.setLocation(this.getX(), this.getY());
+        if (step == 0) killSound(false);
     }
 
     public Box getCarHitbox()
@@ -40,18 +41,30 @@ public class Car extends JLabel implements Runnable{
     public void run() { //controls car movement
         while (this.getX() > Main.offScreen)
         {
+            long startTime = System.nanoTime();
+
             moveCar();
             try {
                 Thread.sleep(10);
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
+
+            long totalTime = System.nanoTime() - startTime;
+
+            if (totalTime < MyFrame.targetTime) {
+                try {
+                    Thread.sleep((MyFrame.targetTime - totalTime) / 1000000);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+            }
         }
         sound.setLoopable(false);
         killThreads();
     }
 
-    public void killSound(){sound.setLoopable(false);}
+    public void killSound(boolean b){sound.setLoopable(b);}
 
     public void killThreads() {
         sound.killThread();

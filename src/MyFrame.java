@@ -48,7 +48,7 @@ public class MyFrame extends JFrame implements Runnable, MouseListener { //make 
 
     public void addCars() throws IOException, InterruptedException //creates new cars
     {
-        if (s.getTimePassed() % 5 == 0)
+        if (s.getTimePassed() % 5 == 0) //5 seconds to add a car is purely for testing purposes
         {
             for (int i = 0; i < timesGenerated; i++) cars.add(new Car(1000, 300));
             timesGenerated = 0;

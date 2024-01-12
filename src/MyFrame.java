@@ -15,7 +15,6 @@ public class MyFrame extends JFrame implements Runnable, MouseListener { //make 
     private Dimension size = Toolkit.getDefaultToolkit().getScreenSize();
     public static boolean gameOver;
     private Thread thread;
-    private boolean trigger;
     private Stopwatch s = new Stopwatch();
 
     public MyFrame() throws IOException { //https://stackoverflow.com/questions/2141019/how-can-i-check-if-something-leaves-the-screen-jframe car leaves screen idfk
@@ -47,15 +46,14 @@ public class MyFrame extends JFrame implements Runnable, MouseListener { //make 
         frame.add(cone);
     }
 
-    public void addCars() throws IOException //creates new cars
+    public void addCars() throws IOException, InterruptedException //creates new cars
     {
-        if (s.getTimePassed() % 5 == 0 && !trigger && s.getTimePassed() != 0)
+        if (s.getTimePassed() % 5 == 0)
         {
-            trigger = true;
             for (int i = 0; i < timesGenerated; i++) cars.add(new Car(1000, 300));
             timesGenerated = 0;
             for (Car car : cars) frame.add(car);
-            if (s.getTimePassed() % 6 == 0) trigger = false;
+            Thread.sleep(100);
         }
     }
 
@@ -116,7 +114,7 @@ public class MyFrame extends JFrame implements Runnable, MouseListener { //make 
             roadBlock();
             try {
                 addCars();
-            } catch (IOException e) {
+            } catch (IOException | InterruptedException e) {
                 throw new RuntimeException(e);
             }
         } while (!Thread.currentThread().isInterrupted());

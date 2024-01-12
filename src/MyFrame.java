@@ -53,7 +53,7 @@ public class MyFrame extends JFrame implements Runnable, MouseListener { //make 
             for (int i = 0; i < timesGenerated; i++) cars.add(new Car(1000, 300));
             timesGenerated = 0;
             for (Car car : cars) frame.add(car);
-            Thread.sleep(100);
+            Thread.sleep(1000);
         }
     }
 

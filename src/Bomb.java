@@ -21,12 +21,6 @@ public class Bomb extends TrafficCone implements Runnable {
     @Override
     public void run() {
         sound.play("bomb_place", false);
-        try {
-            Thread.sleep(400);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
-        sound.play("man_V_machine", false);
     } //this thing might result in me having to move key listener to myframe but idk lol
     public Box getBombHitbox() {return bombHitbox;}
 }

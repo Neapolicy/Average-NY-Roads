@@ -31,7 +31,7 @@ public class Stopwatch implements Runnable { //just tracks the time ig
                 try {
                     Thread.sleep((MyFrame.targetTime - totalTime) / 1000000);
                 } catch (InterruptedException e) {
-                    throw new RuntimeException(e);
+                    System.out.println("Elapsed Time: " + gameTime);
                 }
             }
         }

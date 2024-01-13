@@ -12,9 +12,11 @@ public class MyFrame extends JFrame implements Runnable, MouseListener, KeyListe
     public static int targetFPS = 30;
     public static int targetTime = 1000000000 / targetFPS;
     public static boolean gameOver;
+    private Bomb bomb;
     private Player player;
     private TrafficCone cone; //might make this an arraylist??
     private ArrayList<Car> cars = new ArrayList<>();
+    private ArrayList<Pothole> potholes = new ArrayList<>();
     private int timesGenerated;
     private JFrame frame = new JFrame();
     private Dimension size = Toolkit.getDefaultToolkit().getScreenSize();
@@ -68,19 +70,8 @@ public class MyFrame extends JFrame implements Runnable, MouseListener, KeyListe
             }
     }
 
-    public void roadBlock() throws InterruptedException { //refer to the hitbox instead
-        for (Car car : cars)
-            if (cone != null)
-                if (cone.getConeHitbox().intersects(car.getCarHitbox())) {
-                    car.killSound(false);
-                    car.setSpeed(0);
-            } else {
-                car.setSpeed(10);// allows car to play audio again once no longer blocked by cone
-            }
-    }
-
     public void conePlacement() {
-        if (TrafficCone.conesPlaced == 1) {
+        if (TrafficCone.conesPlaced >= 1) {
             if (player.getPlayerHitbox().intersects(cone.getConeHitbox())) {
                 switch (player.getDirection()) {
                     case "up":
@@ -100,57 +91,49 @@ public class MyFrame extends JFrame implements Runnable, MouseListener, KeyListe
         }
     }
 
+    public void bombCollision() throws IOException {
+        for (Car car: cars)
+        {
+            if (car.getCarHitbox().intersects(bomb.getBombHitbox()))
+            {
+                sound.play("man_V_machine", false);
+                frame.remove(car);
+            }
+        }
+        if (bomb.getBombHitbox().intersects(cone.getConeHitbox()) && TrafficCone.conesPlaced >= 1) frame.remove(cone);
+        else
+        {
+            potholes.add(new Pothole(bomb.getX(), bomb.getY()));
+            frame.add(potholes.get(potholes.size() - 1));
+        }
+        refresh();
+    }
+    public void roadBlock() throws InterruptedException { //refer to the hitbox instead
+        for (Car car : cars)
+            if (cone != null)
+                if (cone.getConeHitbox().intersects(car.getCarHitbox())) {
+                    car.killSound(false);
+                    car.setSpeed(0);
+                } else {
+                    car.setSpeed(10);// allows car to play audio again once no longer blocked by cone
+                }
+    }
+
+    public void checkPlayerPosition() {
+        if (player.getX() < 0) player.setLocation(0, player.getY());
+        if (player.getX() > size.getWidth() - 100) player.setLocation((int) size.getWidth() - 100, player.getY());
+        if (player.getY() < 0) player.setLocation(player.getX(), 0);
+        if (player.getY() > size.getHeight() - 150) player.setLocation(player.getX(), (int) size.getHeight() - 150);
+    }
+
     public void loseScreen() throws IOException {
         gameOver = true;
         frame.removeKeyListener(this);
         frame.removeMouseListener(this);
         frame.removeAll();
-        refresh();
         thread.interrupt();
         s.killThread();
-    }
-
-    private void refresh() throws IOException {
-        frame.validate();
-        frame.repaint();
-    }
-
-    @Override
-    public void run() {
-        while (!Thread.currentThread().isInterrupted()) {
-            long startTime = System.nanoTime();
-
-            //do stuff per frame below
-            try {
-                checkCollision();
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-            conePlacement();
-            checkCarPositions();
-            checkPlayerPosition();
-
-            try {
-                addCars();
-                roadBlock();
-                refresh();
-            } catch (IOException | InterruptedException e) {
-                throw new RuntimeException(e);
-            }
-
-
-            long totalTime = System.nanoTime() - startTime;
-
-            if (totalTime < targetTime) {
-                try {
-                    Thread.sleep((targetTime - totalTime) / 1000000);
-                } catch (InterruptedException e) {
-                    for (Car car : cars)
-                        car.killSound(false);
-                    throw new RuntimeException(e);
-                }
-            }
-        }
+        refresh();
     }
 
     public void checkCarPositions() {
@@ -162,15 +145,48 @@ public class MyFrame extends JFrame implements Runnable, MouseListener, KeyListe
         }
     }
 
-    public void checkPlayerPosition() {
-        if (player.getX() < 0) player.setLocation(0, player.getY());
-        if (player.getX() > size.getWidth() - 100) player.setLocation((int) size.getWidth() - 100, player.getY());
-        if (player.getY() < 0) player.setLocation(player.getX(), 0);
-        if (player.getY() > size.getHeight() - 150) player.setLocation(player.getX(), (int) size.getHeight() - 150);
-    }
-
     public void stunPlayer() throws InterruptedException { //make a second thread exclusively to handle this
 
+    }
+
+    private void movePlayer(char keyCode) throws IOException {
+        int step = 30;
+
+        switch (keyCode) {
+            case 'w' -> {
+                Player.direction = "up";
+                player.setLocation(player.getX(), player.getY() - step);
+                player.getPlayerHitbox().setLocation(player.getX(), player.getY());
+            }
+            case 'a' -> {
+                Player.direction = "left";
+                player.setLocation(player.getX() - step, player.getY());
+                player.getPlayerHitbox().setLocation(player.getX(), player.getY());
+            }
+            case 's' -> {
+                Player.direction = "down";
+                player.setLocation(player.getX(), player.getY() + step);
+                player.getPlayerHitbox().setLocation(player.getX(), player.getY());
+            }
+            case 'd' -> {
+                Player.direction = "right";
+                player.setLocation(player.getX() + step, player.getY());
+                player.getPlayerHitbox().setLocation(player.getX(), player.getY());
+            }
+            case 'e' ->
+            {
+                bomb = new Bomb();
+                bomb.setLocation(player.getX(), player.getY(), player.getDirection());
+                frame.add(bomb);
+                refresh();
+                bombCollision();
+            }
+        }
+    }
+
+    private void refresh() throws IOException {
+        frame.validate();
+        frame.repaint();
     }
 
     @Override
@@ -234,38 +250,41 @@ public class MyFrame extends JFrame implements Runnable, MouseListener, KeyListe
 
     }
 
-    private void movePlayer(char keyCode) throws IOException {
-        int step = 30;
+    @Override
+    public void run() {
+        while (!Thread.currentThread().isInterrupted()) {
+            long startTime = System.nanoTime();
 
-        switch (keyCode) {
-            case 'w' -> {
-                Player.direction = "up";
-                player.setLocation(player.getX(), player.getY() - step);
-                player.getPlayerHitbox().setLocation(player.getX(), player.getY());
+            //do stuff per frame below
+            try {
+                checkCollision();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
             }
-            case 'a' -> {
-                Player.direction = "left";
-                player.setLocation(player.getX() - step, player.getY());
-                player.getPlayerHitbox().setLocation(player.getX(), player.getY());
-            }
-            case 's' -> {
-                Player.direction = "down";
-                player.setLocation(player.getX(), player.getY() + step);
-                player.getPlayerHitbox().setLocation(player.getX(), player.getY());
-            }
-            case 'd' -> {
-                Player.direction = "right";
-                player.setLocation(player.getX() + step, player.getY());
-                player.getPlayerHitbox().setLocation(player.getX(), player.getY());
-            }
-            case 'e' ->
-            {
-                Bomb bomb = new Bomb();
-                bomb.setLocation(player.getX(), player.getY(), player.getDirection());
-                frame.add(bomb);
+            conePlacement();
+            checkCarPositions();
+            checkPlayerPosition();
+
+            try {
+                addCars();
+                roadBlock();
                 refresh();
+            } catch (IOException | InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+
+
+            long totalTime = System.nanoTime() - startTime;
+
+            if (totalTime < targetTime) {
+                try {
+                    Thread.sleep((targetTime - totalTime) / 1000000);
+                } catch (InterruptedException e) {
+                    for (Car car : cars)
+                        car.killSound(false);
+                    System.out.println("Game Over!");
+                }
             }
         }
-        /*System.out.println(this.getX());*/
     }
 }

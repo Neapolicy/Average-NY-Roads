@@ -15,7 +15,6 @@ public class TrafficCone extends JLabel {
         Image newimg = image.getScaledInstance(50, 50, Image.SCALE_SMOOTH);
         icon = new ImageIcon(newimg);
         setIcon(icon);
-        coneHitbox = new Box(this.getX(), this.getY(), 50, 50, Color.CYAN);
         }
 
     public void setLocation(int x, int y, String direction) {

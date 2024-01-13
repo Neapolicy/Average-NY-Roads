@@ -94,18 +94,22 @@ public class MyFrame extends JFrame implements Runnable, MouseListener, KeyListe
     public void bombCollision() throws IOException {
         for (Car car: cars)
         {
-            if (car.getCarHitbox().intersects(bomb.getBombHitbox()))
+            if (bomb.getBombHitbox().intersects(car.getCarHitbox()))
             {
-                sound.play("man_V_machine", false);
                 frame.remove(car);
+                sound.play("man_V_machine", false);
             }
         }
-        if (bomb.getBombHitbox().intersects(cone.getConeHitbox()) && TrafficCone.conesPlaced >= 1) frame.remove(cone);
+        if (TrafficCone.conesPlaced >= 1)
+        {
+            if(bomb.getBombHitbox().intersects(cone.getConeHitbox())) frame.remove(cone);
+        }
         else
         {
             potholes.add(new Pothole(bomb.getX(), bomb.getY()));
             frame.add(potholes.get(potholes.size() - 1));
         }
+        frame.remove(bomb);
         refresh();
     }
     public void roadBlock() throws InterruptedException { //refer to the hitbox instead
@@ -178,8 +182,8 @@ public class MyFrame extends JFrame implements Runnable, MouseListener, KeyListe
                 bomb = new Bomb();
                 bomb.setLocation(player.getX(), player.getY(), player.getDirection());
                 frame.add(bomb);
-                refresh();
                 bombCollision();
+                refresh();
             }
         }
     }
@@ -269,8 +273,8 @@ public class MyFrame extends JFrame implements Runnable, MouseListener, KeyListe
                 addCars();
                 roadBlock();
                 refresh();
-            } catch (IOException | InterruptedException e) {
-                throw new RuntimeException(e);
+            } catch (IOException | InterruptedException ignored) {
+
             }
 
 

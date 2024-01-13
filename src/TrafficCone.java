@@ -39,5 +39,4 @@ public class TrafficCone extends JLabel {
     }
 
     public Box getConeHitbox() {return coneHitbox;}
-
 }

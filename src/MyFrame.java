@@ -1,4 +1,6 @@
 import java.awt.*;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.IOException;
@@ -6,7 +8,7 @@ import java.util.ArrayList;
 
 import javax.swing.*;
 
-public class MyFrame extends JFrame implements Runnable, MouseListener { //make this in charge on handling of placing images
+public class MyFrame extends JFrame implements Runnable, MouseListener, KeyListener { //make this in charge on handling of placing images
     public static int targetFPS = 30;
     public static int targetTime = 1000000000 / targetFPS;
     public static boolean gameOver;
@@ -29,7 +31,7 @@ public class MyFrame extends JFrame implements Runnable, MouseListener { //make 
         player = new Player();
 
         frame.setUndecorated(false);
-        frame.addKeyListener(player);
+        frame.addKeyListener(this);
         frame.addMouseListener(this);
 
         frame.setFocusable(true);
@@ -100,7 +102,7 @@ public class MyFrame extends JFrame implements Runnable, MouseListener { //make 
 
     public void loseScreen() throws IOException {
         gameOver = true;
-        frame.removeKeyListener(player);
+        frame.removeKeyListener(this);
         frame.removeMouseListener(this);
         frame.removeAll();
         refresh();
@@ -168,12 +170,7 @@ public class MyFrame extends JFrame implements Runnable, MouseListener { //make 
     }
 
     public void stunPlayer() throws InterruptedException { //make a second thread exclusively to handle this
-        Thread t2 = new Thread(this);
-        t2.start();
-        public void run() {
-            removeKeyListener(player);
-            addKeyListener(player);
-        }
+
     }
 
     @Override
@@ -216,5 +213,59 @@ public class MyFrame extends JFrame implements Runnable, MouseListener { //make 
     @Override
     public void mouseExited(MouseEvent e) {
 
+    }
+
+    @Override
+    public void keyTyped(KeyEvent e) {
+    }
+
+    @Override
+    public void keyPressed(KeyEvent e) {
+        char keyCode = e.getKeyChar();
+        try {
+            movePlayer(keyCode);
+        } catch (IOException ex) {
+            throw new RuntimeException(ex);
+        }
+    }
+
+    @Override
+    public void keyReleased(KeyEvent e) {
+
+    }
+
+    private void movePlayer(char keyCode) throws IOException {
+        int step = 30;
+
+        switch (keyCode) {
+            case 'w' -> {
+                Player.direction = "up";
+                player.setLocation(player.getX(), player.getY() - step);
+                player.getPlayerHitbox().setLocation(player.getX(), player.getY());
+            }
+            case 'a' -> {
+                Player.direction = "left";
+                player.setLocation(player.getX() - step, player.getY());
+                player.getPlayerHitbox().setLocation(player.getX(), player.getY());
+            }
+            case 's' -> {
+                Player.direction = "down";
+                player.setLocation(player.getX(), player.getY() + step);
+                player.getPlayerHitbox().setLocation(player.getX(), player.getY());
+            }
+            case 'd' -> {
+                Player.direction = "right";
+                player.setLocation(player.getX() + step, player.getY());
+                player.getPlayerHitbox().setLocation(player.getX(), player.getY());
+            }
+            case 'e' ->
+            {
+                Bomb bomb = new Bomb();
+                bomb.setLocation(player.getX(), player.getY(), player.getDirection());
+                frame.add(bomb);
+                refresh();
+            }
+        }
+        /*System.out.println(this.getX());*/
     }
 }

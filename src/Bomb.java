@@ -6,6 +6,7 @@ import java.io.IOException;
 
 public class Bomb extends JLabel implements Runnable {
     private Box bombHitbox;
+    public static int bombCount = 3;
     private Sound sound = new Sound();
 
     public Bomb() throws IOException {

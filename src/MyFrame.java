@@ -71,7 +71,7 @@ public class MyFrame extends JFrame implements Runnable, MouseListener, KeyListe
     }
 
     public void conePlacement() {
-        if (TrafficCone.conesPlaced == 1) {
+        if (!cone.isEmpty()) {
             if (player.getPlayerHitbox().intersects(cone.get(0).getConeHitbox())) {
                 switch (player.getDirection()) {
                     case "up":
@@ -114,9 +114,7 @@ public class MyFrame extends JFrame implements Runnable, MouseListener, KeyListe
             potholes.add(new Pothole(bombs.get(0).getX(), bombs.get(0).getY()));
             frame.add(potholes.get(potholes.size() - 1));
         }
-        frame.remove(bombs.get(0));
         bombs.remove(0);
-        System.out.println(bombs.size());
         frame.validate();
         frame.repaint();
     }
@@ -127,7 +125,7 @@ public class MyFrame extends JFrame implements Runnable, MouseListener, KeyListe
                     car.killSound(false);
                     car.setSpeed(0);
                 } else {
-                    car.setSpeed(10);// allows car to play audio again once no longer blocked by cone
+                    car.setSpeed(20);// allows car to play audio again once no longer blocked by cone
                 }
     }
 

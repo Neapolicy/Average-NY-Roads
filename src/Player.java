@@ -19,7 +19,7 @@ public class Player extends JLabel {
         Dimension size = Toolkit.getDefaultToolkit().getScreenSize();
         this.setBounds((int) size.getWidth() / 2, (int) size.getHeight() / 2, icon.getIconWidth(), icon.getIconHeight());
         this.setOpaque(true);
-        playerHitbox = new Box(this.getX(), this.getY(), 50, 50, Color.ORANGE);
+        playerHitbox = new Box(this.getX(), this.getY(), 50, 50);
     }
 
     public String getDirection() {

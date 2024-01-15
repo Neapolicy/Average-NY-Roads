@@ -20,7 +20,7 @@ public class Pothole extends JLabel { //shouldnt be that hard hopefully??
             this.setBackground(Color.BLACK);
             this.setOpaque(true);
             this.setBounds(x, y , icon.getIconWidth(), icon.getIconHeight());
-            potholeHitbox = new Box(this.getX(), this.getY(), 50, 50, Color.CYAN);
+            potholeHitbox = new Box(this.getX(), this.getY(), 50, 50);
     }
 
     public Box getPotholeHitbox()

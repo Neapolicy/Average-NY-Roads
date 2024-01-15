@@ -6,9 +6,8 @@ import java.io.IOException;
 
 public class Car extends JLabel implements Runnable{
     private Box carHitbox;
-    private boolean isBlocked = true;
     private Sound sound = new Sound();
-    private int step = 10;
+    private int step = 20;
     private Thread thread;
     public Car(int x, int y) throws IOException {
         ImageIcon icon = new ImageIcon(ImageIO.read(new File("ImageFiles/Images/car1.png")));
@@ -19,10 +18,11 @@ public class Car extends JLabel implements Runnable{
 
         this.setBounds(x, y, icon.getIconWidth(), icon.getIconHeight());
         this.setOpaque(true);
-        carHitbox = (new Box(this.getX(), this.getY(), this.getWidth(), this.getHeight(), Color.RED));
+        carHitbox = (new Box(this.getX(), this.getY(), this.getWidth(), this.getHeight()));
         sound.play("car_move", true);
         thread = new Thread(this);
         thread.start();
+
     }
 
     private void moveCar()

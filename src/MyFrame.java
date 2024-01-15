@@ -12,9 +12,9 @@ public class MyFrame extends JFrame implements Runnable, MouseListener, KeyListe
     public static int targetFPS = 30;
     public static int targetTime = 1000000000 / targetFPS;
     public static boolean gameOver;
-    private Bomb bomb;
+    private ArrayList<Bomb> bombs = new ArrayList<>();
     private Player player;
-    private TrafficCone cone; //might make this an arraylist??
+    private ArrayList<TrafficCone> cone = new ArrayList<>(); //might make this an arraylist??
     private ArrayList<Car> cars = new ArrayList<>();
     private ArrayList<Pothole> potholes = new ArrayList<>();
     private int timesGenerated;
@@ -71,8 +71,8 @@ public class MyFrame extends JFrame implements Runnable, MouseListener, KeyListe
     }
 
     public void conePlacement() {
-        if (TrafficCone.conesPlaced >= 1) {
-            if (player.getPlayerHitbox().intersects(cone.getConeHitbox())) {
+        if (TrafficCone.conesPlaced == 1) {
+            if (player.getPlayerHitbox().intersects(cone.get(0).getConeHitbox())) {
                 switch (player.getDirection()) {
                     case "up":
                         player.setLocation(player.getX(), player.getY() + 60);
@@ -89,33 +89,41 @@ public class MyFrame extends JFrame implements Runnable, MouseListener, KeyListe
                 }
             }
         }
-    }
+    } //genius idea for completely eliminating rectangles, make it a arraylist for each class/object, and remove it when you do frame.remove
+    //have it call a method that will remove the rectangle wooo I AM A FXCKING GENIUS
 
     public void bombCollision() throws IOException {
         for (Car car: cars)
         {
-            if (bomb.getBombHitbox().intersects(car.getCarHitbox()))
+            if (bombs.get(0).getBombHitbox().intersects(car.getCarHitbox()))
             {
                 frame.remove(car);
+                Bomb.bombCount ++;
                 sound.play("man_V_machine", false);
             }
         }
         if (TrafficCone.conesPlaced >= 1)
         {
-            if(bomb.getBombHitbox().intersects(cone.getConeHitbox())) frame.remove(cone);
+            if(bombs.get(0).getBombHitbox().intersects(cone.get(0).getConeHitbox()))
+            {
+                frame.remove(cone.get(0));
+            }
         }
         else
         {
-            potholes.add(new Pothole(bomb.getX(), bomb.getY()));
+            potholes.add(new Pothole(bombs.get(0).getX(), bombs.get(0).getY()));
             frame.add(potholes.get(potholes.size() - 1));
         }
-        frame.remove(bomb);
-        refresh();
+        frame.remove(bombs.get(0));
+        bombs.remove(0);
+        System.out.println(bombs.size());
+        frame.validate();
+        frame.repaint();
     }
     public void roadBlock() throws InterruptedException { //refer to the hitbox instead
         for (Car car : cars)
-            if (cone != null)
-                if (cone.getConeHitbox().intersects(car.getCarHitbox())) {
+            if (!cone.isEmpty())
+                if (cone.get(0).getConeHitbox().intersects(car.getCarHitbox())) {
                     car.killSound(false);
                     car.setSpeed(0);
                 } else {
@@ -130,14 +138,15 @@ public class MyFrame extends JFrame implements Runnable, MouseListener, KeyListe
         if (player.getY() > size.getHeight() - 150) player.setLocation(player.getX(), (int) size.getHeight() - 150);
     }
 
-    public void loseScreen() throws IOException {
+    public void loseScreen() {
         gameOver = true;
         frame.removeKeyListener(this);
         frame.removeMouseListener(this);
         frame.removeAll();
         thread.interrupt();
         s.killThread();
-        refresh();
+        frame.validate();
+        frame.repaint();
     }
 
     public void checkCarPositions() {
@@ -145,6 +154,8 @@ public class MyFrame extends JFrame implements Runnable, MouseListener, KeyListe
             if (cars.get(i).getX() <= Main.offScreen) {
                 frame.remove(cars.get(i));
                 cars.remove(cars.get(i));
+                frame.validate();
+                frame.repaint();
             }
         }
     }
@@ -179,28 +190,26 @@ public class MyFrame extends JFrame implements Runnable, MouseListener, KeyListe
             }
             case 'e' ->
             {
-                bomb = new Bomb();
-                bomb.setLocation(player.getX(), player.getY(), player.getDirection());
-                frame.add(bomb);
-                bombCollision();
-                refresh();
+                if (Bomb.bombCount > 0)
+                {
+                    bombs.add(new Bomb());
+                    bombs.get(0).setLocation(player.getX(), player.getY(), player.getDirection());
+                    frame.add(bombs.get(0));
+                    bombCollision();
+                    Bomb.bombCount --;
+                }
             }
         }
-    }
-
-    private void refresh() throws IOException {
-        frame.validate();
-        frame.repaint();
     }
 
     @Override
     public void mouseClicked(MouseEvent e) {
         if (e.getButton() == MouseEvent.BUTTON1) {
             try {
-                cone = new TrafficCone();
+                cone.add(new TrafficCone());
                 stunPlayer();
-                cone.setLocation(player.getX(), player.getY(), player.getDirection());
-                frame.add(cone);
+                cone.get(0).setLocation(player.getX(), player.getY(), player.getDirection());
+                frame.add(cone.get(0));
             } catch (IOException | InterruptedException ex) {
                 throw new RuntimeException(ex);
             }
@@ -209,7 +218,10 @@ public class MyFrame extends JFrame implements Runnable, MouseListener, KeyListe
         if (e.getButton() == MouseEvent.BUTTON3) {
             if (cone != null)
             {
-                frame.remove(cone);
+                frame.remove(cone.get(0));
+                cone.remove(0);
+                frame.validate();
+                frame.repaint();
                 TrafficCone.conesPlaced--;
             }
         }
@@ -272,7 +284,8 @@ public class MyFrame extends JFrame implements Runnable, MouseListener, KeyListe
             try {
                 addCars();
                 roadBlock();
-                refresh();
+                frame.validate();
+                frame.repaint();
             } catch (IOException | InterruptedException ignored) {
 
             }

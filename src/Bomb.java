@@ -10,30 +10,34 @@ public class Bomb extends JLabel implements Runnable {
     private Sound sound = new Sound();
 
     public Bomb() throws IOException {
-        ImageIcon icon = new ImageIcon(ImageIO.read(new File("ImageFiles/Images/player.png")));
+        ImageIcon icon = new ImageIcon(ImageIO.read(new File("ImageFiles/Images/car1.png")));
         Image image = icon.getImage();
-        Image newimg = image.getScaledInstance(50, 50, Image.SCALE_SMOOTH);
+        Image newimg = image.getScaledInstance(80, 80, Image.SCALE_SMOOTH);
         icon = new ImageIcon(newimg);
         setIcon(icon);
         Thread t = new Thread(this);
         t.start();
-    } //has access to set location
+    }
 
     public void setLocation(int x, int y, String direction) {
-            int coneSize = 50;
-            switch (direction) {
-                case "up" -> this.setBounds(x, y - coneSize, coneSize, coneSize);
-                case "down" -> this.setBounds(x, y + coneSize, coneSize, coneSize);
-                case "left" -> this.setBounds(x - coneSize, y, coneSize, coneSize);
-                case "right" -> this.setBounds(x + coneSize, y, coneSize, coneSize);
-            }
-            this.setBackground(Color.BLACK);
-            this.setOpaque(true);
-            bombHitbox = (new Box(this.getX(), this.getY(), this.getWidth(), this.getHeight(), Color.RED));
+        int distanceFromPlayer = 50;
+        switch (direction) {
+            case "up" -> this.setBounds(x, y - distanceFromPlayer, 80, 80);
+            case "down" -> this.setBounds(x, y + distanceFromPlayer, 80, 80);
+            case "left" -> this.setBounds(x - distanceFromPlayer, y, 80, 80);
+            case "right" -> this.setBounds(x + distanceFromPlayer, y, 80, 80);
+        }
+        this.setBackground(Color.BLACK);
+        this.setOpaque(true);
+        bombHitbox = (new Box(this.getX(), this.getY(), this.getWidth(), this.getHeight()));
     }
+
     @Override
     public void run() {
         sound.play("bomb_place", false);
     } //this thing might result in me having to move key listener to myframe but idk lol
-    public Box getBombHitbox() {return bombHitbox;}
+
+    public Box getBombHitbox() {
+        return bombHitbox;
+    }
 }

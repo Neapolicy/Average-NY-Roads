@@ -28,7 +28,7 @@ public class TrafficCone extends JLabel {
             }
             this.setBackground(Color.BLACK);
             this.setOpaque(true);
-            coneHitbox = (new Box(this.getX(), this.getY(), this.getWidth(), this.getHeight(), Color.RED));
+            coneHitbox = (new Box(this.getX(), this.getY(), this.getWidth(), this.getHeight()));
         }
         capConesPlaced();
     }

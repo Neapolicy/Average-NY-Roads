@@ -93,11 +93,12 @@ public class MyFrame extends JFrame implements Runnable, MouseListener, KeyListe
     //have it call a method that will remove the rectangle wooo I AM A FXCKING GENIUS
 
     public void bombCollision() throws IOException {
-        for (Car car: cars)
+        for (int i = 0; i < cars.size(); i++)
         {
-            if (bombs.get(0).getBombHitbox().intersects(car.getCarHitbox()))
+            if (bombs.get(0).getBombHitbox().intersects(cars.get(i).getCarHitbox()))
             {
-                frame.remove(car);
+                frame.remove(cars.get(i));
+                cars.remove(cars.get(i));
                 Bomb.bombCount ++;
                 sound.play("man_V_machine", false);
             }
@@ -115,7 +116,7 @@ public class MyFrame extends JFrame implements Runnable, MouseListener, KeyListe
             frame.add(potholes.get(potholes.size() - 1));
         }
         bombs.remove(0);
-        frame.validate();
+        frame.revalidate();
         frame.repaint();
     }
     public void roadBlock() throws InterruptedException { //refer to the hitbox instead
@@ -143,7 +144,7 @@ public class MyFrame extends JFrame implements Runnable, MouseListener, KeyListe
         frame.removeAll();
         thread.interrupt();
         s.killThread();
-        frame.validate();
+        frame.revalidate();
         frame.repaint();
     }
 
@@ -152,7 +153,7 @@ public class MyFrame extends JFrame implements Runnable, MouseListener, KeyListe
             if (cars.get(i).getX() <= Main.offScreen) {
                 frame.remove(cars.get(i));
                 cars.remove(cars.get(i));
-                frame.validate();
+                frame.revalidate();
                 frame.repaint();
             }
         }
@@ -218,7 +219,7 @@ public class MyFrame extends JFrame implements Runnable, MouseListener, KeyListe
             {
                 frame.remove(cone.get(0));
                 cone.remove(0);
-                frame.validate();
+                frame.revalidate();
                 frame.repaint();
                 TrafficCone.conesPlaced--;
             }
@@ -282,7 +283,7 @@ public class MyFrame extends JFrame implements Runnable, MouseListener, KeyListe
             try {
                 addCars();
                 roadBlock();
-                frame.validate();
+                frame.revalidate();
                 frame.repaint();
             } catch (IOException | InterruptedException ignored) {
 
@@ -297,7 +298,7 @@ public class MyFrame extends JFrame implements Runnable, MouseListener, KeyListe
                 } catch (InterruptedException e) {
                     for (Car car : cars)
                         car.killSound(false);
-                    System.out.println("Game Over!");
+                    System.out.close();
                 }
             }
         }

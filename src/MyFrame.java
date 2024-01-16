@@ -8,7 +8,7 @@ import java.util.ArrayList;
 
 import javax.swing.*;
 
-public class MyFrame extends JFrame implements Runnable, MouseListener, KeyListener { //make this in charge on handling of placing images
+public class MyFrame extends JFrame implements Runnable { //make this in charge on handling of placing images
     public static int targetFPS = 30;
     public static int targetTime = 1000000000 / targetFPS;
     public static boolean gameOver;
@@ -33,8 +33,8 @@ public class MyFrame extends JFrame implements Runnable, MouseListener, KeyListe
         player = new Player();
 
         frame.setUndecorated(false);
-        frame.addKeyListener(this);
-        frame.addMouseListener(this);
+        frame.addKeyListener(player);
+        frame.addMouseListener(player);
 
         frame.setFocusable(true);
 
@@ -64,10 +64,16 @@ public class MyFrame extends JFrame implements Runnable, MouseListener, KeyListe
 
     public void checkCollision() throws IOException { //refer to the hitbox instead
         for (Car car : cars)
+        {
             if (player.getPlayerHitbox().intersects(car.getCarHitbox())) {
                 car.killSound(false);
                 loseScreen();
             }
+            for (Pothole pothole : potholes)
+            {
+                if (car.getCarHitbox().intersects(pothole.getPotholeHitbox())) loseScreen();
+            }
+        }
     }
 
     public void conePlacement() {
@@ -113,8 +119,9 @@ public class MyFrame extends JFrame implements Runnable, MouseListener, KeyListe
         else
         {
             potholes.add(new Pothole(bombs.get(0).getX(), bombs.get(0).getY()));
-            frame.add(potholes.get(potholes.size() - 1));
-        }
+            frame.add(potholes.get(potholes.size() - 1)); //this is the cause for the orange square
+        }                                                 //bc that was supposed to be the pothole being created
+        frame.remove(bombs.get(0));
         bombs.remove(0);
         frame.revalidate();
         frame.repaint();
@@ -122,7 +129,7 @@ public class MyFrame extends JFrame implements Runnable, MouseListener, KeyListe
     public void roadBlock() throws InterruptedException { //refer to the hitbox instead
         for (Car car : cars)
             if (!cone.isEmpty())
-                if (cone.get(0).getConeHitbox().intersects(car.getCarHitbox())) {
+                if (cone.get(0).getConeHitbox().intersects(car.getCarHitbox())) { //have to fix the issue where cone hitbox is null after removing
                     car.killSound(false);
                     car.setSpeed(0);
                 } else {
@@ -139,8 +146,8 @@ public class MyFrame extends JFrame implements Runnable, MouseListener, KeyListe
 
     public void loseScreen() {
         gameOver = true;
-        frame.removeKeyListener(this);
-        frame.removeMouseListener(this);
+        frame.removeKeyListener(player);
+        frame.removeMouseListener(player);
         frame.removeAll();
         thread.interrupt();
         s.killThread();
@@ -158,35 +165,9 @@ public class MyFrame extends JFrame implements Runnable, MouseListener, KeyListe
             }
         }
     }
-
-    public void stunPlayer() throws InterruptedException { //make a second thread exclusively to handle this
-
-    }
-
-    private void movePlayer(char keyCode) throws IOException {
-        int step = 30;
-
-        switch (keyCode) {
-            case 'w' -> {
-                Player.direction = "up";
-                player.setLocation(player.getX(), player.getY() - step);
-                player.getPlayerHitbox().setLocation(player.getX(), player.getY());
-            }
-            case 'a' -> {
-                Player.direction = "left";
-                player.setLocation(player.getX() - step, player.getY());
-                player.getPlayerHitbox().setLocation(player.getX(), player.getY());
-            }
-            case 's' -> {
-                Player.direction = "down";
-                player.setLocation(player.getX(), player.getY() + step);
-                player.getPlayerHitbox().setLocation(player.getX(), player.getY());
-            }
-            case 'd' -> {
-                Player.direction = "right";
-                player.setLocation(player.getX() + step, player.getY());
-                player.getPlayerHitbox().setLocation(player.getX(), player.getY());
-            }
+    public void userKeyInput() throws IOException {
+        switch(player.getKeyCode()) //will be necessary once i do the pothole fixing
+        {
             case 'e' ->
             {
                 if (Bomb.bombCount > 0)
@@ -199,22 +180,20 @@ public class MyFrame extends JFrame implements Runnable, MouseListener, KeyListe
                 }
             }
         }
+        player.resetKeyCode();
     }
-
-    @Override
-    public void mouseClicked(MouseEvent e) {
-        if (e.getButton() == MouseEvent.BUTTON1) {
+    public void userMouseInput() { //make a second thread exclusively to handle this
+        if (Player.clickCount % 2 == 0) {
             try {
                 cone.add(new TrafficCone());
-                stunPlayer();
                 cone.get(0).setLocation(player.getX(), player.getY(), player.getDirection());
                 frame.add(cone.get(0));
-            } catch (IOException | InterruptedException ex) {
+            } catch (IOException ex) {
                 throw new RuntimeException(ex);
             }
             TrafficCone.conesPlaced++;
         }
-        if (e.getButton() == MouseEvent.BUTTON3) {
+        if (Player.clickCount % 4 == 0) {
             if (cone != null)
             {
                 frame.remove(cone.get(0));
@@ -223,72 +202,29 @@ public class MyFrame extends JFrame implements Runnable, MouseListener, KeyListe
                 frame.repaint();
                 TrafficCone.conesPlaced--;
             }
+            Player.clickCount = 0;
         }
-    }
-
-    @Override
-    public void mousePressed(MouseEvent e) {
-
-    }
-
-    @Override
-    public void mouseReleased(MouseEvent e) {
-
-    }
-
-    @Override
-    public void mouseEntered(MouseEvent e) {
-
-    }
-
-    @Override
-    public void mouseExited(MouseEvent e) {
-
-    }
-
-    @Override
-    public void keyTyped(KeyEvent e) {
-    }
-
-    @Override
-    public void keyPressed(KeyEvent e) {
-        char keyCode = e.getKeyChar();
-        try {
-            movePlayer(keyCode);
-        } catch (IOException ex) {
-            throw new RuntimeException(ex);
-        }
-    }
-
-    @Override
-    public void keyReleased(KeyEvent e) {
-
     }
 
     @Override
     public void run() {
         while (!Thread.currentThread().isInterrupted()) {
             long startTime = System.nanoTime();
-
             //do stuff per frame below
-            try {
-                checkCollision();
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-            conePlacement();
-            checkCarPositions();
-            checkPlayerPosition();
-
             try {
                 addCars();
                 roadBlock();
+                userKeyInput();
+                userMouseInput();
+                checkCollision();
+                conePlacement();
+                checkCarPositions();
+                checkPlayerPosition();
                 frame.revalidate();
                 frame.repaint();
-            } catch (IOException | InterruptedException ignored) {
-
+            } catch (IOException | InterruptedException e) {
+                throw new RuntimeException(e);
             }
-
 
             long totalTime = System.nanoTime() - startTime;
 

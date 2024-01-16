@@ -3,11 +3,15 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.io.File;
 import java.io.IOException;
 
-public class Player extends JLabel {
+public class Player extends JLabel implements MouseListener, KeyListener {
     public static String direction = "up";
+    public static int clickCount;
+    private char keyCode;
     private Box playerHitbox; //https://stackoverflow.com/questions/40252221/java-how-to-use-an-object-from-one-mouselistener-to-another-class cheque it out idk
     public Player() throws IOException {
         ImageIcon icon = new ImageIcon(ImageIO.read(new File("ImageFiles/Images/player.png")));
@@ -30,5 +34,83 @@ public class Player extends JLabel {
     public Box getPlayerHitbox()
     {
         return playerHitbox;
+    }
+
+    private void movePlayer(char keyCode) throws IOException {
+        int step = 30;
+
+        switch (keyCode) {
+            case 'w' -> {
+                Player.direction = "up";
+                this.setLocation(this.getX(), this.getY() - step);
+                this.getPlayerHitbox().setLocation(this.getX(), this.getY());
+            }
+            case 'a' -> {
+                Player.direction = "left";
+                this.setLocation(this.getX() - step, this.getY());
+                this.getPlayerHitbox().setLocation(this.getX(), this.getY());
+            }
+            case 's' -> {
+                Player.direction = "down";
+                this.setLocation(this.getX(), this.getY() + step);
+                this.getPlayerHitbox().setLocation(this.getX(), this.getY());
+            }
+            case 'd' -> {
+                Player.direction = "right";
+                this.setLocation(this.getX() + step, this.getY());
+                this.getPlayerHitbox().setLocation(this.getX(), this.getY());
+            }
+        }
+    }
+    public char getKeyCode(){
+        return keyCode;
+    }
+
+    public void resetKeyCode() {
+        keyCode = '0';
+    }
+
+    @Override
+    public void mouseClicked(MouseEvent e) {
+        clickCount++;
+    }
+
+    @Override
+    public void mousePressed(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseReleased(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseEntered(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseExited(MouseEvent e) {
+
+    }
+
+    @Override
+    public void keyTyped(KeyEvent e) {
+    }
+
+    @Override
+    public void keyPressed(KeyEvent e) {
+        keyCode = e.getKeyChar();
+        try {
+            movePlayer(keyCode);
+        } catch (IOException ex) {
+            throw new RuntimeException(ex);
+        }
+    }
+
+    @Override
+    public void keyReleased(KeyEvent e) {
+
     }
 }

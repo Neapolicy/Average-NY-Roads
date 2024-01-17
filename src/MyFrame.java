@@ -186,13 +186,13 @@ public class MyFrame extends JFrame implements Runnable { //make this in charge 
 
     public void userMouseInput() { //make a second thread exclusively to handle this
         try {
-            if (Player.clickCount % 2 == 0) {
+            if (Player.clickCount % 2 == 0 && TrafficCone.conesPlaced < 1) {
                 cone = new TrafficCone();
                 cone.setLocation(player.getX(), player.getY(), player.getDirection());
                 frame.add(cone);
                 TrafficCone.conesPlaced++;
             }
-            if (Player.clickCount % 4 == 0) {
+            if (Player.clickCount % 4 == 0 && TrafficCone.conesPlaced == 1) {
                 frame.remove(cone);
                 frame.revalidate();
                 frame.repaint();

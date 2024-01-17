@@ -18,7 +18,7 @@ public class TrafficCone extends JLabel {
         }
 
     public void setLocation(int x, int y, String direction) {
-        if (conesPlaced < 1) {
+
             int coneSize = 50;
             switch (direction) {
                 case "up" -> this.setBounds(x, y - coneSize, coneSize, coneSize);
@@ -29,13 +29,7 @@ public class TrafficCone extends JLabel {
             this.setBackground(Color.BLACK);
             this.setOpaque(true);
             coneHitbox = (new Box(this.getX(), this.getY(), this.getWidth(), this.getHeight()));
-        }
-        capConesPlaced();
-    }
 
-    public void capConesPlaced(){
-        if (conesPlaced > 1) conesPlaced = 1;
-        else if (conesPlaced < 0) conesPlaced = 0;
     }
 
     public Box getConeHitbox() {return coneHitbox;}

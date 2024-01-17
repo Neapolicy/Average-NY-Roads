@@ -14,7 +14,7 @@ public class MyFrame extends JFrame implements Runnable { //make this in charge 
     public static boolean gameOver;
     private ArrayList<Bomb> bombs = new ArrayList<>();
     private Player player;
-    private ArrayList<TrafficCone> cone = new ArrayList<>(); //might make this an arraylist??
+    private TrafficCone cone; //might make this an arraylist??
     private ArrayList<Car> cars = new ArrayList<>();
     private ArrayList<Pothole> potholes = new ArrayList<>();
     private int timesGenerated;
@@ -75,8 +75,8 @@ public class MyFrame extends JFrame implements Runnable { //make this in charge 
     }
 
     public void conePlacement() {
-        if (!cone.isEmpty()) {
-            if (player.getPlayerHitbox().intersects(cone.get(0).getConeHitbox())) {
+        if (cone != null && cone.getConeHitbox() != null) {
+            if (player.getPlayerHitbox().intersects(cone.getConeHitbox())) {
                 switch (player.getDirection()) {
                     case "up":
                         player.setLocation(player.getX(), player.getY() + 60);
@@ -106,8 +106,8 @@ public class MyFrame extends JFrame implements Runnable { //make this in charge 
             }
         }
         if (TrafficCone.conesPlaced >= 1) {
-            if (bombs.get(0).getBombHitbox().intersects(cone.get(0).getConeHitbox())) {
-                frame.remove(cone.get(0));
+            if (bombs.get(0).getBombHitbox().intersects(cone.getConeHitbox())) {
+                frame.remove(cone);
             }
         } else {
             potholes.add(new Pothole(bombs.get(0).getX(), bombs.get(0).getY()));
@@ -120,14 +120,16 @@ public class MyFrame extends JFrame implements Runnable { //make this in charge 
     }
 
     public void roadBlock() throws InterruptedException { //refer to the hitbox instead
-        for (Car car : cars)
-            if (!cone.isEmpty())
-                if (cone.get(0).getConeHitbox().intersects(car.getCarHitbox())) { //have to fix the issue where cone hitbox is null after removing
+        for (Car car : cars) {
+            if (cone != null && cone.getConeHitbox() != null) {
+                if (cone.getConeHitbox().intersects(car.getCarHitbox())) { //have to fix the issue where cone hitbox is null after removing
                     car.killSound(false);
                     car.setSpeed(0);
                 } else {
                     car.setSpeed(20);// allows car to play audio again once no longer blocked by cone
                 }
+            }
+        }
     }
 
     public void checkPlayerPosition() {
@@ -173,8 +175,7 @@ public class MyFrame extends JFrame implements Runnable { //make this in charge 
             }
             case ' ' -> {
                 for (int i = 0; i < potholes.size(); i++)
-                    if (player.getPlayerHitbox().intersects(potholes.get(i).getPotholeHitbox()))
-                    {
+                    if (player.getPlayerHitbox().intersects(potholes.get(i).getPotholeHitbox())) {
                         frame.remove(potholes.get(i));
                         potholes.remove(potholes.get(i));
                     }
@@ -184,25 +185,24 @@ public class MyFrame extends JFrame implements Runnable { //make this in charge 
     }
 
     public void userMouseInput() { //make a second thread exclusively to handle this
-        if (Player.clickCount % 2 == 0) {
-            try {
-                cone.add(new TrafficCone());
-                cone.get(0).setLocation(player.getX(), player.getY(), player.getDirection());
-                frame.add(cone.get(0));
-            } catch (IOException ex) {
-                throw new RuntimeException(ex);
+        try {
+            if (Player.clickCount % 2 == 0) {
+                cone = new TrafficCone();
+                cone.setLocation(player.getX(), player.getY(), player.getDirection());
+                frame.add(cone);
+                TrafficCone.conesPlaced++;
             }
-            TrafficCone.conesPlaced++;
-        }
-        if (Player.clickCount % 4 == 0) {
-            {
-                frame.remove(cone.get(0));
-                cone.remove(0);
+            if (Player.clickCount % 4 == 0) {
+                frame.remove(cone);
                 frame.revalidate();
                 frame.repaint();
                 TrafficCone.conesPlaced--;
+
+                Player.clickCount = 0;
             }
-            Player.clickCount = 0;
+        } catch (IOException ex) {
+            thread.interrupt();
+            System.out.println("failed to create cone"); // Handle or log the exception appropriately
         }
     }
 

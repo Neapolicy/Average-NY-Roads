@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import javax.swing.*;
 
 public class MyFrame extends JFrame implements Runnable { //make this in charge on handling of placing images
-    public static int targetFPS = 30;
+    public static int targetFPS = 40;
     public static int targetTime = 1000000000 / targetFPS;
     public static boolean gameOver;
     private ArrayList<Bomb> bombs = new ArrayList<>();

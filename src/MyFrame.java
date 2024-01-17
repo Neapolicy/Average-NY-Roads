@@ -63,14 +63,12 @@ public class MyFrame extends JFrame implements Runnable { //make this in charge 
     }
 
     public void checkCollision() throws IOException { //refer to the hitbox instead
-        for (Car car : cars)
-        {
+        for (Car car : cars) {
             if (player.getPlayerHitbox().intersects(car.getCarHitbox())) {
                 car.killSound(false);
                 loseScreen();
             }
-            for (Pothole pothole : potholes)
-            {
+            for (Pothole pothole : potholes) {
                 if (car.getCarHitbox().intersects(pothole.getPotholeHitbox())) loseScreen();
             }
         }
@@ -99,25 +97,19 @@ public class MyFrame extends JFrame implements Runnable { //make this in charge 
     //have it call a method that will remove the rectangle wooo I AM A FXCKING GENIUS
 
     public void bombCollision() throws IOException {
-        for (int i = 0; i < cars.size(); i++)
-        {
-            if (bombs.get(0).getBombHitbox().intersects(cars.get(i).getCarHitbox()))
-            {
+        for (int i = 0; i < cars.size(); i++) {
+            if (bombs.get(0).getBombHitbox().intersects(cars.get(i).getCarHitbox())) {
                 frame.remove(cars.get(i));
                 cars.remove(cars.get(i));
-                Bomb.bombCount ++;
+                Bomb.bombCount++;
                 sound.play("man_V_machine", false);
             }
         }
-        if (TrafficCone.conesPlaced >= 1)
-        {
-            if(bombs.get(0).getBombHitbox().intersects(cone.get(0).getConeHitbox()))
-            {
+        if (TrafficCone.conesPlaced >= 1) {
+            if (bombs.get(0).getBombHitbox().intersects(cone.get(0).getConeHitbox())) {
                 frame.remove(cone.get(0));
             }
-        }
-        else
-        {
+        } else {
             potholes.add(new Pothole(bombs.get(0).getX(), bombs.get(0).getY()));
             frame.add(potholes.get(potholes.size() - 1)); //this is the cause for the orange square
         }                                                 //bc that was supposed to be the pothole being created
@@ -126,6 +118,7 @@ public class MyFrame extends JFrame implements Runnable { //make this in charge 
         frame.revalidate();
         frame.repaint();
     }
+
     public void roadBlock() throws InterruptedException { //refer to the hitbox instead
         for (Car car : cars)
             if (!cone.isEmpty())
@@ -165,23 +158,31 @@ public class MyFrame extends JFrame implements Runnable { //make this in charge 
             }
         }
     }
+
     public void userKeyInput() throws IOException {
-        switch(player.getKeyCode()) //will be necessary once i do the pothole fixing
+        switch (player.getKeyCode()) //will be necessary once i do the pothole fixing
         {
-            case 'e' ->
-            {
-                if (Bomb.bombCount > 0)
-                {
+            case 'e' -> {
+                if (Bomb.bombCount > 0) {
                     bombs.add(new Bomb());
                     bombs.get(0).setLocation(player.getX(), player.getY(), player.getDirection());
                     frame.add(bombs.get(0));
                     bombCollision();
-                    Bomb.bombCount --;
+                    Bomb.bombCount--;
                 }
+            }
+            case ' ' -> {
+                for (int i = 0; i < potholes.size(); i++)
+                    if (player.getPlayerHitbox().intersects(potholes.get(i).getPotholeHitbox()))
+                    {
+                        frame.remove(potholes.get(i));
+                        potholes.remove(potholes.get(i));
+                    }
             }
         }
         player.resetKeyCode();
     }
+
     public void userMouseInput() { //make a second thread exclusively to handle this
         if (Player.clickCount % 2 == 0) {
             try {
@@ -194,7 +195,6 @@ public class MyFrame extends JFrame implements Runnable { //make this in charge 
             TrafficCone.conesPlaced++;
         }
         if (Player.clickCount % 4 == 0) {
-            if (cone != null)
             {
                 frame.remove(cone.get(0));
                 cone.remove(0);

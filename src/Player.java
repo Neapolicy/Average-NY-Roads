@@ -67,7 +67,7 @@ public class Player extends JLabel implements MouseListener, KeyListener {
     }
 
     public void resetKeyCode() {
-        keyCode = '0';
+        keyCode = Character.MIN_VALUE;
     }
 
     @Override

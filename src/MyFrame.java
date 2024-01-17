@@ -12,7 +12,7 @@ public class MyFrame extends JFrame implements Runnable { //make this in charge 
     public static int targetFPS = 40;
     public static int targetTime = 1000000000 / targetFPS;
     public static boolean gameOver;
-    private ArrayList<Bomb> bombs = new ArrayList<>();
+    private Bomb bomb;
     private Player player;
     private TrafficCone cone; //might make this an arraylist??
     private ArrayList<Car> cars = new ArrayList<>();
@@ -98,7 +98,7 @@ public class MyFrame extends JFrame implements Runnable { //make this in charge 
 
     public void bombCollision() throws IOException {
         for (int i = 0; i < cars.size(); i++) {
-            if (bombs.get(0).getBombHitbox().intersects(cars.get(i).getCarHitbox())) {
+            if (bomb.getBombHitbox().intersects(cars.get(i).getCarHitbox())) {
                 frame.remove(cars.get(i));
                 cars.remove(cars.get(i));
                 Bomb.bombCount++;
@@ -106,15 +106,14 @@ public class MyFrame extends JFrame implements Runnable { //make this in charge 
             }
         }
         if (TrafficCone.conesPlaced >= 1) {
-            if (bombs.get(0).getBombHitbox().intersects(cone.getConeHitbox())) {
+            if (bomb.getBombHitbox().intersects(cone.getConeHitbox())) {
                 frame.remove(cone);
             }
         } else {
-            potholes.add(new Pothole(bombs.get(0).getX(), bombs.get(0).getY()));
+            potholes.add(new Pothole(bomb.getX(), bomb.getY()));
             frame.add(potholes.get(potholes.size() - 1)); //this is the cause for the orange square
         }                                                 //bc that was supposed to be the pothole being created
-        frame.remove(bombs.get(0));
-        bombs.remove(0);
+        frame.remove(bomb);
         frame.revalidate();
         frame.repaint();
     }
@@ -161,14 +160,15 @@ public class MyFrame extends JFrame implements Runnable { //make this in charge 
         }
     }
 
-    public void userKeyInput() throws IOException {
+    public void userKeyInput() throws IOException { //current bug: bombs don't display after cone placement
         switch (player.getKeyCode()) //will be necessary once i do the pothole fixing
         {
             case 'e' -> {
                 if (Bomb.bombCount > 0) {
-                    bombs.add(new Bomb());
-                    bombs.get(0).setLocation(player.getX(), player.getY(), player.getDirection());
-                    frame.add(bombs.get(0));
+                    bomb = new Bomb();
+                    bomb.setLocation(player.getX(), player.getY(), player.getDirection());
+                    frame.add(bomb);
+                    System.out.println(bomb.getX());
                     bombCollision();
                     Bomb.bombCount--;
                 }
@@ -194,8 +194,6 @@ public class MyFrame extends JFrame implements Runnable { //make this in charge 
             }
             if (Player.clickCount % 4 == 0 && TrafficCone.conesPlaced == 1) {
                 frame.remove(cone);
-                frame.revalidate();
-                frame.repaint();
                 TrafficCone.conesPlaced--;
 
                 Player.clickCount = 0;

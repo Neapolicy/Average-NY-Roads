@@ -97,7 +97,7 @@ public class MyFrame extends JFrame implements Runnable { //make this in charge 
     //have it call a method that will remove the rectangle wooo I AM A FXCKING GENIUS
 
     public void bombCollision() throws IOException {
-        for (int i = 0; i < cars.size(); i++) {
+        for (int i = 0; i < cars.size(); i++) { //first check if bomb hit car, if true, then remove car
             if (bomb.getBombHitbox().intersects(cars.get(i).getCarHitbox())) {
                 frame.remove(cars.get(i));
                 cars.remove(cars.get(i));
@@ -105,10 +105,11 @@ public class MyFrame extends JFrame implements Runnable { //make this in charge 
                 sound.play("man_V_machine", false);
             }
         }
-        if (TrafficCone.conesPlaced >= 1) {
-            if (bomb.getBombHitbox().intersects(cone.getConeHitbox())) {
-                frame.remove(cone);
-            }
+        if (bomb.getBombHitbox().intersects(cone.getConeHitbox())) {
+            frame.remove(cone);
+            TrafficCone.conesPlaced--;
+
+            Player.clickCount = 0; //ik i can turn this into a method but i feel like its more efficient for some reason without
         } else {
             potholes.add(new Pothole(bomb.getX(), bomb.getY()));
             frame.add(potholes.get(potholes.size() - 1)); //this is the cause for the orange square
@@ -168,7 +169,6 @@ public class MyFrame extends JFrame implements Runnable { //make this in charge 
                     bomb = new Bomb();
                     bomb.setLocation(player.getX(), player.getY(), player.getDirection());
                     frame.add(bomb);
-                    System.out.println(bomb.getX());
                     bombCollision();
                     Bomb.bombCount--;
                 }

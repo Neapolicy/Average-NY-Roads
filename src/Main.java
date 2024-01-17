@@ -7,5 +7,4 @@ public class Main
         new MyFrame();
     }
 }
-
 // game is called ny simulator, where the game is only slightly de-attached from reality

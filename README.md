@@ -3,7 +3,7 @@
 
 ### **Synopsis**
 
-You get paid like 15 dollars a hour to fill in potholes during rush hour, the axle of the economy continues to spin through your sacrifice
+You get paid like 15 dollars a hour to fill in potholes during rush hour, and as a result, the axle of the economy continues to spin through your sacrifice!
 
 ## Installation
 

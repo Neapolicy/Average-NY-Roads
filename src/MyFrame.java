@@ -28,7 +28,7 @@ public class MyFrame extends JFrame implements Runnable { //make this in charge 
     public MyFrame() throws IOException { //https://stackoverflow.com/questions/2141019/how-can-i-check-if-something-leaves-the-screen-jframe car leaves screen idfk
         frame.setDefaultCloseOperation(EXIT_ON_CLOSE);
         frame.setLayout(null);
-        frame.setTitle("THE AXLE OF THE ECONOMY MUST TURN");
+        frame.setTitle("FWMC RADIO BAU BAU");
 
         player = new Player();
 

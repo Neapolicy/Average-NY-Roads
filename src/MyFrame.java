@@ -17,6 +17,8 @@ public class MyFrame extends JFrame implements Runnable { //make this in charge 
     private int timesGenerated;
     private JFrame frame = new JFrame();
     private int[] car_locations = {300, 400};
+    private int[] pothole_locations_Y = {300, 400};
+    private int[] pothole_locations_X = {500, 600};
     private final Random rand = new Random();
     private Dimension size = Toolkit.getDefaultToolkit().getScreenSize();
     private Thread thread;
@@ -54,13 +56,31 @@ public class MyFrame extends JFrame implements Runnable { //make this in charge 
     {
         if (s.getTimePassed() % 5 == 0) //5 seconds to add a car is purely for testing purposes
         {
-            int y_axis = rand.nextInt(1, 3);
-            for (int i = 0; i < timesGenerated; i++) cars.add(new Car(frame.getWidth(), car_locations[y_axis]));
-            timesGenerated = 0;
-            for (Car car : cars) frame.add(car);
-            Thread.sleep(1000);
+            int y_axis = rand.nextInt(car_locations.length);
+            for (int i = 0; i < timesGenerated; i++) {
+                cars.add(new Car(frame.getWidth(), car_locations[y_axis]));
+                frame.add(cars.get(cars.size() - 1));
+                Thread.sleep(300);
+            }
+            Thread.sleep(700);
         }
         timesGenerated = rand.nextInt(1, 2); //method works woohoo
+    }
+
+    public void addPotholes() throws InterruptedException, IOException {
+        if (s.getTimePassed() % 5 == 0) //5 seconds to add a car is purely for testing purposes
+        {
+            int y_axis = rand.nextInt(pothole_locations_Y.length);
+            int x_axis = rand.nextInt(pothole_locations_X.length);
+            for (int i = 0; i < timesGenerated; i++)
+            {
+                potholes.add(new Pothole(pothole_locations_X[x_axis], pothole_locations_Y[y_axis]));
+                frame.add(potholes.get(potholes.size() - 1));
+                Thread.sleep(300);
+            }
+            timesGenerated = 0;
+        }
+        timesGenerated = rand.nextInt(1, 4); //method works woohoo
     }
 
     public void checkCollision() throws IOException { //refer to the hitbox instead
@@ -212,6 +232,7 @@ public class MyFrame extends JFrame implements Runnable { //make this in charge 
             //do stuff per frame below
             try {
                 addCars();
+                addPotholes();
                 roadBlock();
                 userKeyInput();
                 userMouseInput();

@@ -12,10 +12,7 @@ The project and zip file can be found [here](https://github.com/Neapolicy/Averag
 
 ## Game Description
 
-Witch's Brew is a text RPG where you start nothing and work your way up from zero to become strong enough to defeat the CEO of racism
-and hopefully not die along the way. 
-<br>
-Failing to carry out this hit will most likely result in your death under "mysterious" circumstances
+tba
 
 ## Features
  - Sounds

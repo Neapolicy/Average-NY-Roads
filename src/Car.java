@@ -7,7 +7,7 @@ import java.io.IOException;
 public class Car extends JLabel implements Runnable{
     private Box carHitbox;
     private Sound sound = new Sound();
-    private int step = 20;
+    private int step = 10;
     private Thread thread;
     public Car(int x, int y) throws IOException {
         ImageIcon icon = new ImageIcon(ImageIO.read(new File("ImageFiles/Images/car1.png")));

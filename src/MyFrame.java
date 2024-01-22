@@ -9,6 +9,7 @@ public class MyFrame extends JFrame implements Runnable { //make this in charge 
     public static int targetFPS = 40;
     public static int targetTime = 1000000000 / targetFPS;
     public static boolean gameOver;
+    private final Random rand = new Random();
     private Bomb bomb;
     private Player player;
     private TrafficCone cone; //might make this an arraylist??
@@ -16,21 +17,20 @@ public class MyFrame extends JFrame implements Runnable { //make this in charge 
     private ArrayList<Pothole> potholes = new ArrayList<>();
     private int timesGenerated;
     private JFrame frame = new JFrame();
-    private int[] car_locations = {300, 400};
-    private int[] pothole_locations_Y = {300, 400};
-    private int[] pothole_locations_X = {500, 600};
-    private final Random rand = new Random();
     private Dimension size = Toolkit.getDefaultToolkit().getScreenSize();
     private Thread thread;
     private Stopwatch s = new Stopwatch();
     private Sound sound = new Sound();
+    private int[] car_locations = {300, 400};
+    private int[] pothole_locations_Y = {300, 400};
+    private int[] pothole_locations_X = {500, 600};
+    private boolean collision;
 
     public MyFrame() throws IOException { //https://stackoverflow.com/questions/2141019/how-can-i-check-if-something-leaves-the-screen-jframe car leaves screen idfk
         frame.setDefaultCloseOperation(EXIT_ON_CLOSE);
         frame.setLayout(null);
-        frame.setTitle("I don't even know if JFrame works anymore..");
+        frame.setTitle("THE AXLE OF THE ECONOMY MUST TURN");
 
-        cars.add(new Car((int) size.getWidth(), 300));
         player = new Player();
 
         frame.setUndecorated(false);
@@ -42,19 +42,14 @@ public class MyFrame extends JFrame implements Runnable { //make this in charge 
         frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
 
         frame.setVisible(true);
-        add();
+        frame.add(player);
         thread = new Thread(this);
         thread.start();
     }
 
-    public void add() {
-        frame.add(player); //find a way to somehow add the traffic cone AAAAAA
-        for (Car car : cars) frame.add(car);
-    }
-
     public void addCars() throws IOException, InterruptedException //creates new cars
     {
-        if (s.getTimePassed() % 5 == 0) //5 seconds to add a car is purely for testing purposes
+        if (s.getTimePassed() % 10 == 0) //5 seconds to add a car is purely for testing purposes
         {
             int y_axis = rand.nextInt(car_locations.length);
             for (int i = 0; i < timesGenerated; i++) {
@@ -68,7 +63,7 @@ public class MyFrame extends JFrame implements Runnable { //make this in charge 
     }
 
     public void addPotholes() throws InterruptedException, IOException {
-        if (s.getTimePassed() % 5 == 0) //5 seconds to add a car is purely for testing purposes
+        if (s.getTimePassed() % 5 == 0 && s.getTimePassed() != 0) //5 seconds to add a car is purely for testing purposes
         {
             int y_axis = rand.nextInt(pothole_locations_Y.length);
             int x_axis = rand.nextInt(pothole_locations_X.length);
@@ -124,6 +119,7 @@ public class MyFrame extends JFrame implements Runnable { //make this in charge 
                 cars.remove(cars.get(i));
                 Bomb.bombCount++;
                 sound.play("man_V_machine", false);
+                collision = true;
             }
         }
         if (bomb.getBombHitbox().intersects(cone.getConeHitbox())) {
@@ -131,10 +127,11 @@ public class MyFrame extends JFrame implements Runnable { //make this in charge 
             TrafficCone.conesPlaced--;
 
             Player.clickCount = 0; //ik i can turn this into a method but i feel like its more efficient for some reason without
-        } else {
+        } else if (!collision){
             potholes.add(new Pothole(bomb.getX(), bomb.getY()));
             frame.add(potholes.get(potholes.size() - 1)); //this is the cause for the orange square
         }                                                 //bc that was supposed to be the pothole being created
+        collision = false;
         frame.remove(bomb);
         frame.revalidate();
         frame.repaint();

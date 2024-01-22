@@ -2,7 +2,6 @@ import java.awt.*;
 import java.util.Random;
 import java.io.IOException;
 import java.util.ArrayList;
-
 import javax.swing.*;
 
 public class MyFrame extends JFrame implements Runnable { //make this in charge on handling of placing images

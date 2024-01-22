@@ -56,6 +56,8 @@ public class MyFrame extends JFrame implements Runnable { //make this in charge 
                 cars.add(new Car(frame.getWidth(), car_locations[y_axis]));
                 frame.add(cars.get(cars.size() - 1));
                 Thread.sleep(300);
+                Car.step += .5;
+                Car.speed = Car.step;
             }
             Thread.sleep(700);
         }
@@ -142,9 +144,9 @@ public class MyFrame extends JFrame implements Runnable { //make this in charge 
             if (cone != null && cone.getConeHitbox() != null) {
                 if (cone.getConeHitbox().intersects(car.getCarHitbox())) { //have to fix the issue where cone hitbox is null after removing
                     car.killSound(false);
-                    car.setSpeed(0);
+                    car.stopCar();
                 } else {
-                    car.setSpeed(20);// allows car to play audio again once no longer blocked by cone
+                    car.setSpeed(Car.speed);// allows car to play audio again once no longer blocked by cone
                 }
             }
         }

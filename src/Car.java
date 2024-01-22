@@ -7,7 +7,8 @@ import java.io.IOException;
 public class Car extends JLabel implements Runnable{
     private Box carHitbox;
     private Sound sound = new Sound();
-    private int step = 10;
+    public static double step = 10;
+    public static double speed = step;
     private Thread thread;
     public Car(int x, int y) throws IOException {
         ImageIcon icon = new ImageIcon(ImageIO.read(new File("ImageFiles/Images/car1.png")));
@@ -27,7 +28,7 @@ public class Car extends JLabel implements Runnable{
 
     private void moveCar()
     {
-        this.setLocation(this.getX() - step, this.getY());
+        this.setLocation((int) (this.getX() - step), this.getY());
         carHitbox.setLocation(this.getX(), this.getY());
         if (step == 0) killSound(false);
     }
@@ -73,8 +74,9 @@ public class Car extends JLabel implements Runnable{
     }
 
     public void killThread(){thread.interrupt();}
-    public void setSpeed(int speed)
+    public void setSpeed(double speed)
     {
         step = speed;
     }
+    public void stopCar(){step = 0;}
 }

@@ -37,7 +37,7 @@ public class Player extends JLabel implements MouseListener, KeyListener {
     }
 
     private void movePlayer(char keyCode) throws IOException {
-        int step = 30;
+        int step = 40;
 
         switch (keyCode) {
             case 'w' -> {

@@ -20,7 +20,7 @@ public class MyFrame extends JFrame implements Runnable { //make this in charge 
     private Thread thread;
     private Stopwatch s = new Stopwatch();
     private Sound sound = new Sound();
-    private int[] car_locations = {300, 400};
+    private int[] car_locations = {300, 400, 500, 600};
     private int[] pothole_locations_Y = {300, 400};
     private int[] pothole_locations_X = {500, 600};
     private boolean collision;

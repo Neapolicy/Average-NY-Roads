@@ -23,7 +23,6 @@ public class Car extends JLabel implements Runnable{
         sound.play("car_move", true);
         thread = new Thread(this);
         thread.start();
-
     }
 
     private void moveCar()

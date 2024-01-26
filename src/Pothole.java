@@ -8,7 +8,7 @@ public class Pothole extends JLabel { //shouldnt be that hard hopefully??
     private Box potholeHitbox;
     private ImageIcon icon;
     public Pothole(int x, int y) throws IOException {
-        icon = new ImageIcon(ImageIO.read(new File("ImageFiles/Images/road_block.png")));
+        icon = new ImageIcon(ImageIO.read(new File("ImageFiles/Images/bomb.png")));
         Image image = icon.getImage();
         Image newimg = image.getScaledInstance(50, 50, Image.SCALE_SMOOTH);
         icon = new ImageIcon(newimg);

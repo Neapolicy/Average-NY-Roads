@@ -10,7 +10,7 @@ public class Bomb extends JLabel implements Runnable {
     private Sound sound = new Sound();
 
     public Bomb() throws IOException {
-        ImageIcon icon = new ImageIcon(ImageIO.read(new File("ImageFiles/Images/car1.png")));
+        ImageIcon icon = new ImageIcon(ImageIO.read(new File("ImageFiles/Images/bomb.png")));
         Image image = icon.getImage();
         Image newimg = image.getScaledInstance(80, 80, Image.SCALE_SMOOTH);
         icon = new ImageIcon(newimg);

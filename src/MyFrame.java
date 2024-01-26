@@ -23,7 +23,6 @@ public class MyFrame extends JFrame implements Runnable { //make this in charge 
     private int[] car_locations = {300, 400, 500, 600};
     private int[] pothole_locations_Y = {300, 400};
     private int[] pothole_locations_X = {500, 600};
-    private boolean collision;
 
     public MyFrame() throws IOException { //https://stackoverflow.com/questions/2141019/how-can-i-check-if-something-leaves-the-screen-jframe car leaves screen idfk
         frame.setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -119,23 +118,23 @@ public class MyFrame extends JFrame implements Runnable { //make this in charge 
     public void bombCollision() throws IOException {
         for (int i = 0; i < cars.size(); i++) { //first check if bomb hit car, if true, then remove car
             if (bomb.getBombHitbox().intersects(cars.get(i).getCarHitbox())) {
+                System.out.println("maden heaven");
                 frame.remove(cars.get(i));
                 cars.remove(cars.get(i));
                 Bomb.bombCount++;
                 sound.play("man_V_machine", false);
-                collision = true;
             }
         }
-        if (bomb.getBombHitbox().intersects(cone.getConeHitbox())) {
+        if (bomb.getBombHitbox().intersects(cone.getConeHitbox()) && TrafficCone.conesPlaced == 1) {
             frame.remove(cone);
             TrafficCone.conesPlaced--;
 
             Player.clickCount = 0; //ik i can turn this into a method but i feel like its more efficient for some reason without
-        } else if (!collision){
+        } else {
+            System.out.println("made");
             potholes.add(new Pothole(bomb.getX(), bomb.getY()));
             frame.add(potholes.get(potholes.size() - 1)); //this is the cause for the orange square
         }                                                 //bc that was supposed to be the pothole being created
-        collision = false;
         frame.remove(bomb);
         frame.revalidate();
         frame.repaint();

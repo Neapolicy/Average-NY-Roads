@@ -10,7 +10,7 @@ public class TrafficCone extends JLabel {
     private Box coneHitbox;
 
     public TrafficCone() throws IOException {
-        ImageIcon icon = new ImageIcon(ImageIO.read(new File("ImageFiles/Images/road_block.png")));
+        ImageIcon icon = new ImageIcon(ImageIO.read(new File("ImageFiles/Images/cone.png")));
         Image image = icon.getImage();
         Image newimg = image.getScaledInstance(50, 50, Image.SCALE_SMOOTH);
         icon = new ImageIcon(newimg);

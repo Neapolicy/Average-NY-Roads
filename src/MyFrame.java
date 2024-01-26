@@ -40,8 +40,11 @@ public class MyFrame extends JFrame implements Runnable { //make this in charge 
 
         frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
 
+        Train train = new Train(2000, 100);
+
         frame.setVisible(true);
         frame.add(player);
+        frame.add(train);
         thread = new Thread(this);
         thread.start();
     }
@@ -229,7 +232,7 @@ public class MyFrame extends JFrame implements Runnable { //make this in charge 
             long startTime = System.nanoTime();
             //do stuff per frame below
             try {
-                addCars();
+                /*addCars();*/
                 addPotholes();
                 roadBlock();
                 userKeyInput();

@@ -13,5 +13,7 @@ public class Train extends Car{
         Image newimg = image.getScaledInstance(925, 80, Image.SCALE_SMOOTH);
         icon = new ImageIcon(newimg);
         setIcon(icon);
+
+        this.setBounds(x, y, icon.getIconWidth(), icon.getIconHeight());
     }
 }

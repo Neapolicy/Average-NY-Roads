@@ -8,9 +8,9 @@ public class Train extends Car{
     public Train(int x, int y) throws IOException { //idk, i just want this to have the same functionality as a car, except its technically offscreen?
         super(x, y);
 
-        ImageIcon icon = new ImageIcon(ImageIO.read(new File("ImageFiles/Images/player.png")));
+        ImageIcon icon = new ImageIcon(ImageIO.read(new File("ImageFiles/Images/train.png")));
         Image image = icon.getImage();
-        Image newimg = image.getScaledInstance(125, 80, Image.SCALE_SMOOTH);
+        Image newimg = image.getScaledInstance(925, 80, Image.SCALE_SMOOTH);
         icon = new ImageIcon(newimg);
         setIcon(icon);
     }

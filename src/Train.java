@@ -20,7 +20,7 @@ public class Train extends Car{
     }
     public void moveCar()
     {
-        this.setLocation((this.getX() - 40), this.getY());
+        this.setLocation((this.getX() - 10), this.getY());
         if (step == 0) killSound(false);
     }
 

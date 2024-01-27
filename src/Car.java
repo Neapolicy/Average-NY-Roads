@@ -5,18 +5,19 @@ import java.io.File;
 import java.io.IOException;
 
 public class Car extends JLabel implements Runnable{
-    public static int offScreen = -200;
+    protected int offScreen;
     private Box carHitbox;
-    private Sound sound = new Sound();
+    protected Sound sound = new Sound();
     public static double step = 10;
     public static double speed = step;
     private Thread thread;
-    public Car(int x, int y) throws IOException, InterruptedException {
+    public Car(int x, int y) throws IOException {
         ImageIcon icon = new ImageIcon(ImageIO.read(new File("ImageFiles/Images/car1.png")));
         Image image = icon.getImage();
         Image newimg = image.getScaledInstance(125, 80, Image.SCALE_SMOOTH);
         icon = new ImageIcon(newimg);
         setIcon(icon);
+        offScreen = -200;
 
         this.setBounds(x, y, icon.getIconWidth(), icon.getIconHeight());
         this.setOpaque(true);
@@ -26,7 +27,7 @@ public class Car extends JLabel implements Runnable{
         thread.start();
     }
 
-    private void moveCar()
+    public void moveCar()
     {
         this.setLocation((int) (this.getX() - step), this.getY());
         carHitbox.setLocation(this.getX(), this.getY());
@@ -44,7 +45,7 @@ public class Car extends JLabel implements Runnable{
 
     @Override
     public void run() { //controls car movement
-        while (this.getX() > Car.offScreen)
+        while (this.getX() > offScreen)
         {
             long startTime = System.nanoTime();
 

@@ -5,8 +5,9 @@ import java.io.File;
 import java.io.IOException;
 
 public class Train extends Car{
-    public Train(int x, int y) throws IOException, InterruptedException { //idk, i just want this to have the same functionality as a car, except its technically offscreen?
+    public Train(int x, int y) throws IOException { //idk, i just want this to have the same functionality as a car, except its technically offscreen?
         super(x, y);
+        offScreen = -1000;
 
         ImageIcon icon = new ImageIcon(ImageIO.read(new File("ImageFiles/Images/train.png"))); //alters its own dimensions
         Image image = icon.getImage();
@@ -16,9 +17,13 @@ public class Train extends Car{
 
         this.setBounds(x, y, icon.getIconWidth(), icon.getIconHeight());
     }
+    public void moveCar()
+    {
+        this.setLocation((this.getX() - 40), this.getY());
+        if (step == 0) killSound(false);
+    }
 
     public void playSound() {
-        Sound sound = new Sound();
         sound.play("man_V_machine", true);
     }
 }

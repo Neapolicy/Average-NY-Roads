@@ -173,7 +173,7 @@ public class MyFrame extends JFrame implements Runnable { //make this in charge 
 
     public void checkCarPositions() {
         for (int i = 0; i < cars.size(); i++) {
-            if (cars.get(i).getX() <= Car.offScreen) {
+            if (cars.get(i).getX() <= -200) {
                 frame.remove(cars.get(i));
                 cars.remove(cars.get(i));
                 frame.revalidate();
@@ -231,7 +231,7 @@ public class MyFrame extends JFrame implements Runnable { //make this in charge 
             long startTime = System.nanoTime();
             //do stuff per frame below
             try {
-                /*addCars();*/
+                addCars();
                 addPotholes();
                 roadBlock();
                 userKeyInput();

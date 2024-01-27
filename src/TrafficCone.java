@@ -14,11 +14,11 @@ public class TrafficCone extends JLabel {
         Image image = icon.getImage();
         Image newimg = image.getScaledInstance(50, 50, Image.SCALE_SMOOTH);
         icon = new ImageIcon(newimg);
+        this.setOpaque(true);
         setIcon(icon);
         }
 
     public void setLocation(int x, int y, String direction) {
-
             int coneSize = 50;
             switch (direction) {
                 case "up" -> this.setBounds(x, y - coneSize, coneSize, coneSize);
@@ -26,10 +26,8 @@ public class TrafficCone extends JLabel {
                 case "left" -> this.setBounds(x - coneSize, y, coneSize, coneSize);
                 case "right" -> this.setBounds(x + coneSize, y, coneSize, coneSize);
             }
-            this.setBackground(Color.BLACK);
             this.setOpaque(true);
             coneHitbox = (new Box(this.getX(), this.getY(), this.getWidth(), this.getHeight()));
-
     }
 
     public Box getConeHitbox() {return coneHitbox;}

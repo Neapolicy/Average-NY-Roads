@@ -11,10 +11,11 @@ public class Train extends Car{
 
         ImageIcon icon = new ImageIcon(ImageIO.read(new File("ImageFiles/Images/train.png"))); //alters its own dimensions
         Image image = icon.getImage();
-        Image newimg = image.getScaledInstance(925, 80, Image.SCALE_SMOOTH);
+        Image newimg = image.getScaledInstance(925, 80, Image.SCALE_SMOOTH); //its also not transparent
         icon = new ImageIcon(newimg);
         setIcon(icon);
 
+        this.setOpaque(true);
         this.setBounds(x, y, icon.getIconWidth(), icon.getIconHeight());
     }
     public void moveCar()

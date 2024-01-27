@@ -2,8 +2,7 @@ import java.io.IOException;
 
 public class Main
 {
-    public static int offScreen = -200;
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws IOException, InterruptedException {
         new MyFrame();
     }
 }

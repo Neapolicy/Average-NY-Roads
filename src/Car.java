@@ -5,12 +5,13 @@ import java.io.File;
 import java.io.IOException;
 
 public class Car extends JLabel implements Runnable{
+    public static int offScreen = -200;
     private Box carHitbox;
     private Sound sound = new Sound();
     public static double step = 10;
     public static double speed = step;
     private Thread thread;
-    public Car(int x, int y) throws IOException {
+    public Car(int x, int y) throws IOException, InterruptedException {
         ImageIcon icon = new ImageIcon(ImageIO.read(new File("ImageFiles/Images/car1.png")));
         Image image = icon.getImage();
         Image newimg = image.getScaledInstance(125, 80, Image.SCALE_SMOOTH);
@@ -20,7 +21,7 @@ public class Car extends JLabel implements Runnable{
         this.setBounds(x, y, icon.getIconWidth(), icon.getIconHeight());
         this.setOpaque(true);
         carHitbox = (new Box(this.getX(), this.getY(), this.getWidth(), this.getHeight()));
-        sound.play("car_move", true);
+        playSound();
         thread = new Thread(this);
         thread.start();
     }
@@ -32,6 +33,10 @@ public class Car extends JLabel implements Runnable{
         if (step == 0) killSound(false);
     }
 
+    public void playSound() {
+        sound.play("car_move", true);
+    }
+
     public Box getCarHitbox()
     {
         return carHitbox;
@@ -39,11 +44,12 @@ public class Car extends JLabel implements Runnable{
 
     @Override
     public void run() { //controls car movement
-        while (this.getX() > Main.offScreen)
+        while (this.getX() > Car.offScreen)
         {
             long startTime = System.nanoTime();
 
             moveCar();
+
             try {
                 Thread.sleep(10);
             } catch (InterruptedException e) {

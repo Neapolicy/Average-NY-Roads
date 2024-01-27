@@ -24,7 +24,7 @@ public class MyFrame extends JFrame implements Runnable { //make this in charge 
     private int[] pothole_locations_Y = {300, 400};
     private int[] pothole_locations_X = {500, 600};
 
-    public MyFrame() throws IOException { //https://stackoverflow.com/questions/2141019/how-can-i-check-if-something-leaves-the-screen-jframe car leaves screen idfk
+    public MyFrame() throws IOException, InterruptedException { //https://stackoverflow.com/questions/2141019/how-can-i-check-if-something-leaves-the-screen-jframe car leaves screen idfk
         frame.setDefaultCloseOperation(EXIT_ON_CLOSE);
         frame.setLayout(null);
         frame.setTitle("FWMC RADIO BAU BAU");
@@ -173,7 +173,7 @@ public class MyFrame extends JFrame implements Runnable { //make this in charge 
 
     public void checkCarPositions() {
         for (int i = 0; i < cars.size(); i++) {
-            if (cars.get(i).getX() <= Main.offScreen) {
+            if (cars.get(i).getX() <= Car.offScreen) {
                 frame.remove(cars.get(i));
                 cars.remove(cars.get(i));
                 frame.revalidate();

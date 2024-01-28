@@ -57,7 +57,7 @@ public class MyFrame extends JFrame implements Runnable { //make this in charge 
                 cars.add(new Car(frame.getWidth(), car_locations[y_axis]));
                 frame.add(cars.get(cars.size() - 1));
                 Thread.sleep(300);
-                Car.step += .5;
+                Car.step += 2.5;
                 Car.speed = Car.step;
             }
             Thread.sleep(700);

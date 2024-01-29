@@ -7,7 +7,7 @@ import java.io.IOException;
 public class Car extends JLabel implements Runnable{
     protected int offScreen;
     private Box carHitbox;
-    protected Sound sound = new Sound();
+    private Sound sound = new Sound();
     public static double step = 10;
     public static double speed = step;
     private Thread thread;

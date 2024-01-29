@@ -23,6 +23,7 @@ public class MyFrame extends JFrame implements Runnable { //make this in charge 
     private int[] car_locations = {300, 400, 500, 600};
     private int[] pothole_locations_Y = {300, 400};
     private int[] pothole_locations_X = {500, 600};
+    private Train train;
 
     public MyFrame() throws IOException, InterruptedException { //https://stackoverflow.com/questions/2141019/how-can-i-check-if-something-leaves-the-screen-jframe car leaves screen idfk
         frame.setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -39,14 +40,13 @@ public class MyFrame extends JFrame implements Runnable { //make this in charge 
 
         frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
 
-        Train train = new Train(2000, 100);
-
         frame.setVisible(true);
         frame.add(player);
-        frame.add(train);
+
         thread = new Thread(this);
         thread.start();
     }
+
 
     public void addCars() throws IOException, InterruptedException //creates new cars
     {
@@ -63,6 +63,15 @@ public class MyFrame extends JFrame implements Runnable { //make this in charge 
             Thread.sleep(700);
         }
         timesGenerated = rand.nextInt(1, 2); //method works woohoo
+    }
+
+    public void trainSummon() throws IOException, InterruptedException {
+        if (s.getTimePassed() % 8 == 0) //5 seconds to add a car is purely for testing purposes
+        {
+            train = new Train(frame.getWidth(), 100);
+            frame.add(train);
+            Thread.sleep(1000);
+        }
     }
 
     public void addPotholes() throws InterruptedException, IOException {
@@ -125,11 +134,13 @@ public class MyFrame extends JFrame implements Runnable { //make this in charge 
                 sound.play("man_V_machine", false);
             }
         }
-        if (bomb.getBombHitbox().intersects(cone.getConeHitbox()) && TrafficCone.conesPlaced == 1) {
-            frame.remove(cone);
-            TrafficCone.conesPlaced--;
+        if (cone != null){
+            if (bomb.getBombHitbox().intersects(cone.getConeHitbox())) {
+                frame.remove(cone);
+                TrafficCone.conesPlaced--;
 
-            Player.clickCount = 0; //ik i can turn this into a method but i feel like its more efficient for some reason without
+                Player.clickCount = 0; //ik i can turn this into a method but i feel like its more efficient for some reason without
+            }
         } else {
             System.out.println("made");
             potholes.add(new Pothole(bomb.getX(), bomb.getY()));
@@ -179,6 +190,12 @@ public class MyFrame extends JFrame implements Runnable { //make this in charge 
                 frame.revalidate();
                 frame.repaint();
             }
+        }
+        if (train.getX() <= -1000)
+        {
+            frame.remove(train);
+            frame.revalidate();
+            frame.repaint();
         }
     }
 
@@ -232,6 +249,7 @@ public class MyFrame extends JFrame implements Runnable { //make this in charge 
             //do stuff per frame below
             try {
                 addCars();
+                trainSummon();
                 addPotholes();
                 roadBlock();
                 userKeyInput();

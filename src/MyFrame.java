@@ -227,7 +227,7 @@ public class MyFrame extends JFrame implements Runnable { //make this in charge 
                     frame.add(cone);
                     TrafficCone.conesPlaced++;
                 }
-                if (TrafficCone.conesPlaced == 1) {
+                else if (TrafficCone.conesPlaced == 1) {
                     frame.remove(cone);
                     TrafficCone.conesPlaced--;
                 }

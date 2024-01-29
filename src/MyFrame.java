@@ -139,7 +139,7 @@ public class MyFrame extends JFrame implements Runnable { //make this in charge 
                 sound.play("man_V_machine", false);
             }
         }
-        if (cone != null){
+        if (cone != null){ //checks of there even is a cone
             if (bomb.getBombHitbox().intersects(cone.getConeHitbox())) {
                 frame.remove(cone);
                 TrafficCone.conesPlaced--;  //ik i can turn this into a method but i feel like its more efficient for some reason without

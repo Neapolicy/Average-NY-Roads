@@ -25,12 +25,17 @@ public class MyFrame extends JFrame implements Runnable { //make this in charge 
     private int[] pothole_locations_X = {500, 600};
     private Train train;
 
-    public MyFrame() throws IOException, InterruptedException { //https://stackoverflow.com/questions/2141019/how-can-i-check-if-something-leaves-the-screen-jframe car leaves screen idfk
-        frame.setDefaultCloseOperation(EXIT_ON_CLOSE);
+    public MyFrame() throws IOException { //https://stackoverflow.com/questions/2141019/how-can-i-check-if-something-leaves-the-screen-jframe car leaves screen idfk
+        JLabel background;
+        frame.setSize((int) size.getWidth(), (int) size.getHeight());
         frame.setLayout(null);
+        frame.setDefaultCloseOperation(EXIT_ON_CLOSE);
         frame.setTitle("FWMC RADIO BAU BAU");
 
         player = new Player();
+        ImageIcon image = new ImageIcon("ImageFiles/Images/player.png"); //has to be png idk??
+        background = new JLabel("", image, JLabel.CENTER);
+        background.setBounds(0, 0, frame.getWidth(), frame.getHeight());
 
         frame.setUndecorated(false);
         frame.addKeyListener(player);
@@ -42,6 +47,7 @@ public class MyFrame extends JFrame implements Runnable { //make this in charge 
 
         frame.setVisible(true);
         frame.add(player);
+        frame.add(background);
 
         thread = new Thread(this);
         thread.start();

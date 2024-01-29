@@ -218,7 +218,23 @@ public class MyFrame extends JFrame implements Runnable { //make this in charge 
                         potholes.remove(potholes.get(i));
                     }
             }
+            case 'q' ->{
+                if (TrafficCone.conesPlaced < 1) {
+                    cone = new TrafficCone();
+                    cone.setLocation(player.getX(), player.getY(), player.getDirection());
+                    frame.add(cone);
+                    TrafficCone.conesPlaced++;
+                }
+                if (TrafficCone.conesPlaced == 1) {
+                    frame.remove(cone);
+                    TrafficCone.conesPlaced--;
+
+                    Player.clickCount = 0;
+                }
+            }
         }
+        frame.revalidate();
+        frame.repaint();
         player.resetKeyCode();
     }
 
@@ -238,7 +254,8 @@ public class MyFrame extends JFrame implements Runnable { //make this in charge 
             }
         } catch (IOException ex) {
             thread.interrupt();
-            System.out.println("failed to create cone"); // Handle or log the exception appropriately
+            throw new RuntimeException("wth is going on");
+            // Handle or log the exception appropriately
         }
     }
 
@@ -253,7 +270,7 @@ public class MyFrame extends JFrame implements Runnable { //make this in charge 
                 addPotholes();
                 roadBlock();
                 userKeyInput();
-                userMouseInput();
+                /*userMouseInput();*/
                 checkCollision();
                 conePlacement();
                 checkCarPositions();

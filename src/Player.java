@@ -8,9 +8,8 @@ import java.awt.event.MouseListener;
 import java.io.File;
 import java.io.IOException;
 
-public class Player extends JLabel implements MouseListener, KeyListener {
+public class Player extends JLabel implements KeyListener {
     public static String direction = "up";
-    public static int clickCount;
     private char keyCode;
     private ImageIcon icon;
     private Box playerHitbox; //https://stackoverflow.com/questions/40252221/java-how-to-use-an-object-from-one-mouselistener-to-another-class cheque it out idk
@@ -74,32 +73,6 @@ public class Player extends JLabel implements MouseListener, KeyListener {
     public void resetKeyCode() {
         keyCode = Character.MIN_VALUE;
     }
-
-    @Override
-    public void mouseClicked(MouseEvent e) {
-        clickCount++;
-    }
-
-    @Override
-    public void mousePressed(MouseEvent e) {
-
-    }
-
-    @Override
-    public void mouseReleased(MouseEvent e) {
-
-    }
-
-    @Override
-    public void mouseEntered(MouseEvent e) {
-
-    }
-
-    @Override
-    public void mouseExited(MouseEvent e) {
-
-    }
-
     @Override
     public void keyTyped(KeyEvent e) {
     }

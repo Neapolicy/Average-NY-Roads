@@ -39,7 +39,6 @@ public class MyFrame extends JFrame implements Runnable { //make this in charge 
 
         frame.setUndecorated(false);
         frame.addKeyListener(player);
-        frame.addMouseListener(player);
 
         frame.setFocusable(true);
 
@@ -47,7 +46,7 @@ public class MyFrame extends JFrame implements Runnable { //make this in charge 
 
         frame.setVisible(true);
         frame.add(player);
-        frame.add(background);
+        /*frame.add(background);*/
 
         thread = new Thread(this);
         thread.start();
@@ -143,9 +142,7 @@ public class MyFrame extends JFrame implements Runnable { //make this in charge 
         if (cone != null){
             if (bomb.getBombHitbox().intersects(cone.getConeHitbox())) {
                 frame.remove(cone);
-                TrafficCone.conesPlaced--;
-
-                Player.clickCount = 0; //ik i can turn this into a method but i feel like its more efficient for some reason without
+                TrafficCone.conesPlaced--;  //ik i can turn this into a method but i feel like its more efficient for some reason without
             }
         } else {
             System.out.println("made");
@@ -180,7 +177,6 @@ public class MyFrame extends JFrame implements Runnable { //make this in charge 
     public void loseScreen() {
         gameOver = true;
         frame.removeKeyListener(player);
-        frame.removeMouseListener(player);
         frame.removeAll();
         thread.interrupt();
         s.killThread();
@@ -234,35 +230,12 @@ public class MyFrame extends JFrame implements Runnable { //make this in charge 
                 if (TrafficCone.conesPlaced == 1) {
                     frame.remove(cone);
                     TrafficCone.conesPlaced--;
-
-                    Player.clickCount = 0;
                 }
             }
         }
         frame.revalidate();
         frame.repaint();
         player.resetKeyCode();
-    }
-
-    public void userMouseInput() { //make a second thread exclusively to handle this
-        try {
-            if (Player.clickCount % 2 == 0 && TrafficCone.conesPlaced < 1) {
-                cone = new TrafficCone();
-                cone.setLocation(player.getX(), player.getY(), player.getDirection());
-                frame.add(cone);
-                TrafficCone.conesPlaced++;
-            }
-            if (Player.clickCount % 4 == 0 && TrafficCone.conesPlaced == 1) {
-                frame.remove(cone);
-                TrafficCone.conesPlaced--;
-
-                Player.clickCount = 0;
-            }
-        } catch (IOException ex) {
-            thread.interrupt();
-            throw new RuntimeException("wth is going on");
-            // Handle or log the exception appropriately
-        }
     }
 
     @Override
@@ -276,7 +249,6 @@ public class MyFrame extends JFrame implements Runnable { //make this in charge 
                 addPotholes();
                 roadBlock();
                 userKeyInput();
-                /*userMouseInput();*/
                 checkCollision();
                 conePlacement();
                 checkCarPositions();

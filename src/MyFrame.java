@@ -25,7 +25,7 @@ public class MyFrame extends JFrame implements Runnable { //make this in charge 
     private int[] pothole_locations_X = {500, 600};
     private Train train;
 
-    public MyFrame() throws IOException { //https://stackoverflow.com/questions/2141019/how-can-i-check-if-something-leaves-the-screen-jframe car leaves screen idfk
+    public MyFrame() throws IOException, InterruptedException { //https://stackoverflow.com/questions/2141019/how-can-i-check-if-something-leaves-the-screen-jframe car leaves screen idfk
         JLabel background;
         frame.setSize((int) size.getWidth(), (int) size.getHeight());
         frame.setLayout(null);
@@ -54,6 +54,10 @@ public class MyFrame extends JFrame implements Runnable { //make this in charge 
         {
             long startTime = System.nanoTime();
             userKeyInput();
+            roadBlock();
+            checkCollision();
+            conePlacement();
+            checkPlayerPosition();
             long totalTime = System.nanoTime() - startTime;
 
             if (totalTime < targetTime) {
@@ -148,7 +152,6 @@ public class MyFrame extends JFrame implements Runnable { //make this in charge 
     public void bombCollision() throws IOException {
         for (int i = 0; i < cars.size(); i++) { //first check if bomb hit car, if true, then remove car
             if (bomb.getBombHitbox().intersects(cars.get(i).getCarHitbox())) {
-                System.out.println("maden heaven");
                 frame.remove(cars.get(i));
                 cars.remove(cars.get(i));
                 Bomb.bombCount++;
@@ -158,12 +161,12 @@ public class MyFrame extends JFrame implements Runnable { //make this in charge 
         if (cone != null){ //checks of there even is a cone
             if (bomb.getBombHitbox().intersects(cone.getConeHitbox())) {
                 frame.remove(cone);
-                TrafficCone.conesPlaced--;  //ik i can turn this into a method but i feel like its more efficient for some reason without
+                TrafficCone.conesPlaced--;  //checks for cone, if there is, remove it
             }
-        } else {
-            System.out.println("made");
-            potholes.add(new Pothole(bomb.getX(), bomb.getY()));
-            frame.add(potholes.get(potholes.size() - 1)); //this is the cause for the orange square
+        } else{ //checks if you blew up a car
+            potholes.add(new Pothole(bomb.getX(), bomb.getY())); //fix the thing where blowing up a car creates a pothole
+            frame.add(potholes.get(potholes.size() - 1));
+                                                            //this is the cause for the orange square
         }                                                 //bc that was supposed to be the pothole being created
         frame.remove(bomb);
         frame.revalidate();
@@ -261,14 +264,10 @@ public class MyFrame extends JFrame implements Runnable { //make this in charge 
             long startTime = System.nanoTime();
             //do stuff per frame below
             try {
-                addCars();
+                addCars(); //create cars, train ,and potholes
                 trainSummon();
                 addPotholes();
-                roadBlock();
-                checkCollision();
-                conePlacement();
                 checkCarPositions();
-                checkPlayerPosition();
                 frame.revalidate();
                 frame.repaint();
             } catch (IOException | InterruptedException e) {

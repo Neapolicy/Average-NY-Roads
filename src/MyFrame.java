@@ -50,6 +50,22 @@ public class MyFrame extends JFrame implements Runnable { //make this in charge 
 
         thread = new Thread(this);
         thread.start();
+        while (!gameOver)
+        {
+            long startTime = System.nanoTime();
+            userKeyInput();
+            long totalTime = System.nanoTime() - startTime;
+
+            if (totalTime < targetTime) {
+                try {
+                    Thread.sleep((targetTime - totalTime) / 1000000);
+                } catch (InterruptedException e) {
+                    for (Car car : cars)
+                        car.killSound(false);
+                    System.out.close();
+                }
+            }
+        }
     }
 
 
@@ -95,7 +111,7 @@ public class MyFrame extends JFrame implements Runnable { //make this in charge 
         timesGenerated = rand.nextInt(1, 4); //method works woohoo
     }
 
-    public void checkCollision() throws IOException { //refer to the hitbox instead
+    public void checkCollision() { //refer to the hitbox instead
         for (Car car : cars) {
             if (player.getPlayerHitbox().intersects(car.getCarHitbox())) {
                 car.killSound(false);
@@ -249,7 +265,6 @@ public class MyFrame extends JFrame implements Runnable { //make this in charge 
                 trainSummon();
                 addPotholes();
                 roadBlock();
-                userKeyInput();
                 checkCollision();
                 conePlacement();
                 checkCarPositions();

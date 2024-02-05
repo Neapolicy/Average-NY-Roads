@@ -9,6 +9,7 @@ import java.io.IOException;
 public class Player extends JLabel implements KeyListener {
     public static String direction = "up";
     private int score;
+    private int combo;
     private char keyCode;
     private ImageIcon icon;
     private Box playerHitbox; //https://stackoverflow.com/questions/40252221/java-how-to-use-an-object-from-one-mouselistener-to-another-class cheque it out idk
@@ -29,6 +30,22 @@ public class Player extends JLabel implements KeyListener {
         setIcon(icon);
     }
 
+    public void increaseScore(int timeBetween, int timeElapsed) //time between filling potholes
+    {
+        int moneyMade = 10 + (timeElapsed / 4);
+        if (timeBetween <= 5)
+        {
+            moneyMade *= (((double)combo) / 10); //multiplies by combo/10
+        }
+        score += moneyMade;
+    }
+    public void resetCombo(){
+        combo = 0; 
+    }
+    public void increaseCombo(){
+         combo ++; 
+    }
+
     public String getDirection() {
         return direction;
     }
@@ -40,15 +57,6 @@ public class Player extends JLabel implements KeyListener {
     public int getScore()
     {
         return score;
-    }
-
-    public void addScore(int timeBetween, int timeElapsed)
-    {
-        score += 10;
-        if (timeBetween < 3)
-        {
-            score += 
-        }
     }
 
     private void movePlayer(char keyCode) throws IOException {

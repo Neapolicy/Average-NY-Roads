@@ -3,13 +3,12 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.io.File;
 import java.io.IOException;
 
 public class Player extends JLabel implements KeyListener {
     public static String direction = "up";
+    private int score;
     private char keyCode;
     private ImageIcon icon;
     private Box playerHitbox; //https://stackoverflow.com/questions/40252221/java-how-to-use-an-object-from-one-mouselistener-to-another-class cheque it out idk
@@ -37,6 +36,19 @@ public class Player extends JLabel implements KeyListener {
     public Box getPlayerHitbox()
     {
         return playerHitbox;
+    }
+    public int getScore()
+    {
+        return score;
+    }
+
+    public void addScore(int timeBetween, int timeElapsed)
+    {
+        score += 10;
+        if (timeBetween < 3)
+        {
+            score += 
+        }
     }
 
     private void movePlayer(char keyCode) throws IOException {

@@ -60,6 +60,7 @@ public class MyFrame extends JFrame implements Runnable { //make this in charge 
             checkCollision();
             conePlacement();
             checkPlayerPosition();
+            resetCombo();
             long totalTime = System.nanoTime() - startTime;
 
             if (totalTime < targetTime) {
@@ -178,6 +179,11 @@ public class MyFrame extends JFrame implements Runnable { //make this in charge 
     public void comboManager()  //always increases combo
     {
         player.increaseCombo();
+        player.increaseScore((int)s.getTimePassed());
+    }
+
+    public void resetCombo()
+    {
         if (s.getTimePassed() - timeLastFilled > 5)
         {
             player.resetCombo();
@@ -249,6 +255,7 @@ public class MyFrame extends JFrame implements Runnable { //make this in charge 
                         frame.remove(potholes.get(i));
                         potholes.remove(potholes.get(i));
                         potholesFilled++;
+                        timeLastFilled = (int) s.getTimePassed();
                         comboManager();
                     }
             }

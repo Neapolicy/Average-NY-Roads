@@ -30,10 +30,10 @@ public class Player extends JLabel implements KeyListener {
         setIcon(icon);
     }
 
-    public void increaseScore(int timeBetween, int timeElapsed) //time between filling potholes
+    public void increaseScore(int timeElapsed) //time between filling potholes
     {
         int moneyMade = 10 + (timeElapsed / 4);
-        if (timeBetween <= 5)
+        if (combo != 1)
         {
             moneyMade *= 1 + (((double)combo) / 10); //multiplies by combo/10
         }

@@ -35,7 +35,7 @@ public class Player extends JLabel implements KeyListener {
         int moneyMade = 10 + (timeElapsed / 4);
         if (timeBetween <= 5)
         {
-            moneyMade *= (((double)combo) / 10); //multiplies by combo/10
+            moneyMade *= 1 + (((double)combo) / 10); //multiplies by combo/10
         }
         score += moneyMade;
     }

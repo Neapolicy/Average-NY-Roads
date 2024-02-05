@@ -23,6 +23,8 @@ public class MyFrame extends JFrame implements Runnable { //make this in charge 
     private int[] car_locations = {300, 400, 500, 600};
     private int[] pothole_locations_Y = {300, 400};
     private int[] pothole_locations_X = {500, 600};
+    private int potholesFilled;
+    private int timeLastFilled;
     private Train train;
 
     public MyFrame() throws IOException, InterruptedException { //https://stackoverflow.com/questions/2141019/how-can-i-check-if-something-leaves-the-screen-jframe car leaves screen idfk
@@ -173,6 +175,15 @@ public class MyFrame extends JFrame implements Runnable { //make this in charge 
         frame.repaint();
     }
 
+    public void comboManager()  //always increases combo
+    {
+        player.increaseCombo();
+        if (s.getTimePassed() - timeLastFilled > 5)
+        {
+            player.resetCombo();
+        }
+    }
+
     public void roadBlock() throws InterruptedException { //refer to the hitbox instead
         for (Car car : cars) {
             if (cone != null && cone.getConeHitbox() != null) {
@@ -237,6 +248,8 @@ public class MyFrame extends JFrame implements Runnable { //make this in charge 
                     if (player.getPlayerHitbox().intersects(potholes.get(i).getPotholeHitbox())) {
                         frame.remove(potholes.get(i));
                         potholes.remove(potholes.get(i));
+                        potholesFilled++;
+                        comboManager();
                     }
             }
             case 'q' ->{

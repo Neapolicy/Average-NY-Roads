@@ -214,10 +214,10 @@ public class MyFrame extends JFrame implements Runnable { //make this in charge 
         gameOver = true;
         frame.removeKeyListener(player);
         frame.removeAll();
-        thread.interrupt();
-        s.killThread();
         frame.revalidate();
         frame.repaint();
+        thread.interrupt();
+        s.killThread();
     }
 
     public void checkCarPositions() {

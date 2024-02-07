@@ -21,7 +21,7 @@ public class MyFrame extends JFrame implements Runnable { //make this in charge 
     private Stopwatch s = new Stopwatch();
     private Sound sound = new Sound();
     private int[] car_locations = {300, 400, 500, 600};
-    private int[] countDowns = {5, 10};
+    private int[] countDowns = {6, 10};
     private int potholesFilled;
     private int timeLastFilled;
     private Train train;
@@ -77,7 +77,7 @@ public class MyFrame extends JFrame implements Runnable { //make this in charge 
 
     public void addCars() throws IOException, InterruptedException //creates new cars
     {
-        if (s.getTimePassed() % (countDowns[1] - (s.getTimePassed() / 11)) == 0) //5 seconds to add a car is purely for testing purposes
+        if (s.getTimePassed() % (countDowns[1] - (s.getTimePassed() / 15)) == 0) //5 seconds to add a car is purely for testing purposes
         {
             if (countDowns[1] < 6) countDowns[1] = 6;
             int y_axis = rand.nextInt(car_locations.length);

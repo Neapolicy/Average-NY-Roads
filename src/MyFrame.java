@@ -22,8 +22,6 @@ public class MyFrame extends JFrame implements Runnable { //make this in charge 
     private Sound sound = new Sound();
     private int[] car_locations = {300, 400, 500, 600};
     private int[] countDowns = {5, 10};
-    private int[] pothole_locations_Y = {300, 400};
-    private int[] pothole_locations_X = {500, 600};
     private int potholesFilled;
     private int timeLastFilled;
     private Train train;
@@ -108,11 +106,11 @@ public class MyFrame extends JFrame implements Runnable { //make this in charge 
         if (s.getTimePassed() % (countDowns[0] - s.getTimePassed() / 10) == 0 && s.getTimePassed() != 0) //5 seconds to add a car is purely for testing purposes
         {
             if (countDowns[0] < 3) countDowns[0] = 3;
-            int y_axis = rand.nextInt(pothole_locations_Y.length);
-            int x_axis = rand.nextInt(pothole_locations_X.length);
+            int y_axis = rand.nextInt(100, 600);
+            int x_axis = rand.nextInt(100, 600);
             for (int i = 0; i < timesGenerated; i++)
             {
-                potholes.add(new Pothole(pothole_locations_X[x_axis], pothole_locations_Y[y_axis]));
+                potholes.add(new Pothole(x_axis, y_axis));
                 frame.add(potholes.get(potholes.size() - 1));
                 Thread.sleep(300);
             }

@@ -182,7 +182,7 @@ public class MyFrame extends JFrame implements Runnable { //make this in charge 
     public void comboManager()  //always increases combo
     {
         player.increaseCombo();
-        player.increaseScore((s.getTimePassed());
+        player.increaseScore((int) s.getTimePassed());
     }
 
     public void resetCombo()

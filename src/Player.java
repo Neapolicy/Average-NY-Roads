@@ -10,6 +10,7 @@ public class Player extends JLabel implements KeyListener {
     public static String direction = "up";
     private int score;
     private int combo;
+    private int highestCombo;
     private char keyCode;
     private ImageIcon icon;
     private Box playerHitbox; //https://stackoverflow.com/questions/40252221/java-how-to-use-an-object-from-one-mouselistener-to-another-class cheque it out idk
@@ -43,7 +44,8 @@ public class Player extends JLabel implements KeyListener {
         combo = 0; 
     }
     public void increaseCombo(){
-         combo ++; 
+        combo ++;
+        if (combo > highestCombo) highestCombo = combo;
     }
 
     public String getDirection() {
@@ -57,6 +59,10 @@ public class Player extends JLabel implements KeyListener {
     public int getScore()
     {
         return score;
+    }
+    public int getHighestCombo()
+    {
+        return highestCombo;
     }
 
     private void movePlayer(char keyCode) throws IOException {

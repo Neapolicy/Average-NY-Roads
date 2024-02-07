@@ -21,6 +21,7 @@ public class MyFrame extends JFrame implements Runnable { //make this in charge 
     private Stopwatch s = new Stopwatch();
     private Sound sound = new Sound();
     private int[] car_locations = {300, 400, 500, 600};
+    private int[] countDowns = {5, 10};
     private int[] pothole_locations_Y = {300, 400};
     private int[] pothole_locations_X = {500, 600};
     private int potholesFilled;
@@ -78,8 +79,9 @@ public class MyFrame extends JFrame implements Runnable { //make this in charge 
 
     public void addCars() throws IOException, InterruptedException //creates new cars
     {
-        if (s.getTimePassed() % 10 == 0) //5 seconds to add a car is purely for testing purposes
+        if (s.getTimePassed() % (countDowns[1] - (s.getTimePassed() / 11)) == 0) //5 seconds to add a car is purely for testing purposes
         {
+            if (countDowns[1] < 6) countDowns[1] = 6;
             int y_axis = rand.nextInt(car_locations.length);
             for (int i = 0; i < timesGenerated; i++) {
                 cars.add(new Car(frame.getWidth(), car_locations[y_axis]));
@@ -103,8 +105,9 @@ public class MyFrame extends JFrame implements Runnable { //make this in charge 
     }
 
     public void addPotholes() throws InterruptedException, IOException {
-        if (s.getTimePassed() % 5 == 0 && s.getTimePassed() != 0) //5 seconds to add a car is purely for testing purposes
+        if (s.getTimePassed() % (countDowns[0] - s.getTimePassed() / 10) == 0 && s.getTimePassed() != 0) //5 seconds to add a car is purely for testing purposes
         {
+            if (countDowns[0] < 3) countDowns[0] = 3;
             int y_axis = rand.nextInt(pothole_locations_Y.length);
             int x_axis = rand.nextInt(pothole_locations_X.length);
             for (int i = 0; i < timesGenerated; i++)
@@ -179,7 +182,7 @@ public class MyFrame extends JFrame implements Runnable { //make this in charge 
     public void comboManager()  //always increases combo
     {
         player.increaseCombo();
-        player.increaseScore((int)s.getTimePassed());
+        player.increaseScore((s.getTimePassed());
     }
 
     public void resetCombo()
@@ -211,13 +214,12 @@ public class MyFrame extends JFrame implements Runnable { //make this in charge 
     }
 
     public void loseScreen() {
-        gameOver = true;
-        frame.removeKeyListener(player);
-        frame.removeAll();
-        frame.revalidate();
-        frame.repaint();
-        thread.interrupt();
-        s.killThread();
+        System.out.println("Game Over!");
+        System.out.println("You survived for: " + s.getTimePassed() + " seconds");
+        System.out.println("Your highest combo was: " + player.getHighestCombo());
+        System.out.println("Your score was: " + player.getScore());
+        System.out.println("You filled a total of " + potholesFilled + " potholes");
+        System.exit(0);
     }
 
     public void checkCarPositions() {

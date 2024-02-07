@@ -36,6 +36,4 @@ public class Stopwatch implements Runnable { //just tracks the time ig
             }
         }
     }
-
-    public void killThread(){t.interrupt();}
 }

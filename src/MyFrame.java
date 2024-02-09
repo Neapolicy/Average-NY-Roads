@@ -80,6 +80,7 @@ public class MyFrame extends JFrame implements Runnable { //make this in charge 
         if (s.getTimePassed() % (countDowns[1] - (s.getTimePassed() / 15)) == 0) //5 seconds to add a car is purely for testing purposes
         {
             if (countDowns[1] < 6) countDowns[1] = 6;
+            timesGenerated = rand.nextInt(1, 2);
             int y_axis = rand.nextInt(car_locations.length);
             for (int i = 0; i < timesGenerated; i++) {
                 cars.add(new Car(frame.getWidth(), car_locations[y_axis]));
@@ -90,7 +91,7 @@ public class MyFrame extends JFrame implements Runnable { //make this in charge 
             }
             Thread.sleep(700);
         }
-        timesGenerated = rand.nextInt(1, 2); //method works woohoo
+         //method works woohoo
     }
 
     public void trainSummon() throws IOException, InterruptedException {
@@ -106,6 +107,7 @@ public class MyFrame extends JFrame implements Runnable { //make this in charge 
         if (s.getTimePassed() % (countDowns[0] - s.getTimePassed() / 10) == 0 && s.getTimePassed() != 0) //5 seconds to add a car is purely for testing purposes
         {
             if (countDowns[0] < 3) countDowns[0] = 3;
+            timesGenerated = rand.nextInt(1, 2);
             int y_axis = rand.nextInt(300, 600);
             int x_axis = rand.nextInt(100, 600);
             for (int i = 0; i < timesGenerated; i++)
@@ -114,9 +116,7 @@ public class MyFrame extends JFrame implements Runnable { //make this in charge 
                 frame.add(potholes.get(potholes.size() - 1));
                 Thread.sleep(300);
             }
-            timesGenerated = 0;
         }
-        timesGenerated = rand.nextInt(1, 4); //method works woohoo
     }
 
     public void checkCollision() { //refer to the hitbox instead
@@ -229,6 +229,10 @@ public class MyFrame extends JFrame implements Runnable { //make this in charge 
                 frame.repaint();
             }
         }
+    }
+
+    public void checkTrainPosition()
+    {
         if (train.getX() <= -1000)
         {
             frame.remove(train);
@@ -284,10 +288,11 @@ public class MyFrame extends JFrame implements Runnable { //make this in charge 
             long startTime = System.nanoTime();
             //do stuff per frame below
             try {
-                addCars(); //create cars, train ,and potholes
                 trainSummon();
+                addCars(); //create cars, train ,and potholes
                 addPotholes();
                 checkCarPositions();
+                checkTrainPosition();
                 frame.revalidate();
                 frame.repaint();
             } catch (IOException | InterruptedException e) {

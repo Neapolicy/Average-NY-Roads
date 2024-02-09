@@ -25,6 +25,7 @@ public class MyFrame extends JFrame implements Runnable { //make this in charge 
     private int potholesFilled;
     private int timeLastFilled;
     private Train train;
+    private boolean collision = false;;
 
     public MyFrame() throws IOException, InterruptedException { //https://stackoverflow.com/questions/2141019/how-can-i-check-if-something-leaves-the-screen-jframe car leaves screen idfk
         JLabel background;
@@ -160,6 +161,7 @@ public class MyFrame extends JFrame implements Runnable { //make this in charge 
                 cars.remove(cars.get(i));
                 Bomb.bombCount++;
                 sound.play("man_V_machine", false);
+                collision = true;
             }
         }
         if (cone != null){ //checks of there even is a cone
@@ -167,10 +169,9 @@ public class MyFrame extends JFrame implements Runnable { //make this in charge 
                 frame.remove(cone);
                 TrafficCone.conesPlaced--;  //checks for cone, if there is, remove it
             }
-        } else{ //checks if you blew up a car
+        } else if (!collision){ //checks if you blew up a car
             potholes.add(new Pothole(bomb.getX(), bomb.getY())); //fix the thing where blowing up a car creates a pothole
-            frame.add(potholes.get(potholes.size() - 1));
-                                                            //this is the cause for the orange square
+            frame.add(potholes.get(potholes.size() - 1));                                                    //this is the cause for the orange square
         }                                                 //bc that was supposed to be the pothole being created
         frame.remove(bomb);
         frame.revalidate();

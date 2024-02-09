@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import javax.swing.*;
 
 public class MyFrame extends JFrame implements Runnable { //make this in charge on handling of placing images
-    public static int targetFPS = 40;
+    public static int targetFPS = 60;
     public static int targetTime = 1000000000 / targetFPS;
     public static boolean gameOver;
     private final Random rand = new Random();
@@ -21,7 +21,7 @@ public class MyFrame extends JFrame implements Runnable { //make this in charge 
     private Stopwatch s = new Stopwatch();
     private Sound sound = new Sound();
     private int[] car_locations = {300, 400, 500, 600};
-    private int[] countDowns = {6, 10};
+    private int[] countDowns = {7, 10};
     private int potholesFilled;
     private int timeLastFilled;
     private Train train;
@@ -106,7 +106,7 @@ public class MyFrame extends JFrame implements Runnable { //make this in charge 
         if (s.getTimePassed() % (countDowns[0] - s.getTimePassed() / 10) == 0 && s.getTimePassed() != 0) //5 seconds to add a car is purely for testing purposes
         {
             if (countDowns[0] < 3) countDowns[0] = 3;
-            int y_axis = rand.nextInt(100, 600);
+            int y_axis = rand.nextInt(300, 600);
             int x_axis = rand.nextInt(100, 600);
             for (int i = 0; i < timesGenerated; i++)
             {
@@ -185,7 +185,7 @@ public class MyFrame extends JFrame implements Runnable { //make this in charge 
 
     public void resetCombo()
     {
-        if (s.getTimePassed() - timeLastFilled > 5)
+        if (s.getTimePassed() - timeLastFilled > 4)
         {
             player.resetCombo();
         }

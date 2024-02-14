@@ -80,15 +80,13 @@ public class MyFrame extends JFrame implements Runnable { //make this in charge 
     {
         if (s.getTimePassed() % (countDowns[1] - (s.getTimePassed() / 15)) == 0) //5 seconds to add a car is purely for testing purposes, also rewrite this without using sleep
         {
-            if (countDowns[1] < 6) countDowns[1] = 6; //spawn
-            timesGenerated = rand.nextInt(1, 2);
+            int lastSpawnedYCoord = 0;
+            if (countDowns[1] < 6) countDowns[1] = 6; //spawn timer min
+            timesGenerated = rand.nextInt(1, 5);
             int y_axis = rand.nextInt(car_locations.length);
             for (int i = 0; i < timesGenerated; i++) {
-                
-                
-                    cars.add(new Car(frame.getWidth(), car_locations[y_axis]));
-                    frame.add(cars.get(cars.size() - 1));
-                
+                cars.add(new Car(frame.getWidth(), car_locations[y_axis]));
+                frame.add(cars.get(cars.size() - 1));
             }
             Car.step += 2.5;
             Car.speed = Car.step;

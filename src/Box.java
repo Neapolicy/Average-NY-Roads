@@ -1,5 +1,4 @@
 import java.awt.*;
-import java.awt.event.KeyEvent;
 
 public class Box extends Rectangle {
     private Color color;

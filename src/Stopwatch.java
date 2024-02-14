@@ -1,5 +1,6 @@
 public class Stopwatch implements Runnable { //just tracks the time ig
     private final long startTime = System.currentTimeMillis();
+    private int targetTime = 1000000000;
     private int timePassed = 1;
     private int gameTime;
     private Thread t;
@@ -27,9 +28,9 @@ public class Stopwatch implements Runnable { //just tracks the time ig
 
             long totalTime = System.nanoTime() - startTimer;
 
-            if (totalTime < MyFrame.targetTime) {
+            if (totalTime < targetTime) {
                 try {
-                    Thread.sleep((MyFrame.targetTime - totalTime) / 1000000);
+                    Thread.sleep((targetTime - totalTime) / 1000000);
                 } catch (InterruptedException e) {
                     System.out.println("Elapsed Time: " + gameTime);
                 }

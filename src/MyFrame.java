@@ -7,6 +7,7 @@ import javax.swing.*;
 public class MyFrame extends JFrame implements Runnable { //make this in charge on handling of placing images
     public static int targetFPS = 60;
     public static int targetTime = 1000000000 / targetFPS;
+    public static int targetTimeThread = 1000000000;
     public static boolean gameOver;
     private final Random rand = new Random();
     private Bomb bomb;
@@ -56,7 +57,6 @@ public class MyFrame extends JFrame implements Runnable { //make this in charge 
         {
             long startTime = System.nanoTime();
             userKeyInput();
-            roadBlock();
             checkCollision();
             conePlacement();
             checkPlayerPosition();
@@ -78,19 +78,20 @@ public class MyFrame extends JFrame implements Runnable { //make this in charge 
 
     public void addCars() throws IOException, InterruptedException //creates new cars
     {
-        if (s.getTimePassed() % (countDowns[1] - (s.getTimePassed() / 15)) == 0) //5 seconds to add a car is purely for testing purposes
+        if (s.getTimePassed() % (countDowns[1] - (s.getTimePassed() / 15)) == 0) //5 seconds to add a car is purely for testing purposes, also rewrite this without using sleep
         {
-            if (countDowns[1] < 6) countDowns[1] = 6;
+            if (countDowns[1] < 6) countDowns[1] = 6; //spawn
             timesGenerated = rand.nextInt(1, 2);
             int y_axis = rand.nextInt(car_locations.length);
             for (int i = 0; i < timesGenerated; i++) {
-                cars.add(new Car(frame.getWidth(), car_locations[y_axis]));
-                frame.add(cars.get(cars.size() - 1));
-                Thread.sleep(300);
-                Car.step += 2.5;
-                Car.speed = Car.step;
+                
+                
+                    cars.add(new Car(frame.getWidth(), car_locations[y_axis]));
+                    frame.add(cars.get(cars.size() - 1));
+                
             }
-            Thread.sleep(700);
+            Car.step += 2.5;
+            Car.speed = Car.step;
         }
          //method works woohoo
     }
@@ -100,7 +101,6 @@ public class MyFrame extends JFrame implements Runnable { //make this in charge 
         {
             train = new Train(frame.getWidth(), 100);
             frame.add(train);
-            Thread.sleep(1000);
         }
     }
 
@@ -108,14 +108,13 @@ public class MyFrame extends JFrame implements Runnable { //make this in charge 
         if (s.getTimePassed() % (countDowns[0] - s.getTimePassed() / 10) == 0 && s.getTimePassed() != 0) //5 seconds to add a car is purely for testing purposes
         {
             if (countDowns[0] < 3) countDowns[0] = 3;
-            timesGenerated = rand.nextInt(1, 2);
+            timesGenerated = rand.nextInt(1, 4);
             int y_axis = rand.nextInt(300, 600);
             int x_axis = rand.nextInt(100, 600);
             for (int i = 0; i < timesGenerated; i++)
             {
                 potholes.add(new Pothole(x_axis, y_axis));
                 frame.add(potholes.get(potholes.size() - 1));
-                Thread.sleep(300);
             }
         }
     }
@@ -128,6 +127,14 @@ public class MyFrame extends JFrame implements Runnable { //make this in charge 
             }
             for (Pothole pothole : potholes) {
                 if (car.getCarHitbox().intersects(pothole.getPotholeHitbox())) loseScreen();
+            }
+            if (cone != null && cone.getConeHitbox() != null) {
+                if (cone.getConeHitbox().intersects(car.getCarHitbox())) { //have to fix the issue where cone hitbox is null after removing
+                    car.killSound(false);
+                    car.stopCar();
+                } else {
+                    car.setSpeed(Car.speed);// allows car to play audio again once no longer blocked by cone
+                }
             }
         }
     }
@@ -189,19 +196,6 @@ public class MyFrame extends JFrame implements Runnable { //make this in charge 
         if (s.getTimePassed() - timeLastFilled > 4)
         {
             player.resetCombo();
-        }
-    }
-
-    public void roadBlock() throws InterruptedException { //refer to the hitbox instead
-        for (Car car : cars) {
-            if (cone != null && cone.getConeHitbox() != null) {
-                if (cone.getConeHitbox().intersects(car.getCarHitbox())) { //have to fix the issue where cone hitbox is null after removing
-                    car.killSound(false);
-                    car.stopCar();
-                } else {
-                    car.setSpeed(Car.speed);// allows car to play audio again once no longer blocked by cone
-                }
-            }
         }
     }
 
@@ -302,9 +296,9 @@ public class MyFrame extends JFrame implements Runnable { //make this in charge 
 
             long totalTime = System.nanoTime() - startTime;
 
-            if (totalTime < targetTime) {
+            if (totalTime < targetTimeThread) {
                 try {
-                    Thread.sleep((targetTime - totalTime) / 1000000);
+                    Thread.sleep((targetTimeThread - totalTime) / 1000000);
                 } catch (InterruptedException e) {
                     for (Car car : cars)
                         car.killSound(false);

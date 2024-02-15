@@ -8,8 +8,8 @@ public class Car extends JLabel implements Runnable{
     protected int offScreen;
     private Box carHitbox;
     private Sound sound = new Sound();
-    public static double step = 10;
-    public static double speed = step;
+    private double step = 10;
+    public static double speed = 10;
     private Thread thread;
     public Car(int x, int y) throws IOException {
         ImageIcon icon = new ImageIcon(ImageIO.read(new File("ImageFiles/Images/car1.png")));

@@ -57,6 +57,7 @@ public class MyFrame extends JFrame implements Runnable { //make this in charge 
         {
             long startTime = System.nanoTime();
             userKeyInput();
+            player.run();
             checkCollision();
             checkPlayerPosition();
             resetCombo();

@@ -13,7 +13,13 @@ public class Player extends JLabel implements KeyListener {
     private int highestCombo;
     private char keyCode;
     private ImageIcon icon;
+    private boolean up;
+    private boolean down;
+    private boolean left;
+    private boolean right;
+    private int step = 20;
     private Box playerHitbox; //https://stackoverflow.com/questions/40252221/java-how-to-use-an-object-from-one-mouselistener-to-another-class cheque it out idk
+
     public Player() throws IOException {
         setIcon("player");
 
@@ -34,17 +40,18 @@ public class Player extends JLabel implements KeyListener {
     public void increaseScore(int timeElapsed) //time between filling potholes
     {
         int moneyMade = 10 + (timeElapsed / 4);
-        if (combo != 1)
-        {
-            moneyMade *= 1 + (((double)combo) / 10); //multiplies by combo/10
+        if (combo != 1) {
+            moneyMade *= 1 + (((double) combo) / 10); //multiplies by combo/10
         }
         score += moneyMade;
     }
-    public void resetCombo(){
-        combo = 0; 
+
+    public void resetCombo() {
+        combo = 0;
     }
-    public void increaseCombo(){
-        combo ++;
+
+    public void increaseCombo() {
+        combo++;
         if (combo > highestCombo) highestCombo = combo;
     }
 
@@ -52,53 +59,49 @@ public class Player extends JLabel implements KeyListener {
         return direction;
     }
 
-    public Box getPlayerHitbox()
-    {
+    public Box getPlayerHitbox() {
         return playerHitbox;
     }
-    public int getScore()
-    {
+
+    public int getScore() {
         return score;
     }
-    public int getHighestCombo()
-    {
+
+    public int getHighestCombo() {
         return highestCombo;
     }
 
     private void movePlayer(char keyCode) throws IOException {
-        int step = 40;
-
         switch (keyCode) {
             case 'w' -> {
                 Player.direction = "up";
-                this.setLocation(this.getX(), this.getY() - step);
-                this.getPlayerHitbox().setLocation(this.getX(), this.getY());
+                up = true;
             }
             case 'a' -> {
+                left = true;
                 Player.direction = "left";
-                this.setLocation(this.getX() - step, this.getY());
-                this.getPlayerHitbox().setLocation(this.getX(), this.getY());
             }
             case 's' -> {
+                down = true;
                 Player.direction = "down";
                 setIcon("player_down");
-                this.setLocation(this.getX(), this.getY() + step);
-                this.getPlayerHitbox().setLocation(this.getX(), this.getY());
             }
             case 'd' -> {
+                right = true;
                 Player.direction = "right";
-                this.setLocation(this.getX() + step, this.getY());
-                this.getPlayerHitbox().setLocation(this.getX(), this.getY());
             }
         }
+        run();
     }
-    public char getKeyCode(){
+
+    public char getKeyCode() {
         return keyCode;
     }
 
     public void resetKeyCode() {
         keyCode = Character.MIN_VALUE;
     }
+
     @Override
     public void keyTyped(KeyEvent e) {
     }
@@ -115,6 +118,31 @@ public class Player extends JLabel implements KeyListener {
 
     @Override
     public void keyReleased(KeyEvent e) {
+        keyCode = e.getKeyChar();
+        switch (keyCode) {
+            case 'w' -> up = false;
+            case 'a' -> left = false;
+            case 's' -> down = false;
+            case 'd' -> right = false;
+        }
+    }
 
+    public void run() {
+        if (up) {
+            this.setLocation(this.getX(), this.getY() - step);
+            this.getPlayerHitbox().setLocation(this.getX(), this.getY());
+        }
+        if (down) {
+            this.setLocation(this.getX(), this.getY() + step);
+            this.getPlayerHitbox().setLocation(this.getX(), this.getY());
+        }
+        if (left) {
+            this.setLocation(this.getX() - step, this.getY());
+            this.getPlayerHitbox().setLocation(this.getX(), this.getY());
+        }
+        if (right) {
+            this.setLocation(this.getX() + step, this.getY());
+            this.getPlayerHitbox().setLocation(this.getX(), this.getY());
+        }
     }
 }

@@ -83,9 +83,11 @@ public class MyFrame extends JFrame implements Runnable { //make this in charge 
             int lastSpawnedYCoord = 0;
             if (countDowns[1] < 6) countDowns[1] = 6; //spawn timer min
             timesGenerated = rand.nextInt(1, 5);
-            int y_axis = rand.nextInt(car_locations.length);
             for (int i = 0; i < timesGenerated; i++) {
+                int y_axis = rand.nextInt(car_locations.length);
+                while (y_axis == lastSpawnedYCoord) y_axis = rand.nextInt(car_locations.length);
                 cars.add(new Car(frame.getWidth(), car_locations[y_axis]));
+                lastSpawnedYCoord = car_locations[y_axis];
                 frame.add(cars.get(cars.size() - 1));
             }
             Car.step += 2.5;
@@ -127,7 +129,7 @@ public class MyFrame extends JFrame implements Runnable { //make this in charge 
                 if (car.getCarHitbox().intersects(pothole.getPotholeHitbox())) loseScreen();
             }
             if (cone != null && cone.getConeHitbox() != null) {
-                if (cone.getConeHitbox().intersects(car.getCarHitbox())) { //have to fix the issue where cone hitbox is null after removing
+                if (cone.getConeHitbox().intersects(car.getCarHitbox())) { 
                     car.killSound(false);
                     car.stopCar();
                 } else {
@@ -199,9 +201,9 @@ public class MyFrame extends JFrame implements Runnable { //make this in charge 
 
     public void checkPlayerPosition() {
         if (player.getX() < 0) player.setLocation(0, player.getY());
-        if (player.getX() > size.getWidth() - 100) player.setLocation((int) size.getWidth() - 100, player.getY());
-        if (player.getY() < 0) player.setLocation(player.getX(), 0);
-        if (player.getY() > size.getHeight() - 150) player.setLocation(player.getX(), (int) size.getHeight() - 150);
+        if (player.getX() > size.getWidth() - 500) player.setLocation((int) size.getWidth() - 500, player.getY());
+        if (player.getY() < 300) player.setLocation(player.getX(), 300);
+        if (player.getY() > size.getHeight() - 400) player.setLocation(player.getX(), (int) size.getHeight() - 400);
     }
 
     public void loseScreen() {

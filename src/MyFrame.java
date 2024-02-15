@@ -96,7 +96,7 @@ public class MyFrame extends JFrame implements Runnable { //make this in charge 
     }
 
     public void trainSummon() throws IOException, InterruptedException {
-        if (s.getTimePassed() % 8 == 0) //5 seconds to add a car is purely for testing purposes
+        if (s.getTimePassed() % 8 == 0)
         {
             train = new Train(frame.getWidth(), 100);
             frame.add(train);

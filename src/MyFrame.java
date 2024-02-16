@@ -75,7 +75,6 @@ public class MyFrame extends JFrame implements Runnable { //make this in charge 
         }
     }
 
-
     public void addCars() throws IOException, InterruptedException //creates new cars
     {
         if (s.getTimePassed() % (countDowns[1] - (s.getTimePassed() / 15)) == 0) //5 seconds to add a car is purely for testing purposes, also rewrite this without using sleep
@@ -89,6 +88,7 @@ public class MyFrame extends JFrame implements Runnable { //make this in charge 
                 cars.add(new Car(frame.getWidth(), car_locations[y_axis]));
                 lastSpawnedYCoord = car_locations[y_axis];
                 frame.add(cars.get(cars.size() - 1));
+                Thread.sleep(300);
             }
             Car.speed += 2.5;
         }

@@ -119,13 +119,13 @@ public class MyFrame extends JFrame implements Runnable { //make this in charge 
     }
 
     public void checkCollision() { //refer to the hitbox instead
-        for (int i = 0; i < cars.size(); i++) {
-            if (player.getPlayerHitbox().intersects(cars.get(i).getCarHitbox())) {
-                cars.get(i).killSound(false);
+        for (Car car : cars) {
+            if (player.getPlayerHitbox().intersects(car.getCarHitbox())) {
+                car.killSound(false);
                 loseScreen();
             }
             for (Pothole pothole : potholes) {
-                if (cars.get(i).getCarHitbox().intersects(pothole.getPotholeHitbox())) loseScreen();
+                if (car.getCarHitbox().intersects(pothole.getPotholeHitbox())) loseScreen();
             }
             // if (cone != null && cone.getConeHitbox() != null) {
             //     if (cone.getConeHitbox().intersects(cars.get(i).getCarHitbox())) { 

@@ -127,38 +127,8 @@ public class MyFrame extends JFrame implements Runnable { //make this in charge 
             for (Pothole pothole : potholes) {
                 if (car.getCarHitbox().intersects(pothole.getPotholeHitbox())) loseScreen();
             }
-            // if (cone != null && cone.getConeHitbox() != null) {
-            //     if (cone.getConeHitbox().intersects(cars.get(i).getCarHitbox())) { 
-            //         cars.get(i).killSound(false);
-            //         cars.get(i).stopCar();
-            //     } else {
-            //         cars.get(i).setSpeed(Car.speed);
-            //     }
-            // }
         }
     }
-
-    // public void conePlacement() {
-    //     if (cone != null && cone.getConeHitbox() != null) {
-    //         if (player.getPlayerHitbox().intersects(cone.getConeHitbox())) {
-    //             switch (player.getDirection()) {
-    //                 case "up":
-    //                     player.setLocation(player.getX(), player.getY() + 60);
-    //                     player.getPlayerHitbox().setLocation(player.getX(), player.getY());
-    //                 case "down":
-    //                     player.setLocation(player.getX(), player.getY() - 30);
-    //                     player.getPlayerHitbox().setLocation(player.getX(), player.getY());
-    //                 case "left":
-    //                     player.setLocation(player.getX() + 60, player.getY());
-    //                     player.getPlayerHitbox().setLocation(player.getX(), player.getY());
-    //                 case "right":
-    //                     player.setLocation(player.getX() - 30, player.getY());
-    //                     player.getPlayerHitbox().setLocation(player.getX(), player.getY());
-    //             }
-    //         }
-    //     }
-    //genius idea for completely eliminating rectangles, make it a arraylist for each class/object, and remove it when you do frame.remove
-    //have it call a method that will remove the rectangle wooo I AM A FXCKING GENIUS
 
     public void bombCollision() throws IOException {
         for (int i = 0; i < cars.size(); i++) { //first check if bomb hit car, if true, then remove car
@@ -170,12 +140,6 @@ public class MyFrame extends JFrame implements Runnable { //make this in charge 
                 collision = true;
             }
         }
-        // if (cone != null){ //checks of there even is a cone
-        //     if (bomb.getBombHitbox().intersects(cone.getConeHitbox())) {
-        //         frame.remove(cone);
-        //         TrafficCone.conesPlaced--;  //checks for cone, if there is, remove it
-        //     }
-        //} 
         if (!collision){ //checks if you blew up a car
             potholes.add(new Pothole(bomb.getX(), bomb.getY())); //fix the thing where blowing up a car creates a pothole
             frame.add(potholes.get(potholes.size() - 1));                                                    //this is the cause for the orange square
@@ -258,19 +222,6 @@ public class MyFrame extends JFrame implements Runnable { //make this in charge 
                         comboManager();
                     }
             }
-            // case 'q' ->{
-            //     if (TrafficCone.conesPlaced < 1) {
-            //         cone = new TrafficCone();
-            //         cone.setLocation(player.getX(), player.getY(), player.getDirection());
-            //         frame.add(cone);
-            //         TrafficCone.conesPlaced++;
-            //     }
-            //     else if (TrafficCone.conesPlaced == 1) {
-            //         frame.remove(cone);
-            //         cone = null;
-            //         TrafficCone.conesPlaced--;
-            //     }
-            // }
         }
         frame.revalidate();
         frame.repaint();

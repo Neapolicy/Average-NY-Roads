@@ -1,7 +1,10 @@
 import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.File;
 import java.util.Random;
 import java.io.IOException;
 import java.util.ArrayList;
+import javax.imageio.ImageIO;
 import javax.swing.*;
 
 public class MyFrame extends JFrame implements Runnable { //make this in charge on handling of placing images
@@ -12,11 +15,11 @@ public class MyFrame extends JFrame implements Runnable { //make this in charge 
     private final Random rand = new Random();
     private Bomb bomb;
     private Player player;
-    //private TrafficCone cone; //might make this an arraylist??
     private ArrayList<Car> cars = new ArrayList<>();
     private ArrayList<Pothole> potholes = new ArrayList<>();
     private int timesGenerated;
     private JFrame frame = new JFrame();
+    private BufferedImage image;
     private Dimension size = Toolkit.getDefaultToolkit().getScreenSize();
     private Thread thread;
     private Stopwatch s = new Stopwatch();
@@ -28,28 +31,28 @@ public class MyFrame extends JFrame implements Runnable { //make this in charge 
     private Train train;
     private boolean collision = false;;
 
-    public MyFrame() throws IOException, InterruptedException { //https://stackoverflow.com/questions/2141019/how-can-i-check-if-something-leaves-the-screen-jframe car leaves screen idfk
-        JLabel background;
+    public MyFrame() throws IOException {
         frame.setSize((int) size.getWidth(), (int) size.getHeight());
         frame.setLayout(null);
         frame.setDefaultCloseOperation(EXIT_ON_CLOSE);
         frame.setTitle("FWMC RADIO BAU BAU");
-
+        frame.setVisible(true);
         player = new Player();
-        ImageIcon image = new ImageIcon("ImageFiles/Images/player.png"); //has to be png idk??
-        background = new JLabel("", image, JLabel.CENTER);
-        background.setBounds(0, 0, frame.getWidth(), frame.getHeight());
 
-        frame.setUndecorated(false);
         frame.addKeyListener(player);
 
         frame.setFocusable(true);
 
         frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
 
+        try {
+            image = ImageIO.read(new File("ImageFiles/Images/railroad.png"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
         frame.setVisible(true);
         frame.add(player);
-        /*frame.add(background);*/
 
         thread = new Thread(this);
         thread.start();
@@ -75,6 +78,22 @@ public class MyFrame extends JFrame implements Runnable { //make this in charge 
         }
     }
 
+    public void refresh(){
+        frame.revalidate();
+        frame.repaint();
+    }
+
+    @Override
+    public void paint(Graphics g){
+        super.paint(g);
+
+        if (image != null) {
+            System.out.println("asd");
+            g.drawImage(image, 0, 0, getWidth(), getHeight(), this);
+        }
+        refresh();
+    }
+
     public void addCars() throws IOException, InterruptedException //creates new cars
     {
         if (s.getTimePassed() % (countDowns[1] - (s.getTimePassed() / 15)) == 0) //5 seconds to add a car is purely for testing purposes, also rewrite this without using sleep
@@ -92,7 +111,6 @@ public class MyFrame extends JFrame implements Runnable { //make this in charge 
             }
             Car.speed += 2.5;
         }
-         //method works woohoo
     }
 
     public void trainSummon() throws IOException, InterruptedException {
@@ -145,8 +163,7 @@ public class MyFrame extends JFrame implements Runnable { //make this in charge 
             frame.add(potholes.get(potholes.size() - 1));                                                    //this is the cause for the orange square
         }                                                 //bc that was supposed to be the pothole being created
         frame.remove(bomb);
-        frame.revalidate();
-        frame.repaint();
+        refresh();
     }
 
     public void comboManager()  //always increases combo
@@ -184,8 +201,7 @@ public class MyFrame extends JFrame implements Runnable { //make this in charge 
             if (cars.get(i).getX() <= -200) {
                 frame.remove(cars.get(i));
                 cars.remove(cars.get(i));
-                frame.revalidate();
-                frame.repaint();
+                refresh();
             }
         }
     }
@@ -195,8 +211,7 @@ public class MyFrame extends JFrame implements Runnable { //make this in charge 
         if (train.getX() <= -1000)
         {
             frame.remove(train);
-            frame.revalidate();
-            frame.repaint();
+            refresh();
         }
     }
 
@@ -223,8 +238,7 @@ public class MyFrame extends JFrame implements Runnable { //make this in charge 
                     }
             }
         }
-        frame.revalidate();
-        frame.repaint();
+        refresh();
         player.resetKeyCode();
     }
 
@@ -239,8 +253,7 @@ public class MyFrame extends JFrame implements Runnable { //make this in charge 
                 addPotholes();
                 checkCarPositions();
                 checkTrainPosition();
-                frame.revalidate();
-                frame.repaint();
+                refresh();
             } catch (IOException | InterruptedException e) {
                 throw new RuntimeException(e);
             }

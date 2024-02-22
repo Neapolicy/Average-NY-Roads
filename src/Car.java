@@ -80,9 +80,4 @@ public class Car extends JLabel implements Runnable{
     }
 
     public void killThread(){thread.interrupt();}
-    public void setSpeed(double speed)
-    {
-        step = speed;
-    }
-    public void stopCar(){step = 0;}
 }

@@ -61,9 +61,9 @@ public class MyFrame extends JFrame implements Runnable { //make this in charge 
             long startTime = System.nanoTime();
             userKeyInput();
             player.run();
-            checkCollision();
-            checkPlayerPosition();
-            resetCombo();
+//            checkCollision();
+//            checkPlayerPosition();
+//            resetCombo();
             long totalTime = System.nanoTime() - startTime;
 
             if (totalTime < targetTime) {
@@ -84,7 +84,7 @@ public class MyFrame extends JFrame implements Runnable { //make this in charge 
     }
 
     @Override
-    public void paint(Graphics g){
+    public void paint(Graphics g) {
         super.paint(g);
 
         // Create an off-screen image for double buffering
@@ -97,7 +97,9 @@ public class MyFrame extends JFrame implements Runnable { //make this in charge 
         }
 
         // Draw the off-screen image on the JFrame's content pane
-        g.drawImage(offScreenImage, 0, 0, this);
+        synchronized (this) {
+            g.drawImage(offScreenImage, 0, 0, this);
+        }
 
         // Dispose of the off-screen graphics to release resources
         offScreenGraphics.dispose();
@@ -142,6 +144,7 @@ public class MyFrame extends JFrame implements Runnable { //make this in charge 
                 potholes.add(new Pothole(x_axis, y_axis));
                 add(potholes.get(potholes.size() - 1));
             }
+            refresh();
         }
     }
 
@@ -172,7 +175,6 @@ public class MyFrame extends JFrame implements Runnable { //make this in charge 
             add(potholes.get(potholes.size() - 1));                                                    //this is the cause for the orange square
         }                                                 //bc that was supposed to be the pothole being created
         remove(bomb);
-        refresh();
     }
 
     public void comboManager()  //always increases combo
@@ -210,7 +212,6 @@ public class MyFrame extends JFrame implements Runnable { //make this in charge 
             if (cars.get(i).getX() <= -200) {
                 remove(cars.get(i));
                 cars.remove(cars.get(i));
-                refresh();
             }
         }
     }
@@ -220,7 +221,7 @@ public class MyFrame extends JFrame implements Runnable { //make this in charge 
         if (train.getX() <= -1000)
         {
             remove(train);
-            refresh();
+            repaint();
         }
     }
 
@@ -265,7 +266,6 @@ public class MyFrame extends JFrame implements Runnable { //make this in charge 
                 addPotholes();
                 checkCarPositions();
                 checkTrainPosition();
-                refresh();
             } catch (IOException | InterruptedException e) {
                 throw new RuntimeException(e);
             }

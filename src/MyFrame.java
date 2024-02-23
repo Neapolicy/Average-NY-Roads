@@ -30,40 +30,41 @@ public class MyFrame extends JFrame implements Runnable { //make this in charge 
     private int lastBomb;
     private Train train;
     private boolean collision = false;;
-
     public MyFrame() throws IOException {
+        setTitle("FWMC RADIO BAU BAU");
+        setDefaultCloseOperation(EXIT_ON_CLOSE);
         setSize((int) size.getWidth(), (int) size.getHeight());
         setLayout(null);
-        setDefaultCloseOperation(EXIT_ON_CLOSE);
-        setTitle("FWMC RADIO BAU BAU");
+        setLocationRelativeTo(null);
 
         player = new Player();
+        Railroad railroad = new Railroad((int) size.getWidth()); // Create an instance of Railroad
 
         addKeyListener(player);
 
-        setFocusable(true);
-
         setExtendedState(JFrame.MAXIMIZED_BOTH);
 
-        try {
-            image = ImageIO.read(new File("ImageFiles/Images/railroad.png"));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        setVisible(true);
         add(player);
+        add(railroad);
 
         thread = new Thread(this);
         thread.start();
+
+        railroad.setBounds(0, 100, 200, 200);
+
+        setVisible(true);
+        gameLoop();
+    }
+
+    public void gameLoop() throws IOException {
         while (!gameOver)
         {
             long startTime = System.nanoTime();
             userKeyInput();
             player.run();
-//            checkCollision();
+            checkCollision();
 //            checkPlayerPosition();
-//            resetCombo();
+            resetCombo();
             long totalTime = System.nanoTime() - startTime;
 
             if (totalTime < targetTime) {
@@ -81,28 +82,6 @@ public class MyFrame extends JFrame implements Runnable { //make this in charge 
     public void refresh(){
         revalidate();
         repaint();
-    }
-
-    @Override
-    public void paint(Graphics g) {
-        super.paint(g);
-
-        // Create an off-screen image for double buffering
-        BufferedImage offScreenImage = new BufferedImage(getWidth(), getHeight(), BufferedImage.TYPE_INT_ARGB);
-        Graphics offScreenGraphics = offScreenImage.getGraphics();
-
-        // Draw the image on the off-screen image
-        if (image != null) {
-            offScreenGraphics.drawImage(image, 0, 120, getWidth(), 100, this);
-        }
-
-        // Draw the off-screen image on the JFrame's content pane
-        synchronized (this) {
-            g.drawImage(offScreenImage, 0, 0, this);
-        }
-
-        // Dispose of the off-screen graphics to release resources
-        offScreenGraphics.dispose();
     }
 
     public void addCars() throws IOException, InterruptedException //creates new cars
@@ -129,6 +108,7 @@ public class MyFrame extends JFrame implements Runnable { //make this in charge 
         {
             train = new Train(getWidth(), 100);
             add(train);
+            repaint();
         }
     }
 
@@ -218,9 +198,10 @@ public class MyFrame extends JFrame implements Runnable { //make this in charge 
 
     public void checkTrainPosition()
     {
-        if (train.getX() <= -1000)
+        if (train != null && train.getX() <= -1000)
         {
             remove(train);
+            train = null;
             repaint();
         }
     }
@@ -237,6 +218,7 @@ public class MyFrame extends JFrame implements Runnable { //make this in charge 
                         add(bomb);
                         bombCollision();
                         Bomb.bombCount--;
+                        bomb = null;
                     }
                 }
             }
@@ -262,9 +244,9 @@ public class MyFrame extends JFrame implements Runnable { //make this in charge 
             //do stuff per frame below
             try {
                 trainSummon();
-                addCars(); //create cars, train ,and potholes
-                addPotholes();
-                checkCarPositions();
+//                addCars(); //create cars, train ,and potholes
+//                addPotholes();
+//                checkCarPositions();
                 checkTrainPosition();
             } catch (IOException | InterruptedException e) {
                 throw new RuntimeException(e);

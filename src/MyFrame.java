@@ -18,8 +18,9 @@ public class MyFrame extends JFrame implements Runnable { //make this in charge 
     private ArrayList<Car> cars = new ArrayList<>();
     private ArrayList<Pothole> potholes = new ArrayList<>();
     private int timesGenerated;
-    private BufferedImage image;
     private Dimension size = Toolkit.getDefaultToolkit().getScreenSize();
+    private Railroad railroad = new Railroad((int) size.getWidth()); // Create an instance of Railroad
+    private Road road; // Create an instance of road
     private Thread thread;
     private Stopwatch s = new Stopwatch();
     private Sound sound = new Sound();
@@ -29,41 +30,43 @@ public class MyFrame extends JFrame implements Runnable { //make this in charge 
     private int timeLastFilled;
     private int lastBomb;
     private Train train;
-    private boolean collision = false;;
+    private boolean collision = false;
+    ;
+
     public MyFrame() throws IOException {
         setTitle("FWMC RADIO BAU BAU");
         setDefaultCloseOperation(EXIT_ON_CLOSE);
-        setSize((int) size.getWidth(), (int) size.getHeight());
+        setSize(500, 500);
         setLayout(null);
         setLocationRelativeTo(null);
 
         player = new Player();
-        Railroad railroad = new Railroad((int) size.getWidth()); // Create an instance of Railroad
+        road = new Road((int) size.getWidth());
 
         addKeyListener(player);
 
         setExtendedState(JFrame.MAXIMIZED_BOTH);
 
         add(player);
-        add(railroad);
+
+        railroad.setBounds(0, 100, (int) size.getWidth(), 120);
+        road.setBounds(0, (int) (size.getHeight() / 2) - 200, (int) size.getWidth(), (int) (size.getHeight() - 700));
 
         thread = new Thread(this);
         thread.start();
-
-        railroad.setBounds(0, 100, 200, 200);
 
         setVisible(true);
         gameLoop();
     }
 
+
     public void gameLoop() throws IOException {
-        while (!gameOver)
-        {
+        while (!gameOver) {
             long startTime = System.nanoTime();
             userKeyInput();
             player.run();
             checkCollision();
-//            checkPlayerPosition();
+            checkPlayerPosition();
             resetCombo();
             long totalTime = System.nanoTime() - startTime;
 
@@ -79,7 +82,7 @@ public class MyFrame extends JFrame implements Runnable { //make this in charge 
         }
     }
 
-    public void refresh(){
+    public void refresh() {
         revalidate();
         repaint();
     }
@@ -104,8 +107,7 @@ public class MyFrame extends JFrame implements Runnable { //make this in charge 
     }
 
     public void trainSummon() throws IOException, InterruptedException {
-        if (s.getTimePassed() % 8 == 0)
-        {
+        if (s.getTimePassed() % 8 == 0) {
             train = new Train(getWidth(), 100);
             add(train);
             repaint();
@@ -119,8 +121,7 @@ public class MyFrame extends JFrame implements Runnable { //make this in charge 
             timesGenerated = rand.nextInt(1, 4);
             int y_axis = rand.nextInt(300, 600);
             int x_axis = rand.nextInt(100, 600);
-            for (int i = 0; i < timesGenerated; i++)
-            {
+            for (int i = 0; i < timesGenerated; i++) {
                 potholes.add(new Pothole(x_axis, y_axis));
                 add(potholes.get(potholes.size() - 1));
             }
@@ -150,7 +151,7 @@ public class MyFrame extends JFrame implements Runnable { //make this in charge 
                 collision = true;
             }
         }
-        if (!collision){ //checks if you blew up a car
+        if (!collision) { //checks if you blew up a car
             potholes.add(new Pothole(bomb.getX(), bomb.getY())); //fix the thing where blowing up a car creates a pothole
             add(potholes.get(potholes.size() - 1));                                                    //this is the cause for the orange square
         }                                                 //bc that was supposed to be the pothole being created
@@ -163,19 +164,19 @@ public class MyFrame extends JFrame implements Runnable { //make this in charge 
         player.increaseScore((int) s.getTimePassed());
     }
 
-    public void resetCombo()
-    {
-        if (s.getTimePassed() - timeLastFilled > 4)
-        {
+    public void resetCombo() {
+        if (s.getTimePassed() - timeLastFilled > 4) {
             player.resetCombo();
         }
     }
 
     public void checkPlayerPosition() {
-        if (player.getX() < 0) player.setLocation(0, player.getY());
-        if (player.getX() > size.getWidth() - 500) player.setLocation((int) size.getWidth() - 500, player.getY());
-        if (player.getY() < 300) player.setLocation(player.getX(), 300);
-        if (player.getY() > size.getHeight() - 400) player.setLocation(player.getX(), (int) size.getHeight() - 400);
+        if (player.getX() < 0) player.setLocation(0, player.getY()); //left
+        if (player.getX() > size.getWidth() - 500)
+            player.setLocation((int) size.getWidth() - 500, player.getY()); //right
+        if (player.getY() < 300) player.setLocation(player.getX(), 300); //top
+        if (player.getY() > size.getHeight() - 400)
+            player.setLocation(player.getX(), (int) size.getHeight() - 400); //bottom
     }
 
     public void loseScreen() {
@@ -196,10 +197,8 @@ public class MyFrame extends JFrame implements Runnable { //make this in charge 
         }
     }
 
-    public void checkTrainPosition()
-    {
-        if (train != null && train.getX() <= -1000)
-        {
+    public void checkTrainPosition() {
+        if (train != null && train.getX() <= -1000) {
             remove(train);
             train = null;
             repaint();
@@ -248,6 +247,8 @@ public class MyFrame extends JFrame implements Runnable { //make this in charge 
 //                addPotholes();
 //                checkCarPositions();
                 checkTrainPosition();
+//                add(road);
+                add(railroad);
             } catch (IOException | InterruptedException e) {
                 throw new RuntimeException(e);
             }
@@ -256,7 +257,7 @@ public class MyFrame extends JFrame implements Runnable { //make this in charge 
 
             if (totalTime < targetTimeThread) {
                 try {
-                    Thread.sleep((targetTimeThread - totalTime) / 1000000);
+                    Thread.sleep((targetTimeThread - totalTime) / 1000000); //theoretically should only be running at 1 fps
                 } catch (InterruptedException e) {
                     for (Car car : cars)
                         car.killSound(false);

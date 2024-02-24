@@ -5,7 +5,7 @@ public class Railroad extends JPanel {
 
     private int width;
 
-    /** Creates a new instance of Road */
+    /** Creates a new instance of railroad */
     public Railroad(int width) {
         this.setLayout(null);
         this.width = width;
@@ -21,5 +21,10 @@ public class Railroad extends JPanel {
         Image newimg = image1.getScaledInstance(width, 80, Image.SCALE_SMOOTH);
         icon1 = new ImageIcon(newimg);
         g.drawImage(icon1.getImage(), 0, 0, this);
+    }
+
+    public void setSize(int width, int height) {
+        super.setSize(width, height);
+        repaint();  // Trigger a repaint to update the displayed image
     }
 }

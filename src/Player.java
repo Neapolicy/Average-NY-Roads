@@ -26,6 +26,7 @@ public class Player extends JLabel implements KeyListener {
         Dimension size = Toolkit.getDefaultToolkit().getScreenSize();
         this.setBounds((int) size.getWidth() / 2, (int) size.getHeight() / 2, icon.getIconWidth(), icon.getIconHeight());
         this.setOpaque(true);
+        this.setBackground(Color.GRAY);
         playerHitbox = new Box(this.getX(), this.getY(), 50, 50);
     }
 

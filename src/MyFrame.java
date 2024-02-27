@@ -31,7 +31,7 @@ public class MyFrame extends JFrame implements Runnable { //make this in charge 
     private int lastBomb;
     private Train train;
     private boolean collision = false;
-    ;
+
 
     public MyFrame() throws IOException {
         setTitle("FWMC RADIO BAU BAU");
@@ -249,6 +249,15 @@ public class MyFrame extends JFrame implements Runnable { //make this in charge 
                 checkTrainPosition();
 //                add(road);
                 add(railroad);
+                Runtime rt = Runtime.getRuntime();
+
+                long total_mem = rt.totalMemory();
+
+                long free_mem = rt.freeMemory();
+
+                long used_mem = total_mem - free_mem;
+
+                System.out.println("Amount of used memory: " + used_mem);
             } catch (IOException | InterruptedException e) {
                 throw new RuntimeException(e);
             }

@@ -247,7 +247,7 @@ public class MyFrame extends JFrame implements Runnable { //make this in charge 
 //                addPotholes();
 //                checkCarPositions();
                 checkTrainPosition();
-//                add(road);
+                add(road);
                 add(railroad);
             } catch (IOException | InterruptedException e) {
                 throw new RuntimeException(e);

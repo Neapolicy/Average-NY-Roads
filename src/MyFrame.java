@@ -18,7 +18,7 @@ public class MyFrame extends JFrame implements Runnable { //make this in charge 
     private ArrayList<Car> cars = new ArrayList<>();
     private ArrayList<Pothole> potholes = new ArrayList<>();
     private int timesGenerated;
-    private Dimension size = Toolkit.getDefaultToolkit().getScreenSize();
+    public static Dimension size = Toolkit.getDefaultToolkit().getScreenSize();
     private Railroad railroad = new Railroad((int) size.getWidth()); // Create an instance of Railroad
     private Road road; // Create an instance of road
     private Thread thread;
@@ -243,11 +243,11 @@ public class MyFrame extends JFrame implements Runnable { //make this in charge 
             //do stuff per frame below
             try {
                 trainSummon();
-//                addCars(); //create cars, train ,and potholes
-//                addPotholes();
-//                checkCarPositions();
-                checkTrainPosition();
-                add(road);
+                // addCars(); //create cars, train ,and potholes
+                // addPotholes();
+                // checkCarPositions();
+                // checkTrainPosition();
+                // add(road);
                 add(railroad);
             } catch (IOException | InterruptedException e) {
                 throw new RuntimeException(e);

@@ -16,11 +16,8 @@ public class Railroad extends JPanel {
         super.paintComponent(g);
 
         // Paint your images
-        ImageIcon icon1 = new ImageIcon("ImageFiles/Images/railroad.png");
-        Image image1 = icon1.getImage();
-        Image newimg = image1.getScaledInstance(width, 80, Image.SCALE_SMOOTH);
-        icon1 = new ImageIcon(newimg);
-        g.drawImage(icon1.getImage(), 0, 0, this);
+        g.drawRect(0, 100, (int) MyFrame.size.getWidth(), 80);
+        g.fillRect(0, 100, (int) MyFrame.size.getWidth(), 80);
     }
 
     public void setSize(int width, int height) {

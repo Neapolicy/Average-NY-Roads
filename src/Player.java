@@ -21,7 +21,7 @@ public class Player extends JLabel implements KeyListener {
     private Box playerHitbox; //https://stackoverflow.com/questions/40252221/java-how-to-use-an-object-from-one-mouselistener-to-another-class cheque it out idk
 
     public Player() throws IOException {
-        setIcon("player");
+        setIcon("player_right");
 
         Dimension size = Toolkit.getDefaultToolkit().getScreenSize();
         this.setBounds((int) size.getWidth() / 2, (int) size.getHeight() / 2, icon.getIconWidth(), icon.getIconHeight());
@@ -76,10 +76,12 @@ public class Player extends JLabel implements KeyListener {
             case 'w' -> {
                 Player.direction = "up";
                 up = true;
+                setIcon("player_up");
             }
             case 'a' -> {
                 left = true;
                 Player.direction = "left";
+                setIcon("player_left");
             }
             case 's' -> {
                 down = true;
@@ -89,6 +91,7 @@ public class Player extends JLabel implements KeyListener {
             case 'd' -> {
                 right = true;
                 Player.direction = "right";
+                setIcon("player_right");
             }
         }
         run();

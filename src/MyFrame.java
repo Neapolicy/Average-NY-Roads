@@ -1,10 +1,7 @@
 import java.awt.*;
-import java.awt.image.BufferedImage;
-import java.io.File;
 import java.util.Random;
 import java.io.IOException;
 import java.util.ArrayList;
-import javax.imageio.ImageIO;
 import javax.swing.*;
 
 public class MyFrame extends JFrame implements Runnable { //make this in charge on handling of placing images
@@ -49,7 +46,9 @@ public class MyFrame extends JFrame implements Runnable { //make this in charge 
 
         add(player);
 
-        railroad.setBounds(0, 100, (int) size.getWidth(), 120);
+        getContentPane().setBackground(new Color(0, 102, 0));
+
+        railroad.setBounds(0, 100, (int) size.getWidth(), 90); //controls how much railroad it reveals
         road.setBounds(0, (int) (size.getHeight() / 2) - 200, (int) size.getWidth(), (int) (size.getHeight() - 700));
 
         thread = new Thread(this);
@@ -108,7 +107,7 @@ public class MyFrame extends JFrame implements Runnable { //make this in charge 
 
     public void trainSummon() throws IOException, InterruptedException {
         if (s.getTimePassed() % 8 == 0) {
-            train = new Train(getWidth(), 100);
+            train = new Train((int) size.getWidth(), 100);
             add(train);
             repaint();
         }

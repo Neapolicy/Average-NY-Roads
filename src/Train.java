@@ -18,7 +18,7 @@ public class Train extends JLabel implements Runnable{
         offScreen = -1000;
 
         this.setBounds(x, y, icon.getIconWidth(), icon.getIconHeight());
-        this.setOpaque(true);
+        this.setOpaque(false);
         playSound();
         thread = new Thread(this);
         thread.start();

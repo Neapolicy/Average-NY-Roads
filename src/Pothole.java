@@ -7,6 +7,7 @@ import java.io.IOException;
 public class Pothole extends JLabel { //shouldn't be that hard hopefully??
     private Box potholeHitbox;
     private ImageIcon icon;
+
     public Pothole(int x, int y) throws IOException {
         icon = new ImageIcon(ImageIO.read(new File("ImageFiles/Images/pothole.png")));
         Image image = icon.getImage();
@@ -17,13 +18,12 @@ public class Pothole extends JLabel { //shouldn't be that hard hopefully??
     }
 
     public void setLocation(int x, int y) {
-            this.setOpaque(true);
-            this.setBounds(x, y , icon.getIconWidth(), icon.getIconHeight());
-            potholeHitbox = new Box(this.getX(), this.getY(), 50, 50);
+        this.setOpaque(false);
+        this.setBounds(x, y, icon.getIconWidth(), icon.getIconHeight());
+        potholeHitbox = new Box(this.getX(), this.getY(), 50, 50);
     }
 
-    public Box getPotholeHitbox()
-    {
+    public Box getPotholeHitbox() {
         return potholeHitbox;
     }
 }

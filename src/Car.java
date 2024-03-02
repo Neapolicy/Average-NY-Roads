@@ -20,7 +20,7 @@ public class Car extends JLabel implements Runnable{
         offScreen = -200;
 
         this.setBounds(x, y, icon.getIconWidth(), icon.getIconHeight());
-        this.setOpaque(true);
+        this.setOpaque(false);
         carHitbox = (new Box(this.getX(), this.getY(), this.getWidth(), this.getHeight()));
         playSound();
         thread = new Thread(this);

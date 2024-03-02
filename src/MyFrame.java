@@ -145,15 +145,15 @@ public class MyFrame extends JFrame implements Runnable { //make this in charge 
             if (bomb.getBombHitbox().intersects(cars.get(i).getCarHitbox())) {
                 remove(cars.get(i));
                 cars.remove(cars.get(i));
-                Bomb.bombCount++;
                 sound.play("man_V_machine", false);
-                collision = true;
+                collision = true; //bombed a car, so a pothole won't spawn
             }
         }
-        if (!collision) { //checks if you blew up a car
+        if (!collision) { //checks if you blew up a car, if you didn't, it will create a pothole
             potholes.add(new Pothole(bomb.getX(), bomb.getY())); //fix the thing where blowing up a car creates a pothole
-            add(potholes.get(potholes.size() - 1));                                                    //this is the cause for the orange square
-        }                                                 //bc that was supposed to be the pothole being created
+            add(potholes.get(potholes.size() - 1));
+        }
+        collision = false;
         remove(bomb);
     }
 
@@ -208,17 +208,14 @@ public class MyFrame extends JFrame implements Runnable { //make this in charge 
         switch (player.getKeyCode()) //will be necessary once i do the pothole fixing
         {
             case 'e' -> {
-                if (Bomb.bombCount > 0) {
                     if ((s.getTimePassed() - lastBomb) >= .1) { //.1 sec cd, prevents double bombing by accident
                         lastBomb = (int) s.getTimePassed();
                         bomb = new Bomb();
                         bomb.setLocation(player.getX(), player.getY(), player.getDirection());
                         add(bomb);
                         bombCollision();
-                        Bomb.bombCount--;
                         bomb = null;
                     }
-                }
             }
             case ' ' -> {
                 for (int i = 0; i < potholes.size(); i++)
@@ -242,10 +239,10 @@ public class MyFrame extends JFrame implements Runnable { //make this in charge 
             //do stuff per frame below
             try {
                 trainSummon();
-                // addCars(); //create cars, train ,and potholes
-                // addPotholes();
-                // checkCarPositions();
-                // checkTrainPosition();
+                addCars(); //create cars, train ,and potholes
+                addPotholes();
+                checkCarPositions();
+                checkTrainPosition();
                 add(road);
                 add(railroad);
             } catch (IOException | InterruptedException e) {

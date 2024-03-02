@@ -6,7 +6,6 @@ import java.io.IOException;
 
 public class Bomb extends JLabel implements Runnable {
     private Box bombHitbox;
-    public static int bombCount = 3;
     private Sound sound = new Sound();
 
     public Bomb() throws IOException {
@@ -28,7 +27,7 @@ public class Bomb extends JLabel implements Runnable {
             case "right" -> this.setBounds(x + distanceFromPlayer, y, 80, 80);
         }
         this.setBackground(Color.BLACK);
-        this.setOpaque(true);
+        this.setOpaque(false);
         bombHitbox = (new Box(this.getX(), this.getY(), this.getWidth(), this.getHeight()));
     }
 

@@ -30,7 +30,7 @@ public class MyFrame extends JFrame implements Runnable { //make this in charge 
     private boolean collision = false;
 
 
-    public MyFrame() throws IOException {
+    public MyFrame() throws IOException { //render the railroad and road first
         setTitle("FWMC RADIO BAU BAU");
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setSize(500, 500);
@@ -45,6 +45,8 @@ public class MyFrame extends JFrame implements Runnable { //make this in charge 
         setExtendedState(JFrame.MAXIMIZED_BOTH);
 
         add(player);
+        add(road);
+        add(railroad);
 
         getContentPane().setBackground(new Color(0, 102, 0));
 
@@ -88,7 +90,7 @@ public class MyFrame extends JFrame implements Runnable { //make this in charge 
 
     public void addCars() throws IOException, InterruptedException //creates new cars
     {
-        if (s.getTimePassed() % (countDowns[1] - (s.getTimePassed() / 15)) == 0) //5 seconds to add a car is purely for testing purposes, also rewrite this without using sleep
+        if (s.getTimePassed() % (countDowns[1] - (s.getTimePassed() / 15)) == 0 && s.getTimePassed() != 0) //5 seconds to add a car is purely for testing purposes, also rewrite this without using sleep
         {
             int lastSpawnedYCoord = 0;
             if (countDowns[1] < 6) countDowns[1] = 6; //spawn timer min
@@ -96,7 +98,7 @@ public class MyFrame extends JFrame implements Runnable { //make this in charge 
             for (int i = 0; i < timesGenerated; i++) {
                 int y_axis = rand.nextInt(car_locations.length);
                 while (y_axis == lastSpawnedYCoord) y_axis = rand.nextInt(car_locations.length);
-                cars.add(new Car(getWidth(), car_locations[y_axis]));
+                cars.add(new Car((int) size.getWidth() + 500, car_locations[y_axis]));
                 lastSpawnedYCoord = car_locations[y_axis];
                 add(cars.get(cars.size() - 1));
                 Thread.sleep(300);
@@ -106,7 +108,7 @@ public class MyFrame extends JFrame implements Runnable { //make this in charge 
     }
 
     public void trainSummon() throws IOException, InterruptedException {
-        if (s.getTimePassed() % 8 == 0) {
+        if (s.getTimePassed() % 8 == 0 && s.getTimePassed() != 0) {
             train = new Train((int) size.getWidth(), 100);
             add(train);
             repaint();

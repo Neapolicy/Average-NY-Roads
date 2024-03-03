@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import javax.swing.*;
 
 public class MyFrame extends JFrame implements Runnable { //make this in charge on handling of placing images
+    public static final String ANSI_YELLOW = "\u001B[33m";
     public static int targetFPS = 60;
     public static int targetTime = 1000000000 / targetFPS;
     public static int targetTimeThread = 1000000000;
@@ -197,7 +198,7 @@ public class MyFrame extends JFrame implements Runnable { //make this in charge 
     }
 
     public void loseScreen() {
-        System.out.println("Game Over!\nHeres the post-game stats!");
+        System.out.println(ANSI_YELLOW + "Game Over!\nHeres the post-game stats!");
         System.out.println("You survived for: " + s.getTimePassed() + " seconds");
         System.out.println("Your highest combo was: " + player.getHighestCombo());
         System.out.println("Your score was: " + player.getScore());

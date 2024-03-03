@@ -5,6 +5,7 @@ public class Scoreboard extends JLabel {
     public Scoreboard(String text){
         Font font = new Font("Arial", Font.PLAIN, 30);
         this.setFont(font);
+        this.setForeground(Color.BLUE); //font color
         this.setText(text);
     }
 

@@ -33,15 +33,21 @@ public class MyFrame extends JFrame implements Runnable { //make this in charge 
     private int lastBomb;
     private Train train;
     private boolean collision = false;
-
+    private boolean start = true;
 
     public MyFrame() throws IOException { //render the railroad and road first
         setTitle("FWMC RADIO BAU BAU");
         setDefaultCloseOperation(EXIT_ON_CLOSE);
-        setSize(500, 500);
+        setSize(900, 700);
         setLayout(null);
         setLocationRelativeTo(null);
 
+        setVisible(true);
+
+        if (!start) gameStart();
+    }
+
+    public void gameStart() throws IOException {
         player = new Player();
         road = new Road();
 
@@ -71,7 +77,6 @@ public class MyFrame extends JFrame implements Runnable { //make this in charge 
         thread = new Thread(this);
         thread.start();
 
-        setVisible(true);
         gameLoop();
     }
 
@@ -227,14 +232,14 @@ public class MyFrame extends JFrame implements Runnable { //make this in charge 
         switch (player.getKeyCode()) //will be necessary once i do the pothole fixing
         {
             case 'e' -> {
-                    if ((s.getTimePassed() - lastBomb) >= .1) { //.1 sec cd, prevents double bombing by accident
-                        lastBomb = s.getTimePassed();
-                        bomb = new Bomb();
-                        bomb.setLocation(player.getX(), player.getY(), player.getDirection());
-                        add(bomb);
-                        bombCollision();
-                        bomb = null;
-                    }
+                if ((s.getTimePassed() - lastBomb) >= .1) { //.1 sec cd, prevents double bombing by accident
+                    lastBomb = s.getTimePassed();
+                    bomb = new Bomb();
+                    bomb.setLocation(player.getX(), player.getY(), player.getDirection());
+                    add(bomb);
+                    bombCollision();
+                    bomb = null;
+                }
             }
             case ' ' -> {
                 for (int i = 0; i < potholes.size(); i++)

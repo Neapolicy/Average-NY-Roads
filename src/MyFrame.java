@@ -17,6 +17,10 @@ public class MyFrame extends JFrame implements Runnable { //make this in charge 
     private int timesGenerated;
     public static Dimension size = Toolkit.getDefaultToolkit().getScreenSize();
     private Railroad railroad = new Railroad((int) size.getWidth()); // Create an instance of Railroad
+    private Scoreboard scoreInfo = new Scoreboard("Current Score: 0");
+    private Scoreboard timeInfo = new Scoreboard("Current Time: 0");
+    private Scoreboard comboInfo = new Scoreboard("Current Combo: 0");
+    private Scoreboard potholesInfo = new Scoreboard("Potholes Filled: 0");
     private Road road; // Create an instance of road
     private Thread thread;
     private Stopwatch s = new Stopwatch();
@@ -38,7 +42,7 @@ public class MyFrame extends JFrame implements Runnable { //make this in charge 
         setLocationRelativeTo(null);
 
         player = new Player();
-        road = new Road((int) size.getWidth());
+        road = new Road();
 
         addKeyListener(player);
 
@@ -48,10 +52,20 @@ public class MyFrame extends JFrame implements Runnable { //make this in charge 
         add(road);
         add(railroad);
 
+        add(scoreInfo); //text
+        add(comboInfo);
+        add(timeInfo);
+        add(potholesInfo);
+
         getContentPane().setBackground(new Color(0, 102, 0));
 
         railroad.setBounds(0, 100, (int) size.getWidth(), 90); //controls how much railroad it reveals
         road.setBounds(0, (int) (size.getHeight() / 2) - 200, (int) size.getWidth(), (int) (size.getHeight() - 700));
+
+        scoreInfo.setBounds(100, (int) (size.getHeight() / 2) + 150, 500, 200); //text
+        comboInfo.setBounds(100, (int) (size.getHeight() / 2) + 200, 500, 200);
+        timeInfo.setBounds(100, (int) (size.getHeight() / 2) + 250, 500, 200);
+        potholesInfo.setBounds(100, (int) (size.getHeight() / 2) + 300, 500, 200);
 
         thread = new Thread(this);
         thread.start();
@@ -162,12 +176,14 @@ public class MyFrame extends JFrame implements Runnable { //make this in charge 
     public void comboManager()  //always increases combo
     {
         player.increaseCombo();
-        player.increaseScore((int) s.getTimePassed());
+        comboInfo.displayCombo(player.getCombo());
+        player.increaseScore(s.getTimePassed());
     }
 
     public void resetCombo() {
         if (s.getTimePassed() - timeLastFilled > 4) {
             player.resetCombo();
+            comboInfo.displayCombo(0);
         }
     }
 
@@ -181,7 +197,7 @@ public class MyFrame extends JFrame implements Runnable { //make this in charge 
     }
 
     public void loseScreen() {
-        System.out.println("Game Over!");
+        System.out.println("Game Over!\nHeres the post-game stats!");
         System.out.println("You survived for: " + s.getTimePassed() + " seconds");
         System.out.println("Your highest combo was: " + player.getHighestCombo());
         System.out.println("Your score was: " + player.getScore());
@@ -211,7 +227,7 @@ public class MyFrame extends JFrame implements Runnable { //make this in charge 
         {
             case 'e' -> {
                     if ((s.getTimePassed() - lastBomb) >= .1) { //.1 sec cd, prevents double bombing by accident
-                        lastBomb = (int) s.getTimePassed();
+                        lastBomb = s.getTimePassed();
                         bomb = new Bomb();
                         bomb.setLocation(player.getX(), player.getY(), player.getDirection());
                         add(bomb);
@@ -225,8 +241,10 @@ public class MyFrame extends JFrame implements Runnable { //make this in charge 
                         remove(potholes.get(i));
                         potholes.remove(potholes.get(i));
                         potholesFilled++;
-                        timeLastFilled = (int) s.getTimePassed();
+                        timeLastFilled = s.getTimePassed();
                         comboManager();
+                        scoreInfo.updateScore(player.getScore());
+                        potholesInfo.updateScore(potholesFilled);
                     }
             }
         }
@@ -240,11 +258,13 @@ public class MyFrame extends JFrame implements Runnable { //make this in charge 
             long startTime = System.nanoTime();
             //do stuff per frame below
             try {
+                timeInfo.displayTime(s.getTimePassed());
                 trainSummon();
                 addCars(); //create cars, train ,and potholes
                 addPotholes();
                 checkCarPositions();
                 checkTrainPosition();
+
                 add(road);
                 add(railroad);
             } catch (IOException | InterruptedException e) {

@@ -7,7 +7,7 @@ public class Stopwatch implements Runnable { //just tracks the time ig
         t.start();
     }
 
-    public long getTimePassed() {return gameTime;}
+    public int getTimePassed() {return gameTime;}
 
     @Override
     public void run() {

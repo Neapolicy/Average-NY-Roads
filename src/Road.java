@@ -2,7 +2,7 @@ import javax.swing.*;
 import java.awt.*;
 
 public class Road extends JPanel{
-    public Road(int width) {
+    public Road() {
         this.setLayout(null);
     }
     @Override

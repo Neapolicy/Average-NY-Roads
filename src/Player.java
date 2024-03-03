@@ -70,7 +70,7 @@ public class Player extends JLabel implements KeyListener {
     public int getHighestCombo() {
         return highestCombo;
     }
-
+    public int getCombo(){return combo;}
     private void movePlayer(char keyCode) throws IOException {
         switch (keyCode) {
             case 'w' -> {

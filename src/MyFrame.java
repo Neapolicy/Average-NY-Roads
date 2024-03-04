@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import javax.swing.*;
 
 public class MyFrame extends JFrame implements Runnable { //make this in charge on handling of placing images
-    public static final String ANSI_YELLOW = "\u001B[33m";
     public static int targetFPS = 60;
     public static int targetTime = 1000000000 / targetFPS;
     public static int targetTimeThread = 1000000000;
@@ -28,7 +27,6 @@ public class MyFrame extends JFrame implements Runnable { //make this in charge 
     private Sound sound = new Sound();
     private int[] car_locations = {300, 400, 500, 600};
     private int[] countDowns = {7, 10};
-    private int potholesFilled;
     private int timeLastFilled;
     private int lastBomb;
     private Train train;
@@ -39,21 +37,37 @@ public class MyFrame extends JFrame implements Runnable { //make this in charge 
         setTitle("FWMC RADIO BAU BAU");
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setSize(900, 700);
+        setExtendedState(JFrame.MAXIMIZED_BOTH);
         setLayout(null);
         setLocationRelativeTo(null);
 
+        startScreen();
         setVisible(true);
+    }
+    public void startScreen(){
+        JButton button = new JButton("Start Game");
+        Scoreboard startText = new Scoreboard("Press E to deploy a bomb");
 
-        if (!start) gameStart();
+        add(startText);
+        add(button);
+
+        button.setBounds((int) (size.getWidth() / 2) , (int) (size.getHeight() / 2), 100, 50);
+        startText.setBounds((int) (size.getWidth() / 2), (int) (size.getHeight() / 2) - 100, 1000, 100);
+        button.addActionListener(e -> {
+            try {
+                gameStart();
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
+            }
+        });
     }
 
     public void gameStart() throws IOException {
+        getContentPane().removeAll();
         player = new Player();
         road = new Road();
 
         addKeyListener(player);
-
-        setExtendedState(JFrame.MAXIMIZED_BOTH);
 
         add(player);
         add(road);
@@ -79,8 +93,16 @@ public class MyFrame extends JFrame implements Runnable { //make this in charge 
 
         gameLoop();
     }
-
-
+    public void loseScreen() {
+        getContentPane().removeAll();
+        gameOver = true;
+//        System.out.println(ANSI_YELLOW + "Game Over!\nHeres the post-game stats!");
+//        System.out.println("You survived for: " + s.getTimePassed() + " seconds");
+//        System.out.println("Your highest combo was: " + player.getHighestCombo());
+//        System.out.println("Your score was: " + player.getScore());
+//        System.out.println("You filled a total of " + potholesFilled + " potholes");
+        getContentPane().removeAll();
+    }
     public void gameLoop() throws IOException {
         while (!gameOver) {
             long startTime = System.nanoTime();
@@ -201,16 +223,6 @@ public class MyFrame extends JFrame implements Runnable { //make this in charge 
         if (player.getY() > size.getHeight() - 400)
             player.setLocation(player.getX(), (int) size.getHeight() - 400); //bottom
     }
-
-    public void loseScreen() {
-        System.out.println(ANSI_YELLOW + "Game Over!\nHeres the post-game stats!");
-        System.out.println("You survived for: " + s.getTimePassed() + " seconds");
-        System.out.println("Your highest combo was: " + player.getHighestCombo());
-        System.out.println("Your score was: " + player.getScore());
-        System.out.println("You filled a total of " + potholesFilled + " potholes");
-        System.exit(0);
-    }
-
     public void checkCarPositions() {
         for (int i = 0; i < cars.size(); i++) {
             if (cars.get(i).getX() <= -200) {
@@ -246,11 +258,9 @@ public class MyFrame extends JFrame implements Runnable { //make this in charge 
                     if (player.getPlayerHitbox().intersects(potholes.get(i).getPotholeHitbox())) {
                         remove(potholes.get(i));
                         potholes.remove(potholes.get(i));
-                        potholesFilled++;
                         timeLastFilled = s.getTimePassed();
                         comboManager();
                         scoreInfo.updateScore(player.getScore());
-                        potholesInfo.updateScore(potholesFilled);
                     }
             }
         }
@@ -260,7 +270,7 @@ public class MyFrame extends JFrame implements Runnable { //make this in charge 
 
     @Override
     public void run() {
-        while (!Thread.currentThread().isInterrupted()) {
+        while (!gameOver) {
             long startTime = System.nanoTime();
             //do stuff per frame below
             try {

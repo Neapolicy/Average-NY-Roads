@@ -3,7 +3,7 @@ import java.awt.*;
 
 public class Scoreboard extends JLabel {
     public Scoreboard(String text){
-        Font font = new Font("Arial", Font.PLAIN, 30);
+        Font font = new Font("Arial", Font.PLAIN, 30); // default
         this.setFont(font);
         this.setForeground(Color.BLUE); //font color
         this.setText(text);
@@ -21,5 +21,10 @@ public class Scoreboard extends JLabel {
     }
     public void potholesFilled(int filled){
         this.setText("Potholes Filled: " + filled);
+    }
+    public void changeFont(String fontType, int size, Color color){ //keeping this just in case
+        Font font = new Font(fontType, Font.PLAIN, size); // default
+        this.setFont(font);
+        this.setForeground(color); //font color
     }
 }

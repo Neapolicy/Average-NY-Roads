@@ -16,14 +16,13 @@ public class MyFrame extends JFrame implements Runnable { //make this in charge 
     private ArrayList<Pothole> potholes = new ArrayList<>();
     private int timesGenerated;
     public static Dimension size = Toolkit.getDefaultToolkit().getScreenSize();
-    private Railroad railroad = new Railroad((int) size.getWidth()); // Create an instance of Railroad
-    private Scoreboard scoreInfo = new Scoreboard("Current Score: 0");
-    private Scoreboard timeInfo = new Scoreboard("Current Time: 0");
-    private Scoreboard comboInfo = new Scoreboard("Current Combo: 0");
-    private Scoreboard potholesInfo = new Scoreboard("Potholes Filled: 0");
+    private Railroad railroad; // Create an instance of Railroad
+    private Scoreboard scoreInfo;
+    private Scoreboard timeInfo;
+    private Scoreboard comboInfo;
     private Road road; // Create an instance of road
     private Thread thread;
-    private Stopwatch s = new Stopwatch();
+    private Stopwatch s;
     private Sound sound = new Sound();
     private int[] car_locations = {300, 400, 500, 600};
     private int[] countDowns = {7, 10};
@@ -31,9 +30,8 @@ public class MyFrame extends JFrame implements Runnable { //make this in charge 
     private int lastBomb;
     private Train train;
     private boolean collision = false;
-    private boolean start = true;
 
-    public MyFrame() throws IOException { //render the railroad and road first
+    public MyFrame() { //render the railroad and road first
         setTitle("FWMC RADIO BAU BAU");
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setSize(900, 700);
@@ -41,10 +39,10 @@ public class MyFrame extends JFrame implements Runnable { //make this in charge 
         setLayout(null);
         setLocationRelativeTo(null);
 
-        startScreen();
         setVisible(true);
+        startScreen();
     }
-    public void startScreen(){
+    public void startScreen() {
         JButton button = new JButton("Start Game");
         Scoreboard startText = new Scoreboard("Press E to deploy a bomb");
 
@@ -64,8 +62,15 @@ public class MyFrame extends JFrame implements Runnable { //make this in charge 
 
     public void gameStart() throws IOException {
         getContentPane().removeAll();
+        refresh();
+
         player = new Player();
         road = new Road();
+        s = new Stopwatch();
+        railroad = new Railroad((int) size.getWidth());
+        scoreInfo = new Scoreboard("Current Score: 0");
+        comboInfo = new Scoreboard("Current Combo: 0");
+        timeInfo  = new Scoreboard("Current Time: 0");
 
         addKeyListener(player);
 
@@ -76,7 +81,6 @@ public class MyFrame extends JFrame implements Runnable { //make this in charge 
         add(scoreInfo); //text
         add(comboInfo);
         add(timeInfo);
-        add(potholesInfo);
 
         getContentPane().setBackground(new Color(0, 102, 0));
 
@@ -86,7 +90,6 @@ public class MyFrame extends JFrame implements Runnable { //make this in charge 
         scoreInfo.setBounds(100, (int) (size.getHeight() / 2) + 150, 500, 200); //text
         comboInfo.setBounds(100, (int) (size.getHeight() / 2) + 200, 500, 200);
         timeInfo.setBounds(100, (int) (size.getHeight() / 2) + 250, 500, 200);
-        potholesInfo.setBounds(100, (int) (size.getHeight() / 2) + 300, 500, 200);
 
         thread = new Thread(this);
         thread.start();
@@ -274,9 +277,9 @@ public class MyFrame extends JFrame implements Runnable { //make this in charge 
             long startTime = System.nanoTime();
             //do stuff per frame below
             try {
-                timeInfo.displayTime(s.getTimePassed());
-                trainSummon();
-                addCars(); //create cars, train ,and potholes
+                timeInfo.displayTime(s.getTimePassed()); //updates time counter
+//                trainSummon();
+//                addCars(); //create cars, train ,and potholes
                 addPotholes();
                 checkCarPositions();
                 checkTrainPosition();

@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import javax.swing.*;
 
 public class MyFrame extends JFrame implements Runnable { //make this in charge on handling of placing images
+    public JFrame frame = new JFrame();
     public static int targetFPS = 60;
     public static int targetTime = 1000000000 / targetFPS;
     public static int targetTimeThread = 1000000000;
@@ -29,39 +30,35 @@ public class MyFrame extends JFrame implements Runnable { //make this in charge 
     private int timeLastFilled;
     private int lastBomb;
     private Train train;
-    private boolean collision = false;
+    private boolean collision = false; //make the frame public lol idk
 
     public MyFrame() { //render the railroad and road first
-        setTitle("FWMC RADIO BAU BAU");
-        setDefaultCloseOperation(EXIT_ON_CLOSE);
-        setSize(900, 700);
-        setExtendedState(JFrame.MAXIMIZED_BOTH);
-        setLayout(null);
-        setLocationRelativeTo(null);
+        frame.setTitle("FWMC RADIO BAU BAU");
+        frame.setDefaultCloseOperation(EXIT_ON_CLOSE);
+        frame.setSize(900, 700);
+        frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
+        frame.setLayout(null);
+        frame.setLocationRelativeTo(null);
 
-        setVisible(true);
+        frame.setVisible(true);
         startScreen();
     }
     public void startScreen() {
         JButton button = new JButton("Start Game");
         Scoreboard startText = new Scoreboard("Press E to deploy a bomb");
 
-        add(startText);
-        add(button);
+        frame.add(startText);
+        frame.add(button);
 
         button.setBounds((int) (size.getWidth() / 2) , (int) (size.getHeight() / 2), 100, 50);
         startText.setBounds((int) (size.getWidth() / 2), (int) (size.getHeight() / 2) - 100, 1000, 100);
         button.addActionListener(e -> {
-            try {
-                gameStart();
-            } catch (IOException ex) {
-                throw new RuntimeException(ex);
-            }
+            Gamestate.state = Gamestate.gameMiddle;
         });
     }
 
     public void gameStart() throws IOException {
-        getContentPane().removeAll();
+        frame.getContentPane().removeAll();
         refresh();
 
         player = new Player();
@@ -72,17 +69,17 @@ public class MyFrame extends JFrame implements Runnable { //make this in charge 
         comboInfo = new Scoreboard("Current Combo: 0");
         timeInfo  = new Scoreboard("Current Time: 0");
 
-        addKeyListener(player);
+        frame.addKeyListener(player);
 
-        add(player);
-        add(road);
-        add(railroad);
+        frame.add(player);
+        frame.add(road);
+        frame.add(railroad);
 
-        add(scoreInfo); //text
-        add(comboInfo);
-        add(timeInfo);
+        frame.add(scoreInfo); //text
+        frame.add(comboInfo);
+        frame.add(timeInfo);
 
-        getContentPane().setBackground(new Color(0, 102, 0));
+        frame.getContentPane().setBackground(new Color(0, 102, 0));
 
         railroad.setBounds(0, 100, (int) size.getWidth(), 90); //controls how much railroad it reveals
         road.setBounds(0, (int) (size.getHeight() / 2) - 200, (int) size.getWidth(), (int) (size.getHeight() - 700));
@@ -97,14 +94,13 @@ public class MyFrame extends JFrame implements Runnable { //make this in charge 
         gameLoop();
     }
     public void loseScreen() {
-        getContentPane().removeAll();
+        frame.getContentPane().removeAll();
         gameOver = true;
 //        System.out.println(ANSI_YELLOW + "Game Over!\nHeres the post-game stats!");
 //        System.out.println("You survived for: " + s.getTimePassed() + " seconds");
 //        System.out.println("Your highest combo was: " + player.getHighestCombo());
 //        System.out.println("Your score was: " + player.getScore());
 //        System.out.println("You filled a total of " + potholesFilled + " potholes");
-        getContentPane().removeAll();
     }
     public void gameLoop() throws IOException {
         while (!gameOver) {
@@ -129,8 +125,8 @@ public class MyFrame extends JFrame implements Runnable { //make this in charge 
     }
 
     public void refresh() {
-        revalidate();
-        repaint();
+        frame.revalidate();
+        frame.repaint();
     }
 
     public void addCars() throws IOException, InterruptedException //creates new cars
@@ -145,7 +141,7 @@ public class MyFrame extends JFrame implements Runnable { //make this in charge 
                 while (y_axis == lastSpawnedYCoord) y_axis = rand.nextInt(car_locations.length);
                 cars.add(new Car((int) size.getWidth() + 500, car_locations[y_axis]));
                 lastSpawnedYCoord = car_locations[y_axis];
-                add(cars.get(cars.size() - 1));
+                frame.add(cars.get(cars.size() - 1));
                 Thread.sleep(300);
             }
             Car.speed += 2.5;
@@ -155,8 +151,8 @@ public class MyFrame extends JFrame implements Runnable { //make this in charge 
     public void trainSummon() throws IOException, InterruptedException {
         if (s.getTimePassed() % 8 == 0 && s.getTimePassed() != 0) {
             train = new Train((int) size.getWidth(), 100);
-            add(train);
-            repaint();
+            frame.add(train);
+            frame.repaint();
         }
     }
 
@@ -169,7 +165,7 @@ public class MyFrame extends JFrame implements Runnable { //make this in charge 
             int x_axis = rand.nextInt(100, 600);
             for (int i = 0; i < timesGenerated; i++) {
                 potholes.add(new Pothole(x_axis, y_axis));
-                add(potholes.get(potholes.size() - 1));
+                frame.add(potholes.get(potholes.size() - 1));
             }
             refresh();
         }
@@ -190,7 +186,7 @@ public class MyFrame extends JFrame implements Runnable { //make this in charge 
     public void bombCollision() throws IOException {
         for (int i = 0; i < cars.size(); i++) { //first check if bomb hit car, if true, then remove car
             if (bomb.getBombHitbox().intersects(cars.get(i).getCarHitbox())) {
-                remove(cars.get(i));
+                frame.remove(cars.get(i));
                 cars.remove(cars.get(i));
                 sound.play("man_V_machine", false);
                 collision = true; //bombed a car, so a pothole won't spawn
@@ -198,10 +194,10 @@ public class MyFrame extends JFrame implements Runnable { //make this in charge 
         }
         if (!collision) { //checks if you blew up a car, if you didn't, it will create a pothole
             potholes.add(new Pothole(bomb.getX(), bomb.getY())); //fix the thing where blowing up a car creates a pothole
-            add(potholes.get(potholes.size() - 1));
+            frame.add(potholes.get(potholes.size() - 1));
         }
         collision = false;
-        remove(bomb);
+        frame.remove(bomb);
     }
 
     public void comboManager()  //always increases combo
@@ -229,7 +225,7 @@ public class MyFrame extends JFrame implements Runnable { //make this in charge 
     public void checkCarPositions() {
         for (int i = 0; i < cars.size(); i++) {
             if (cars.get(i).getX() <= -200) {
-                remove(cars.get(i));
+                frame.remove(cars.get(i));
                 cars.remove(cars.get(i));
             }
         }
@@ -237,9 +233,9 @@ public class MyFrame extends JFrame implements Runnable { //make this in charge 
 
     public void checkTrainPosition() {
         if (train != null && train.getX() <= -1000) {
-            remove(train);
+            frame.remove(train);
             train = null;
-            repaint();
+            frame.repaint();
         }
     }
 
@@ -251,7 +247,7 @@ public class MyFrame extends JFrame implements Runnable { //make this in charge 
                     lastBomb = s.getTimePassed();
                     bomb = new Bomb();
                     bomb.setLocation(player.getX(), player.getY(), player.getDirection());
-                    add(bomb);
+                    frame.add(bomb);
                     bombCollision();
                     bomb = null;
                 }

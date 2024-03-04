@@ -28,6 +28,7 @@ public class Train extends JLabel implements Runnable{
     {
         this.setLocation((int) (this.getX() - step), this.getY());
         if (step == 0) killSound(false);
+        if (this.getX() < 0) this.remove(this);
     }
 
     public void playSound() {

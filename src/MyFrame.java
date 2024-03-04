@@ -32,7 +32,7 @@ public class MyFrame extends JFrame implements Runnable { //make this in charge 
     private Train train;
     private boolean collision = false; //make the frame public lol idk
 
-    public MyFrame() { //render the railroad and road first
+    public MyFrame() throws IOException { //render the railroad and road first
         frame.setTitle("FWMC RADIO BAU BAU");
         frame.setDefaultCloseOperation(EXIT_ON_CLOSE);
         frame.setSize(900, 700);
@@ -41,7 +41,7 @@ public class MyFrame extends JFrame implements Runnable { //make this in charge 
         frame.setLocationRelativeTo(null);
 
         frame.setVisible(true);
-        startScreen();
+        gameStart();
     }
     public void startScreen() {
         JButton button = new JButton("Start Game");
@@ -81,9 +81,6 @@ public class MyFrame extends JFrame implements Runnable { //make this in charge 
 
         frame.getContentPane().setBackground(new Color(0, 102, 0));
 
-        railroad.setBounds(0, 100, (int) size.getWidth(), 90); //controls how much railroad it reveals
-        road.setBounds(0, (int) (size.getHeight() / 2) - 200, (int) size.getWidth(), (int) (size.getHeight() - 700));
-
         scoreInfo.setBounds(100, (int) (size.getHeight() / 2) + 150, 500, 200); //text
         comboInfo.setBounds(100, (int) (size.getHeight() / 2) + 200, 500, 200);
         timeInfo.setBounds(100, (int) (size.getHeight() / 2) + 250, 500, 200);
@@ -96,11 +93,6 @@ public class MyFrame extends JFrame implements Runnable { //make this in charge 
     public void loseScreen() {
         frame.getContentPane().removeAll();
         gameOver = true;
-//        System.out.println(ANSI_YELLOW + "Game Over!\nHeres the post-game stats!");
-//        System.out.println("You survived for: " + s.getTimePassed() + " seconds");
-//        System.out.println("Your highest combo was: " + player.getHighestCombo());
-//        System.out.println("Your score was: " + player.getScore());
-//        System.out.println("You filled a total of " + potholesFilled + " potholes");
     }
     public void gameLoop() throws IOException {
         while (!gameOver) {
@@ -108,7 +100,7 @@ public class MyFrame extends JFrame implements Runnable { //make this in charge 
             userKeyInput();
             player.run();
             checkCollision();
-            checkPlayerPosition();
+
             resetCombo();
             long totalTime = System.nanoTime() - startTime;
 
@@ -214,36 +206,11 @@ public class MyFrame extends JFrame implements Runnable { //make this in charge 
         }
     }
 
-    public void checkPlayerPosition() {
-        if (player.getX() < 0) player.setLocation(0, player.getY()); //left
-        if (player.getX() > size.getWidth() - 500)
-            player.setLocation((int) size.getWidth() - 500, player.getY()); //right
-        if (player.getY() < 300) player.setLocation(player.getX(), 300); //top
-        if (player.getY() > size.getHeight() - 400)
-            player.setLocation(player.getX(), (int) size.getHeight() - 400); //bottom
-    }
-    public void checkCarPositions() {
-        for (int i = 0; i < cars.size(); i++) {
-            if (cars.get(i).getX() <= -200) {
-                frame.remove(cars.get(i));
-                cars.remove(cars.get(i));
-            }
-        }
-    }
-
-    public void checkTrainPosition() {
-        if (train != null && train.getX() <= -1000) {
-            frame.remove(train);
-            train = null;
-            frame.repaint();
-        }
-    }
-
     public void userKeyInput() throws IOException { //current bug: bombs don't display after cone placement
         switch (player.getKeyCode()) //will be necessary once i do the pothole fixing
         {
             case 'e' -> {
-                if ((s.getTimePassed() - lastBomb) >= .1) { //.1 sec cd, prevents double bombing by accident
+                if ((s.getTimePassed() - lastBomb) >= .1) { //.1 sec cd, prevents spam
                     lastBomb = s.getTimePassed();
                     bomb = new Bomb();
                     bomb.setLocation(player.getX(), player.getY(), player.getDirection());
@@ -255,7 +222,7 @@ public class MyFrame extends JFrame implements Runnable { //make this in charge 
             case ' ' -> {
                 for (int i = 0; i < potholes.size(); i++)
                     if (player.getPlayerHitbox().intersects(potholes.get(i).getPotholeHitbox())) {
-                        remove(potholes.get(i));
+                        frame.remove(potholes.get(i));
                         potholes.remove(potholes.get(i));
                         timeLastFilled = s.getTimePassed();
                         comboManager();
@@ -274,14 +241,12 @@ public class MyFrame extends JFrame implements Runnable { //make this in charge 
             //do stuff per frame below
             try {
                 timeInfo.displayTime(s.getTimePassed()); //updates time counter
-//                trainSummon();
-//                addCars(); //create cars, train ,and potholes
-                addPotholes();
-                checkCarPositions();
-                checkTrainPosition();
+               trainSummon();
+               addCars(); //create cars, train ,and potholes
+                // addPotholes();
 
-                add(road);
-                add(railroad);
+                frame.add(road);
+                frame.add(railroad);
             } catch (IOException | InterruptedException e) {
                 throw new RuntimeException(e);
             }

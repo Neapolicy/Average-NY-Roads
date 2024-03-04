@@ -4,6 +4,7 @@ import java.awt.*;
 public class Road extends JPanel{
     public Road() {
         this.setLayout(null);
+        this.setBounds(0, (int) (MyFrame.size.getHeight() / 2) - 200, (int) MyFrame.size.getWidth(), (int) (MyFrame.size.getHeight() - 700));
     }
     @Override
     public void paintComponent(Graphics g) { //rahh

@@ -8,7 +8,6 @@ public class MyFrame extends Mainframe implements Runnable { //make this in char
     public static int targetFPS = 60;
     public static int targetTime = 1000000000 / targetFPS;
     public static int targetTimeThread = 1000000000;
-    public static boolean gameOver;
     private final Random rand = new Random();
     private Bomb bomb;
     private Player player;
@@ -57,7 +56,7 @@ public class MyFrame extends Mainframe implements Runnable { //make this in char
     }
 
     public void gameLoop() throws IOException {
-        while (!gameOver) {
+        while (Gamestate.state != Gamestate.gameEnd) {
             long startTime = System.nanoTime();
             userKeyInput();
             player.run();
@@ -120,10 +119,14 @@ public class MyFrame extends Mainframe implements Runnable { //make this in char
         for (Car car : cars) {
             if (player.getPlayerHitbox().intersects(car.getCarHitbox())) {
                 car.killSound(false);
-                gameOver = true;
+                Gamestate.state = Gamestate.gameEnd;
+                Mainframe.frame.getContentPane().removeAll();
             }
             for (Pothole pothole : potholes) {
-                if (car.getCarHitbox().intersects(pothole.getPotholeHitbox())) gameOver = true;
+                if (car.getCarHitbox().intersects(pothole.getPotholeHitbox())){
+                    Gamestate.state = Gamestate.gameEnd;
+                    Mainframe.frame.getContentPane().removeAll();
+                }
             }
         }
     }
@@ -187,7 +190,7 @@ public class MyFrame extends Mainframe implements Runnable { //make this in char
 
     @Override
     public void run() {
-        while (!gameOver) {
+        while (Gamestate.state != Gamestate.gameEnd) {
             long startTime = System.nanoTime();
             //do stuff per frame below
             try {

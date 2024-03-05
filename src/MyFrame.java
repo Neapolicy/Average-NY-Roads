@@ -21,14 +21,12 @@ public class MyFrame extends Mainframe implements Runnable { //make this in char
     private Scoreboard timeInfo;
     private Scoreboard comboInfo;
     private Road road; // Create an instance of road
-    private Thread thread;
     private Stopwatch s;
     private Sound sound = new Sound();
     private int[] car_locations = {300, 400, 500, 600};
     private int[] countDowns = {7, 10};
     private int timeLastFilled;
     private int lastBomb;
-    private Train train;
     private boolean collision = false; //make the frame public lol idk
 
     public MyFrame() throws IOException { //render the railroad and road first
@@ -52,7 +50,7 @@ public class MyFrame extends Mainframe implements Runnable { //make this in char
 
         frame.getContentPane().setBackground(new Color(0, 102, 0));
 
-        thread = new Thread(this);
+        Thread thread = new Thread(this);
         thread.start();
 
         gameLoop();
@@ -100,7 +98,7 @@ public class MyFrame extends Mainframe implements Runnable { //make this in char
 
     public void trainSummon() throws IOException, InterruptedException {
         if (s.getTimePassed() % 8 == 0 && s.getTimePassed() != 0) {
-            train = new Train((int) size.getWidth(), 100);
+            new Train((int) size.getWidth(), 100);
         }
     }
 

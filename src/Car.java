@@ -25,6 +25,7 @@ public class Car extends JLabel implements Runnable{
         playSound();
         thread = new Thread(this);
         thread.start();
+        Mainframe.frame.add(this);
     }
 
     public void moveCar()

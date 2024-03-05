@@ -9,6 +9,7 @@ public class Railroad extends JPanel {
     public Railroad() {
         this.setLayout(null);
         this.setBounds(0, 100, (int) MyFrame.size.getWidth(), 90); //controls how much railroad it reveals
+        Mainframe.frame.add(this);
     }
 
     @Override

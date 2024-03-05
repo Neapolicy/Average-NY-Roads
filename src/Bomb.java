@@ -16,6 +16,7 @@ public class Bomb extends JLabel implements Runnable {
         setIcon(icon);
         Thread t = new Thread(this);
         t.start();
+        Mainframe.frame.add(this);
     }
 
     public void setLocation(int x, int y, String direction) {

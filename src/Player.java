@@ -27,6 +27,7 @@ public class Player extends JLabel implements KeyListener {
         this.setBounds((int) size.getWidth() / 2, (int) size.getHeight() / 2, icon.getIconWidth(), icon.getIconHeight());
         this.setOpaque(false);
         playerHitbox = new Box(this.getX(), this.getY(), 50, 50);
+        Mainframe.frame.add(this);
     }
 
     public void setIcon(String imageName) throws IOException {

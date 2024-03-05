@@ -15,6 +15,8 @@ public class Pothole extends JLabel { //shouldn't be that hard hopefully??
         icon = new ImageIcon(newimg);
         setIcon(icon);
         setLocation(x, y);
+        Mainframe.frame.add(this);
+        Mainframe.refresh();
     }
 
     public void setLocation(int x, int y) {

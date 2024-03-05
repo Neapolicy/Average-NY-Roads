@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import javax.swing.*;
 
 public class MyFrame extends Mainframe implements Runnable { //make this in charge on handling of placing images
-    public JFrame frame;
     public static int targetFPS = 60;
     public static int targetTime = 1000000000 / targetFPS;
     public static int targetTimeThread = 1000000000;
@@ -32,8 +31,7 @@ public class MyFrame extends Mainframe implements Runnable { //make this in char
     private Train train;
     private boolean collision = false; //make the frame public lol idk
 
-    public MyFrame(JFrame frame) throws IOException { //render the railroad and road first
-        this.frame = frame;
+    public MyFrame() throws IOException { //render the railroad and road first
         gameStart();
     }
 
@@ -44,13 +42,9 @@ public class MyFrame extends Mainframe implements Runnable { //make this in char
         railroad = new Railroad();
         scoreInfo = new Scoreboard("Current Score: 0", 100, (int) (size.getHeight() / 2) + 150, 500, 200);
         comboInfo = new Scoreboard("Current Combo: 0", 100, (int) (size.getHeight() / 2) + 200, 500, 200);
-        timeInfo  = new Scoreboard("Current Time: 0", 100, (int) (size.getHeight() / 2) + 250, 500, 200);
+        timeInfo = new Scoreboard("Current Time: 0", 100, (int) (size.getHeight() / 2) + 250, 500, 200);
 
         frame.addKeyListener(player);
-
-        frame.add(player);
-        frame.add(road);
-        frame.add(railroad);
 
         frame.add(scoreInfo); //text
         frame.add(comboInfo);
@@ -86,11 +80,6 @@ public class MyFrame extends Mainframe implements Runnable { //make this in char
         }
     }
 
-    public void refresh() {
-        revalidate();
-        repaint();
-    }
-
     public void addCars() throws IOException, InterruptedException //creates new cars
     {
         if (s.getTimePassed() % (countDowns[1] - (s.getTimePassed() / 15)) == 0 && s.getTimePassed() != 0) //5 seconds to add a car is purely for testing purposes, also rewrite this without using sleep
@@ -103,7 +92,6 @@ public class MyFrame extends Mainframe implements Runnable { //make this in char
                 while (y_axis == lastSpawnedYCoord) y_axis = rand.nextInt(car_locations.length);
                 cars.add(new Car((int) size.getWidth() + 500, car_locations[y_axis]));
                 lastSpawnedYCoord = car_locations[y_axis];
-                frame.add(cars.get(cars.size() - 1));
                 Thread.sleep(300);
             }
             Car.speed += 2.5;
@@ -113,8 +101,6 @@ public class MyFrame extends Mainframe implements Runnable { //make this in char
     public void trainSummon() throws IOException, InterruptedException {
         if (s.getTimePassed() % 8 == 0 && s.getTimePassed() != 0) {
             train = new Train((int) size.getWidth(), 100);
-            frame.add(train);
-            repaint();
         }
     }
 
@@ -127,7 +113,6 @@ public class MyFrame extends Mainframe implements Runnable { //make this in char
             int x_axis = rand.nextInt(100, 600);
             for (int i = 0; i < timesGenerated; i++) {
                 potholes.add(new Pothole(x_axis, y_axis));
-                frame.add(potholes.get(potholes.size() - 1));
             }
             refresh();
         }
@@ -156,7 +141,6 @@ public class MyFrame extends Mainframe implements Runnable { //make this in char
         }
         if (!collision) { //checks if you blew up a car, if you didn't, it will create a pothole
             potholes.add(new Pothole(bomb.getX(), bomb.getY())); //fix the thing where blowing up a car creates a pothole
-            frame.add(potholes.get(potholes.size() - 1));
         }
         collision = false;
         frame.remove(bomb);
@@ -184,7 +168,6 @@ public class MyFrame extends Mainframe implements Runnable { //make this in char
                     lastBomb = s.getTimePassed();
                     bomb = new Bomb();
                     bomb.setLocation(player.getX(), player.getY(), player.getDirection());
-                    frame.add(bomb);
                     bombCollision();
                     bomb = null;
                 }
@@ -211,8 +194,8 @@ public class MyFrame extends Mainframe implements Runnable { //make this in char
             //do stuff per frame below
             try {
                 timeInfo.displayTime(s.getTimePassed()); //updates time counter
-               trainSummon();
-               addCars(); //create cars, train ,and potholes
+                trainSummon();
+                addCars(); //create cars, train ,and potholes
                 // addPotholes();
 
                 frame.add(road);

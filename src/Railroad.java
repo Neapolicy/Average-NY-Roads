@@ -6,7 +6,7 @@ public class Railroad extends JPanel {
     private Color grey = new Color(204, 204, 204);
 
     /** Creates a new instance of railroad */
-    public Railroad(int width) {
+    public Railroad() {
         this.setLayout(null);
         this.setBounds(0, 100, (int) MyFrame.size.getWidth(), 90); //controls how much railroad it reveals
     }

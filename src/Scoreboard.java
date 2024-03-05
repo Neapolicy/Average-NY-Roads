@@ -2,11 +2,13 @@ import javax.swing.*;
 import java.awt.*;
 
 public class Scoreboard extends JLabel {
-    public Scoreboard(String text){
+    public Scoreboard(String text, int x, int y, int width, int height){
         Font font = new Font("Arial", Font.PLAIN, 30); // default
+        this.setLayout(null);
         this.setFont(font);
         this.setForeground(Color.BLUE); //font color
         this.setText(text);
+        this.setBounds(x, y, width, height);
     }
 
     public void updateScore(int score){
@@ -18,9 +20,6 @@ public class Scoreboard extends JLabel {
     }
     public void displayTime(int time){
         this.setText("Current Time: " + time);
-    }
-    public void potholesFilled(int filled){
-        this.setText("Potholes Filled: " + filled);
     }
     public void changeFont(String fontType, int size, Color color){ //keeping this just in case
         Font font = new Font(fontType, Font.PLAIN, size); // default

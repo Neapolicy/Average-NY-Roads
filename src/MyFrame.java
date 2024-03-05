@@ -4,8 +4,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import javax.swing.*;
 
-public class MyFrame extends JFrame implements Runnable { //make this in charge on handling of placing images
-    public JFrame frame = new JFrame();
+public class MyFrame extends Mainframe implements Runnable { //make this in charge on handling of placing images
+    public JFrame frame;
     public static int targetFPS = 60;
     public static int targetTime = 1000000000 / targetFPS;
     public static int targetTimeThread = 1000000000;
@@ -32,42 +32,19 @@ public class MyFrame extends JFrame implements Runnable { //make this in charge 
     private Train train;
     private boolean collision = false; //make the frame public lol idk
 
-    public MyFrame() throws IOException { //render the railroad and road first
-        frame.setTitle("FWMC RADIO BAU BAU");
-        frame.setDefaultCloseOperation(EXIT_ON_CLOSE);
-        frame.setSize(900, 700);
-        frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
-        frame.setLayout(null);
-        frame.setLocationRelativeTo(null);
-
-        frame.setVisible(true);
+    public MyFrame(JFrame frame) throws IOException { //render the railroad and road first
+        this.frame = frame;
         gameStart();
-    }
-    public void startScreen() {
-        JButton button = new JButton("Start Game");
-        Scoreboard startText = new Scoreboard("Press E to deploy a bomb");
-
-        frame.add(startText);
-        frame.add(button);
-
-        button.setBounds((int) (size.getWidth() / 2) , (int) (size.getHeight() / 2), 100, 50);
-        startText.setBounds((int) (size.getWidth() / 2), (int) (size.getHeight() / 2) - 100, 1000, 100);
-        button.addActionListener(e -> {
-            Gamestate.state = Gamestate.gameMiddle;
-        });
     }
 
     public void gameStart() throws IOException {
-        frame.getContentPane().removeAll();
-        refresh();
-
         player = new Player();
         road = new Road();
         s = new Stopwatch();
-        railroad = new Railroad((int) size.getWidth());
-        scoreInfo = new Scoreboard("Current Score: 0");
-        comboInfo = new Scoreboard("Current Combo: 0");
-        timeInfo  = new Scoreboard("Current Time: 0");
+        railroad = new Railroad();
+        scoreInfo = new Scoreboard("Current Score: 0", 100, (int) (size.getHeight() / 2) + 150, 500, 200);
+        comboInfo = new Scoreboard("Current Combo: 0", 100, (int) (size.getHeight() / 2) + 200, 500, 200);
+        timeInfo  = new Scoreboard("Current Time: 0", 100, (int) (size.getHeight() / 2) + 250, 500, 200);
 
         frame.addKeyListener(player);
 
@@ -81,19 +58,12 @@ public class MyFrame extends JFrame implements Runnable { //make this in charge 
 
         frame.getContentPane().setBackground(new Color(0, 102, 0));
 
-        scoreInfo.setBounds(100, (int) (size.getHeight() / 2) + 150, 500, 200); //text
-        comboInfo.setBounds(100, (int) (size.getHeight() / 2) + 200, 500, 200);
-        timeInfo.setBounds(100, (int) (size.getHeight() / 2) + 250, 500, 200);
-
         thread = new Thread(this);
         thread.start();
 
         gameLoop();
     }
-    public void loseScreen() {
-        frame.getContentPane().removeAll();
-        gameOver = true;
-    }
+
     public void gameLoop() throws IOException {
         while (!gameOver) {
             long startTime = System.nanoTime();
@@ -117,8 +87,8 @@ public class MyFrame extends JFrame implements Runnable { //make this in charge 
     }
 
     public void refresh() {
-        frame.revalidate();
-        frame.repaint();
+        revalidate();
+        repaint();
     }
 
     public void addCars() throws IOException, InterruptedException //creates new cars
@@ -144,7 +114,7 @@ public class MyFrame extends JFrame implements Runnable { //make this in charge 
         if (s.getTimePassed() % 8 == 0 && s.getTimePassed() != 0) {
             train = new Train((int) size.getWidth(), 100);
             frame.add(train);
-            frame.repaint();
+            repaint();
         }
     }
 
@@ -167,10 +137,10 @@ public class MyFrame extends JFrame implements Runnable { //make this in charge 
         for (Car car : cars) {
             if (player.getPlayerHitbox().intersects(car.getCarHitbox())) {
                 car.killSound(false);
-                loseScreen();
+                gameOver = true;
             }
             for (Pothole pothole : potholes) {
-                if (car.getCarHitbox().intersects(pothole.getPotholeHitbox())) loseScreen();
+                if (car.getCarHitbox().intersects(pothole.getPotholeHitbox())) gameOver = true;
             }
         }
     }

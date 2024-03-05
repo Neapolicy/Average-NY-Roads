@@ -13,7 +13,6 @@ public class Mainframe extends JFrame {
 
         frame.setVisible(true);
 
-        new MyFrame();
         checkGameState();
     }
     public void checkGameState() throws IOException {

@@ -1,7 +1,7 @@
 import javax.swing.*;
 import java.io.IOException;
 
-public class Startscreen extends Mainframe{
+public class Startscreen extends Mainframe {
     public Startscreen(){
         startScreen();
     }
@@ -16,6 +16,7 @@ public class Startscreen extends Mainframe{
         startText.setBounds((int) (MyFrame.size.getWidth() / 2), (int) (MyFrame.size.getHeight() / 2) - 100, 1000, 100);
         button.addActionListener(e -> {
             Gamestate.state = Gamestate.gameMiddle;
+            frame.getContentPane().removeAll();
             switchStates();
         });
     }

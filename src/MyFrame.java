@@ -56,7 +56,7 @@ public class MyFrame extends Mainframe implements Runnable { //make this in char
     }
 
     public void gameLoop() throws IOException {
-        while (Gamestate.state != Gamestate.gameEnd) {
+        if (Gamestate.state != Gamestate.gameEnd) {
             long startTime = System.nanoTime();
             userKeyInput();
             player.run();

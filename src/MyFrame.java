@@ -2,7 +2,6 @@ import java.awt.*;
 import java.util.Random;
 import java.io.IOException;
 import java.util.ArrayList;
-import javax.swing.*;
 
 public class MyFrame extends Mainframe implements Runnable { //make this in charge on handling of placing images
     public static int targetFPS = 60;
@@ -198,11 +197,11 @@ public class MyFrame extends Mainframe implements Runnable { //make this in char
                 timeInfo.displayTime(s.getTimePassed()); //updates time counter
 //                trainSummon();
 //                addCars(); //create cars, train ,and potholes
-//                addPotholes();
-//
-//                frame.add(road);
-//                frame.add(railroad);
-            } catch (IOException e) {
+                addPotholes();
+
+                frame.add(road);
+                frame.add(railroad);
+            } catch (IOException | InterruptedException e) {
                 throw new RuntimeException(e);
             }
 

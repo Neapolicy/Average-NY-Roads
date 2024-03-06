@@ -21,6 +21,7 @@ public class Mainframe extends JFrame implements MouseListener {
     public void checkGameState() throws IOException {
         if (Gamestate.state == Gamestate.gameStart) new Startscreen();
         if (Gamestate.state == Gamestate.gameMiddle) new MyFrame();
+        if (Gamestate.state == Gamestate.gameEnd) new Endscreen();
     }
 
     public static void refresh() {

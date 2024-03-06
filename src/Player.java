@@ -42,7 +42,7 @@ public class Player extends JLabel implements KeyListener {
     {
         int moneyMade = 10 + (timeElapsed / 4);
         if (combo != 1) {
-            moneyMade *= 1 + (((double) combo) / 10); //multiplies by combo/10
+            moneyMade *= (int) (1 + (((double) combo) / 10)); //multiplies by combo/10
         }
         score += moneyMade;
     }
@@ -148,14 +148,12 @@ public class Player extends JLabel implements KeyListener {
             this.setLocation(this.getX() + step, this.getY());
             this.getPlayerHitbox().setLocation(this.getX(), this.getY());
         }
-                checkPlayerPosition();
+        checkPlayerPosition();
     }
     public void checkPlayerPosition() {
         if (this.getX() < 0) this.setLocation(0, this.getY()); //left
-        if (this.getX() > MyFrame.size.getWidth() - 500)
-        this.setLocation((int) MyFrame.size.getWidth() - 500, this.getY()); //right
+        if (this.getX() > MyFrame.size.getWidth() - 500) this.setLocation((int) MyFrame.size.getWidth() - 500, this.getY()); //right
         if (this.getY() < 300) this.setLocation(this.getX(), 300); //top
-        if (this.getY() > MyFrame.size.getHeight() - 400)
-        this.setLocation(this.getX(), (int) MyFrame.size.getHeight() - 400); //bottom
+        if (this.getY() > MyFrame.size.getHeight() - 400) this.setLocation(this.getX(), (int) MyFrame.size.getHeight() - 400); //bottom
     }
 }

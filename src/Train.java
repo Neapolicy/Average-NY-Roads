@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.IOException;
 
 public class Train extends JLabel implements Runnable{
+    public static int timeLastSpawned;
     protected int offScreen;
     private Sound sound = new Sound();
     public static double step = 40;

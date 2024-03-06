@@ -7,7 +7,6 @@ import javax.swing.*;
 public class MyFrame extends Mainframe implements Runnable { //make this in charge on handling of placing images
     public static int targetFPS = 60;
     public static int targetTime = 1000000000 / targetFPS;
-    public static int targetTimeThread = 1000000000;
     private final Random rand = new Random();
     private Bomb bomb;
     private Player player;
@@ -51,12 +50,10 @@ public class MyFrame extends Mainframe implements Runnable { //make this in char
 
         Thread thread = new Thread(this);
         thread.start();
-
-        gameLoop();
     }
 
     public void gameLoop() throws IOException {
-        if (Gamestate.state != Gamestate.gameEnd) {
+        if (Gamestate.state != Gamestate.gameEnd) { //loop causes program to freeze
             long startTime = System.nanoTime();
             userKeyInput();
             player.run();
@@ -79,8 +76,9 @@ public class MyFrame extends Mainframe implements Runnable { //make this in char
 
     public void addCars() throws IOException, InterruptedException //creates new cars
     {
-        if (s.getTimePassed() % (countDowns[1] - (s.getTimePassed() / 15)) == 0 && s.getTimePassed() != 0) //5 seconds to add a car is purely for testing purposes, also rewrite this without using sleep
+        if (s.getTimePassed() % (countDowns[1] - (s.getTimePassed() / 15)) == 0 && (s.getTimePassed() != 0 && s.getTimePassed() != Car.timeLastSpawned)) //5 seconds to add a car is purely for testing purposes, also rewrite this without using sleep
         {
+            Car.timeLastSpawned = s.getTimePassed();
             int lastSpawnedYCoord = 0;
             if (countDowns[1] < 6) countDowns[1] = 6; //spawn timer min
             timesGenerated = rand.nextInt(1, 5);
@@ -96,13 +94,14 @@ public class MyFrame extends Mainframe implements Runnable { //make this in char
     }
 
     public void trainSummon() throws IOException, InterruptedException {
-        if (s.getTimePassed() % 8 == 0 && s.getTimePassed() != 0) {
+        if (s.getTimePassed() % 8 == 0 && s.getTimePassed() != 0 && s.getTimePassed() != Train.timeLastSpawned) {
             new Train((int) size.getWidth(), 100);
+            Train.timeLastSpawned = s.getTimePassed();
         }
     }
 
     public void addPotholes() throws InterruptedException, IOException {
-        if (s.getTimePassed() % (countDowns[0] - s.getTimePassed() / 10) == 0 && s.getTimePassed() != 0) //5 seconds to add a car is purely for testing purposes
+        if (s.getTimePassed() % (countDowns[0] - s.getTimePassed() / 10) == 0 && s.getTimePassed() != 0 && Pothole.timeLastSpawned != s.getTimePassed()) //5 seconds to add a car is purely for testing purposes
         {
             if (countDowns[0] < 3) countDowns[0] = 3;
             timesGenerated = rand.nextInt(1, 4);
@@ -111,6 +110,7 @@ public class MyFrame extends Mainframe implements Runnable { //make this in char
             for (int i = 0; i < timesGenerated; i++) {
                 potholes.add(new Pothole(x_axis, y_axis));
             }
+            Pothole.timeLastSpawned = s.getTimePassed();
             refresh();
         }
     }
@@ -123,7 +123,7 @@ public class MyFrame extends Mainframe implements Runnable { //make this in char
                 Mainframe.frame.getContentPane().removeAll();
             }
             for (Pothole pothole : potholes) {
-                if (car.getCarHitbox().intersects(pothole.getPotholeHitbox())){
+                if (car.getCarHitbox().intersects(pothole.getPotholeHitbox())) {
                     Gamestate.state = Gamestate.gameEnd;
                     Mainframe.frame.getContentPane().removeAll();
                 }
@@ -197,19 +197,20 @@ public class MyFrame extends Mainframe implements Runnable { //make this in char
                 timeInfo.displayTime(s.getTimePassed()); //updates time counter
                 trainSummon();
                 addCars(); //create cars, train ,and potholes
-                // addPotholes();
+                addPotholes();
 
                 frame.add(road);
                 frame.add(railroad);
+                gameLoop();
             } catch (IOException | InterruptedException e) {
                 throw new RuntimeException(e);
             }
 
             long totalTime = System.nanoTime() - startTime;
 
-            if (totalTime < targetTimeThread) {
+            if (totalTime < targetTime) {
                 try {
-                    Thread.sleep((targetTimeThread - totalTime) / 1000000); //theoretically should only be running at 1 fps
+                    Thread.sleep((targetTime - totalTime) / 1000000); //theoretically should only be running at 1 fps
                 } catch (InterruptedException e) {
                     for (Car car : cars)
                         car.killSound(false);

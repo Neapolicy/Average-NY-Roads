@@ -1,7 +1,9 @@
 import javax.swing.*;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.io.IOException;
 
-public class Mainframe extends JFrame {
+public class Mainframe extends JFrame implements MouseListener {
     public static JFrame frame = new JFrame();
     public void start() throws IOException {
         frame.setTitle("FWMC RADIO BAU BAU");
@@ -12,6 +14,7 @@ public class Mainframe extends JFrame {
         frame.setLocationRelativeTo(null);
 
         frame.setVisible(true);
+        frame.addMouseListener(this);
 
         checkGameState();
     }
@@ -23,5 +26,38 @@ public class Mainframe extends JFrame {
     public static void refresh() {
         frame.revalidate();
         frame.repaint();
+    }
+
+    @Override
+    public void mouseClicked(MouseEvent e) {
+        if (Gamestate.state == Gamestate.gameStart){
+            Gamestate.state = Gamestate.gameMiddle;
+            frame.getContentPane().removeAll();
+        }
+        try {
+            checkGameState();
+        } catch (IOException ex) {
+            throw new RuntimeException(ex);
+        }
+    }
+
+    @Override
+    public void mousePressed(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseReleased(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseEntered(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseExited(MouseEvent e) {
+
     }
 }

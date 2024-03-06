@@ -7,6 +7,7 @@ import java.io.IOException;
 public class Pothole extends JLabel { //shouldn't be that hard hopefully??
     private Box potholeHitbox;
     private ImageIcon icon;
+    public static int timeLastSpawned;
 
     public Pothole(int x, int y) throws IOException {
         icon = new ImageIcon(ImageIO.read(new File("ImageFiles/Images/pothole.png")));

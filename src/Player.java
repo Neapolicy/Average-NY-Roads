@@ -95,6 +95,7 @@ public class Player extends JLabel implements KeyListener {
                 setIcon("player_right");
             }
         }
+        run();
     }
 
     public char getKeyCode() {

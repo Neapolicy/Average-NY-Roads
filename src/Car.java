@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.IOException;
 
 public class Car extends JLabel implements Runnable{
+    public static int timeLastSpawned;
     protected int offScreen;
     private Box carHitbox;
     private Sound sound = new Sound();

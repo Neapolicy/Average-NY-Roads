@@ -194,15 +194,15 @@ public class MyFrame extends Mainframe implements Runnable { //make this in char
             long startTime = System.nanoTime();
             //do stuff per frame below
             try {
-                timeInfo.displayTime(s.getTimePassed()); //updates time counter
-                trainSummon();
-                addCars(); //create cars, train ,and potholes
-                addPotholes();
-
-                frame.add(road);
-                frame.add(railroad);
                 gameLoop();
-            } catch (IOException | InterruptedException e) {
+                timeInfo.displayTime(s.getTimePassed()); //updates time counter
+//                trainSummon();
+//                addCars(); //create cars, train ,and potholes
+//                addPotholes();
+//
+//                frame.add(road);
+//                frame.add(railroad);
+            } catch (IOException e) {
                 throw new RuntimeException(e);
             }
 

@@ -75,4 +75,10 @@ public class FunFunTime { //this file only exists to meet the requirements of th
             arrs[j + 1] = key;
         }
     }
+    public boolean equals(Object o){
+        return false;
+    }
+    public String toString(){
+        return "";
+    }
 }

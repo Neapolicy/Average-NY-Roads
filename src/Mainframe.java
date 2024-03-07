@@ -5,6 +5,7 @@ import java.io.IOException;
 
 public class Mainframe extends JFrame implements MouseListener {
     public static JFrame frame = new JFrame();
+    private Sound sound = new Sound();
     public void start() throws IOException {
         frame.setTitle("FWMC RADIO BAU BAU");
         frame.setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -21,7 +22,11 @@ public class Mainframe extends JFrame implements MouseListener {
     public void checkGameState() throws IOException {
         if (Gamestate.state == Gamestate.gameStart) new Startscreen();
         if (Gamestate.state == Gamestate.gameMiddle) new MyFrame();
-        if (Gamestate.state == Gamestate.gameEnd) new Endscreen();
+        if (Gamestate.state == Gamestate.gameEnd) {
+            frame.getContentPane().removeAll();
+            sound.play("explosion", false); //find something else
+            new Endscreen();
+        }
     }
 
     public static void refresh() {
@@ -34,6 +39,7 @@ public class Mainframe extends JFrame implements MouseListener {
         if (Gamestate.state == Gamestate.gameStart){
             Gamestate.state = Gamestate.gameMiddle;
             frame.getContentPane().removeAll();
+            frame.removeMouseListener(this);
         }
         try {
             checkGameState();

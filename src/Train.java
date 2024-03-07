@@ -35,7 +35,7 @@ public class Train extends JLabel implements Runnable{
     }
 
     public void playSound() {
-        sound.play("game_over", true);
+        sound.play("Gun_FIre", true);
     }
 
     @Override

@@ -72,7 +72,11 @@ public class MyFrame extends Mainframe implements Runnable { //make this in char
             }
         }
     }
-
+    public void spawns() throws IOException, InterruptedException {
+        trainSummon();
+        addCars(); //create cars, train ,and potholes
+        addPotholes();
+    }
     public void addCars() throws IOException, InterruptedException //creates new cars
     {
         if (s.getTimePassed() % (countDowns[1] - (s.getTimePassed() / 15)) == 0 && (s.getTimePassed() != 0 && s.getTimePassed() != Car.timeLastSpawned)) //5 seconds to add a car is purely for testing purposes, also rewrite this without using sleep
@@ -92,14 +96,14 @@ public class MyFrame extends Mainframe implements Runnable { //make this in char
         }
     }
 
-    public void trainSummon() throws IOException, InterruptedException {
+    public void trainSummon() throws IOException {
         if (s.getTimePassed() % 8 == 0 && s.getTimePassed() != 0 && s.getTimePassed() != Train.timeLastSpawned) {
             new Train((int) size.getWidth(), 100);
             Train.timeLastSpawned = s.getTimePassed();
         }
     }
 
-    public void addPotholes() throws InterruptedException, IOException {
+    public void addPotholes() throws IOException {
         if (s.getTimePassed() % (countDowns[0] - s.getTimePassed() / 10) == 0 && s.getTimePassed() != 0 && Pothole.timeLastSpawned != s.getTimePassed()) //5 seconds to add a car is purely for testing purposes
         {
             if (countDowns[0] < 3) countDowns[0] = 3;
@@ -114,17 +118,17 @@ public class MyFrame extends Mainframe implements Runnable { //make this in char
         }
     }
 
-    public void checkCollision() { //refer to the hitbox instead
+    public void checkCollision() throws IOException { //refer to the hitbox instead
         for (Car car : cars) {
             if (player.getPlayerHitbox().intersects(car.getCarHitbox())) {
                 car.killSound(false);
                 Gamestate.state = Gamestate.gameEnd;
-                Mainframe.frame.getContentPane().removeAll();
+                checkGameState();
             }
             for (Pothole pothole : potholes) {
                 if (car.getCarHitbox().intersects(pothole.getPotholeHitbox())) {
                     Gamestate.state = Gamestate.gameEnd;
-                    Mainframe.frame.getContentPane().removeAll();
+                    checkGameState();
                 }
             }
         }
@@ -143,6 +147,7 @@ public class MyFrame extends Mainframe implements Runnable { //make this in char
             potholes.add(new Pothole(bomb.getX(), bomb.getY())); //fix the thing where blowing up a car creates a pothole
         }
         collision = false;
+        sound.play("explosion", false);
         frame.remove(bomb);
     }
 
@@ -193,11 +198,9 @@ public class MyFrame extends Mainframe implements Runnable { //make this in char
             long startTime = System.nanoTime();
             //do stuff per frame below
             try {
-                gameLoop();
                 timeInfo.displayTime(s.getTimePassed()); //updates time counter
-//                trainSummon();
-//                addCars(); //create cars, train ,and potholes
-                addPotholes();
+                gameLoop();
+                spawns();
 
                 frame.add(road);
                 frame.add(railroad);

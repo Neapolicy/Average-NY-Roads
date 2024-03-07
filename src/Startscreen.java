@@ -13,11 +13,4 @@ public class Startscreen extends Mainframe {
         startText.setBounds((int) (MyFrame.size.getWidth() / 2), (int) (MyFrame.size.getHeight() / 2) - 100, 1000, 100);
     }
 
-    public void switchStates(){
-        try {
-            checkGameState();
-        } catch (IOException ex) {
-            throw new RuntimeException(ex);
-        }
-    }
 }

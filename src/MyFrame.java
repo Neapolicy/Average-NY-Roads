@@ -114,7 +114,6 @@ public class MyFrame extends Mainframe implements Runnable { //make this in char
                 potholes.add(new Pothole(x_axis, y_axis));
             }
             Pothole.timeLastSpawned = s.getTimePassed();
-            refresh();
         }
     }
 

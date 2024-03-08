@@ -78,12 +78,14 @@ public class MyFrame extends Mainframe implements Runnable { //make this in char
                 silenceCars();
                 Gamestate.state = Gamestate.gameEnd;
                 checkGameState();
+                setValues(player.getScore(), player.getCombo(), s.getTimePassed());
             }
             for (Pothole pothole : potholes) {
                 if (car.getCarHitbox().intersects(pothole.getPotholeHitbox())) {
                     silenceCars();
                     Gamestate.state = Gamestate.gameEnd;
                     checkGameState();
+                    setValues(player.getScore(), player.getCombo(), s.getTimePassed());
                 }
             }
         }

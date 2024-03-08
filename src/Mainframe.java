@@ -5,6 +5,7 @@ import java.io.IOException;
 
 public class Mainframe extends JFrame implements MouseListener {
     public static JFrame frame = new JFrame();
+    private Sound sound = new Sound();
     private int score;
     private int combo;
     private int time;
@@ -22,8 +23,14 @@ public class Mainframe extends JFrame implements MouseListener {
         checkGameState();
     }
     public void checkGameState() throws IOException {
-        if (Gamestate.state == Gamestate.gameStart) new Endscreen(score, combo, time);
-        if (Gamestate.state == Gamestate.gameMiddle) new MyFrame();
+        if (Gamestate.state == Gamestate.gameStart) {
+            sound.play("car_screech", true); //replace with soundtrack
+            new Startscreen();
+        }
+        if (Gamestate.state == Gamestate.gameMiddle) {
+            sound.play("car_screech", true);
+            new MyFrame();
+        }
         if (Gamestate.state == Gamestate.gameEnd) {
             frame.getContentPane().removeAll();
             new Endscreen(score, combo, time);

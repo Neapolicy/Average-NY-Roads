@@ -1,9 +1,11 @@
 public class Endscreen extends Mainframe{
+    private Sound sound = new Sound();
     public Endscreen() {
-        Scoreboard startText = new Scoreboard("Game Over!", (int) (MyFrame.size.getWidth() / 2), (int) (MyFrame.size.getHeight() / 2) - 100, 1000, 100);
+        sound.play("explosion", false);
+        Scoreboard endText = new Scoreboard("Game Over!", (int) (MyFrame.size.getWidth() / 2), (int) (MyFrame.size.getHeight() / 2) - 100, 1000, 100);
 
-        frame.add(startText);
+        endText.setBounds((int) (MyFrame.size.getWidth() / 2) - 100, (int) (MyFrame.size.getHeight() / 2) - 100, endText.getWidth(), 100);
 
-        startText.setBounds((int) (MyFrame.size.getWidth() / 2), (int) (MyFrame.size.getHeight() / 2) - 100, 1000, 100);
+        frame.add(endText);
     }
 }

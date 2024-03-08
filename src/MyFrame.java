@@ -1,27 +1,24 @@
 import java.awt.*;
-import java.util.Random;
 import java.io.IOException;
 import java.util.ArrayList;
 
 public class MyFrame extends Mainframe implements Runnable { //make this in charge on handling of placing images
     public static int targetFPS = 60;
     public static int targetTime = 1000000000 / targetFPS;
-    private final Random rand = new Random();
     private Bomb bomb;
     private Player player;
-    private ArrayList<Car> cars = new ArrayList<>();
-    private ArrayList<Pothole> potholes = new ArrayList<>();
-    private int timesGenerated;
+    public static ArrayList<Car> cars = new ArrayList<>();
+    public static ArrayList<Pothole> potholes = new ArrayList<>();
     public static Dimension size = Toolkit.getDefaultToolkit().getScreenSize();
     private Railroad railroad; // Create an instance of Railroad
     private Scoreboard scoreInfo;
     private Scoreboard timeInfo;
     private Scoreboard comboInfo;
     private Road road; // Create an instance of road
-    private Stopwatch s;
+    public static Stopwatch s;
     private Sound sound = new Sound();
-    private int[] car_locations = {300, 400, 500, 600};
-    private int[] countDowns = {7, 10};
+    public static int[] car_locations = {300, 400, 500, 600};
+    public static int[] countDowns = {7, 10};
     private int timeLastFilled;
     private int lastBomb;
     private boolean collision = false; //make the frame public lol idk
@@ -46,6 +43,7 @@ public class MyFrame extends Mainframe implements Runnable { //make this in char
         frame.add(timeInfo);
 
         frame.getContentPane().setBackground(new Color(0, 102, 0));
+        new Spawner();
 
         Thread thread = new Thread(this);
         thread.start();
@@ -65,67 +63,25 @@ public class MyFrame extends Mainframe implements Runnable { //make this in char
                 try {
                     Thread.sleep((targetTime - totalTime) / 1000000);
                 } catch (InterruptedException e) {
-                    for (Car car : cars)
-                        car.killSound(false);
                     System.out.close();
                 }
             }
         }
     }
-    public void spawns() throws IOException, InterruptedException {
-        trainSummon();
-        addCars(); //create cars, train ,and potholes
-        addPotholes();
+    public void silenceCars(){
+        for (Car car : cars)
+            car.killSound(false);
     }
-    public void addCars() throws IOException, InterruptedException //creates new cars
-    {
-        if (s.getTimePassed() % (countDowns[1] - (s.getTimePassed() / 15)) == 0 && (s.getTimePassed() != 0 && s.getTimePassed() != Car.timeLastSpawned)) //5 seconds to add a car is purely for testing purposes, also rewrite this without using sleep
-        {
-            Car.timeLastSpawned = s.getTimePassed();
-            int lastSpawnedYCoord = 0;
-            if (countDowns[1] < 6) countDowns[1] = 6; //spawn timer min
-            timesGenerated = rand.nextInt(1, 5);
-            for (int i = 0; i < timesGenerated; i++) {
-                int y_axis = rand.nextInt(car_locations.length);
-                while (y_axis == lastSpawnedYCoord) y_axis = rand.nextInt(car_locations.length);
-                cars.add(new Car((int) size.getWidth() + 500, car_locations[y_axis]));
-                lastSpawnedYCoord = car_locations[y_axis];
-                Thread.sleep(300);
-            }
-            Car.speed += 2.5;
-        }
-    }
-
-    public void trainSummon() throws IOException {
-        if (s.getTimePassed() % 8 == 0 && s.getTimePassed() != 0 && s.getTimePassed() != Train.timeLastSpawned) {
-            new Train((int) size.getWidth(), 100);
-            Train.timeLastSpawned = s.getTimePassed();
-        }
-    }
-
-    public void addPotholes() throws IOException {
-        if (s.getTimePassed() % (countDowns[0] - s.getTimePassed() / 10) == 0 && s.getTimePassed() != 0 && Pothole.timeLastSpawned != s.getTimePassed()) //5 seconds to add a car is purely for testing purposes
-        {
-            if (countDowns[0] < 3) countDowns[0] = 3;
-            timesGenerated = rand.nextInt(1, 4);
-            int y_axis = rand.nextInt(300, 600);
-            int x_axis = rand.nextInt(100, 600);
-            for (int i = 0; i < timesGenerated; i++) {
-                potholes.add(new Pothole(x_axis, y_axis));
-            }
-            Pothole.timeLastSpawned = s.getTimePassed();
-        }
-    }
-
     public void checkCollision() throws IOException { //refer to the hitbox instead
         for (Car car : cars) {
             if (player.getPlayerHitbox().intersects(car.getCarHitbox())) {
-                car.killSound(false);
+                silenceCars();
                 Gamestate.state = Gamestate.gameEnd;
                 checkGameState();
             }
             for (Pothole pothole : potholes) {
                 if (car.getCarHitbox().intersects(pothole.getPotholeHitbox())) {
+                    silenceCars();
                     Gamestate.state = Gamestate.gameEnd;
                     checkGameState();
                 }
@@ -199,11 +155,10 @@ public class MyFrame extends Mainframe implements Runnable { //make this in char
             try {
                 timeInfo.displayTime(s.getTimePassed()); //updates time counter
                 gameLoop();
-                spawns();
 
                 frame.add(road);
                 frame.add(railroad);
-            } catch (IOException | InterruptedException e) {
+            } catch (IOException e) {
                 throw new RuntimeException(e);
             }
 
@@ -213,8 +168,6 @@ public class MyFrame extends Mainframe implements Runnable { //make this in char
                 try {
                     Thread.sleep((targetTime - totalTime) / 1000000); //theoretically should only be running at 1 fps
                 } catch (InterruptedException e) {
-                    for (Car car : cars)
-                        car.killSound(false);
                     System.out.close();
                 }
             }

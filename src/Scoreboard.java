@@ -27,6 +27,6 @@ public class Scoreboard extends JLabel {
         this.setForeground(color); //font color
     }
     public String toString(){
-        return "professional yapper";
+        return "professional gambler";
     }
 }

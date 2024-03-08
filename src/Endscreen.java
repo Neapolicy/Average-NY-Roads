@@ -7,5 +7,6 @@ public class Endscreen extends Mainframe{
         endText.setBounds((int) (MyFrame.size.getWidth() / 2) - 100, (int) (MyFrame.size.getHeight() / 2) - 100, endText.getWidth(), 100);
 
         frame.add(endText);
+        refresh();
     }
 }

@@ -6,10 +6,5 @@ public class Main
         Mainframe main = new Mainframe();
         main.start();
     }
-    public boolean equals(Object o){
-        return false;
-    }
-    public String toString(){
-        return "";
-    }
+
 }

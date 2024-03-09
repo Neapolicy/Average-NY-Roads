@@ -70,10 +70,5 @@ public class Spawner implements Runnable{
             }
         }
     }
-    public boolean equals(Object o){
-        return false;
-    }
-    public String toString(){
-        return "";
-    }
+
 }

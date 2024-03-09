@@ -75,10 +75,5 @@ public class Train extends JLabel implements Runnable{
     }
 
     public void killThread(){thread.interrupt();}
-    public boolean equals(Object o){
-        return false;
-    }
-    public String toString(){
-        return "";
-    }
+
 }

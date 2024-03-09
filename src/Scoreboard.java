@@ -32,4 +32,5 @@ public class Scoreboard extends JLabel {
     public boolean equals(Object o){
         return false;
     }
+
 }

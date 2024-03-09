@@ -184,10 +184,5 @@ public class MyFrame extends Mainframe implements Runnable { //make this in char
             }
         }
     }
-    public boolean equals(Object o){
-        return false;
-    }
-    public String toString(){
-        return "";
-    }
+
 }

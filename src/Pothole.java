@@ -29,10 +29,5 @@ public class Pothole extends JLabel { //shouldn't be that hard hopefully??
     public Box getPotholeHitbox() {
         return potholeHitbox;
     }
-    public boolean equals(Object o){
-        return false;
-    }
-    public String toString(){
-        return "";
-    }
+
 }

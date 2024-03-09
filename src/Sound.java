@@ -11,9 +11,9 @@ import javax.sound.sampled.SourceDataLine;
 public class Sound implements Runnable
 {
     private String fileLocation;
-    private boolean loopable;
-    private boolean safeGuard = true;
-    private SourceDataLine line;
+    private volatile boolean loopable;
+    private volatile boolean safeGuard = true;
+    private volatile SourceDataLine line;
     private Thread t1;
     private int nBytesRead;
     // https://stackoverflow.com/questions/23255162/looping-audio-on-separate-thread-in-java <- ripped from there, and modified a bit
@@ -47,7 +47,6 @@ public class Sound implements Runnable
                     }
                 }
             }
-            line.stop();
         }
     }
 
@@ -97,11 +96,11 @@ public class Sound implements Runnable
         line.drain();
         line.close();
     }
-    public void stopSound() {
-        nBytesRead = -1;
-    }
 
-    public void setLoopable(boolean b) {loopable = b;}
+    public void setLoopable(boolean b) {
+        loopable = b;
+        safeGuard = false;
+    }
 
     public void killThread() {t1.interrupt();}
 }

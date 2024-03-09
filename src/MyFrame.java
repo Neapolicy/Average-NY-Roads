@@ -134,6 +134,7 @@ public class MyFrame extends Mainframe implements Runnable { //make this in char
         {
             case 'e' -> {
                 if ((s.getTimePassed() - lastBomb) >= .1) { //.1 sec cd, prevents spam
+                    sound.play("bomb_place", false);
                     lastBomb = s.getTimePassed();
                     bomb = new Bomb();
                     bomb.setLocation(player.getX(), player.getY(), player.getDirection());
@@ -152,7 +153,6 @@ public class MyFrame extends Mainframe implements Runnable { //make this in char
                     }
             }
         }
-        refresh();
         player.resetKeyCode();
     }
 
@@ -164,6 +164,7 @@ public class MyFrame extends Mainframe implements Runnable { //make this in char
             try {
                 timeInfo.displayTime(s.getTimePassed()); //updates time counter
                 gameLoop();
+                refresh();
 
                 frame.add(road);
                 frame.add(railroad);

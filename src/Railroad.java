@@ -36,4 +36,10 @@ public class Railroad extends JPanel {
         super.setSize(width, height);
         repaint();  // Trigger a repaint to update the displayed image
     }
+    public boolean equals(Object o){
+        return false;
+    }
+    public String toString(){
+        return "";
+    }
 }

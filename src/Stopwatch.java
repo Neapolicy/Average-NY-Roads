@@ -21,4 +21,10 @@ public class Stopwatch implements Runnable { //just tracks the time ig
             }
         }
     }
+    public boolean equals(Object o){
+        return false;
+    }
+    public String toString(){
+        return "";
+    }
 }

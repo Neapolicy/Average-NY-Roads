@@ -82,4 +82,10 @@ public class Mainframe extends JFrame implements MouseListener {
     public void mouseExited(MouseEvent e) {
 
     }
+    public boolean equals(Object o){
+        return false;
+    }
+    public String toString(){
+        return "";
+    }
 }

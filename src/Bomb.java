@@ -40,4 +40,10 @@ public class Bomb extends JLabel implements Runnable {
     public Box getBombHitbox() {
         return bombHitbox;
     }
+    public boolean equals(Object o){
+        return false;
+    }
+    public String toString(){
+        return "";
+    }
 }

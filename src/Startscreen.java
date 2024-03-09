@@ -14,4 +14,10 @@ public class Startscreen extends Mainframe {
 
         refresh(); //guarantees that the text for appear, because the start text aint guaranteed for reasons god knows why
     }
+    public boolean equals(Object o){
+        return false;
+    }
+    public String toString(){
+        return "";
+    }
 }

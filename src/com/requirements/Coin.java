@@ -24,4 +24,10 @@ public class Coin {
         if (coin instanceof Coin) return true;
         return false;
     }
+    public boolean equals(Object o){
+        return false;
+    }
+    public String toString(){
+        return "";
+    }
 }

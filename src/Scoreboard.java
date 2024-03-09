@@ -29,4 +29,7 @@ public class Scoreboard extends JLabel {
     public String toString(){
         return "professional gambler";
     }
+    public boolean equals(Object o){
+        return false;
+    }
 }

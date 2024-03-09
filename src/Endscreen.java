@@ -14,4 +14,10 @@ public class Endscreen extends Mainframe{
 
         refresh();
     }
+    public boolean equals(Object o){
+        return false;
+    }
+    public String toString(){
+        return "";
+    }
 }

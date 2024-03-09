@@ -92,5 +92,10 @@ public class Sound implements Runnable {
             throw new IllegalArgumentException("Volume should be in the range [0.0, 1.0]");
         }
     }
-
+    public boolean equals(Object o){
+        return false;
+    }
+    public String toString(){
+        return "";
+    }
 }

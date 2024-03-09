@@ -31,4 +31,10 @@ public class TrafficCone extends JLabel {
     }
 
     public Box getConeHitbox() {return coneHitbox;}
+    public boolean equals(Object o){
+        return false;
+    }
+    public String toString(){
+        return "";
+    }
 }

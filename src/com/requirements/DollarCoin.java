@@ -15,4 +15,10 @@ public class DollarCoin extends Coin {
     public void examine(int i){
         super.examine(i);
     }
+    public boolean equals(Object o){
+        return false;
+    }
+    public String toString(){
+        return "";
+    }
 }

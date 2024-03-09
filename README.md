@@ -14,17 +14,5 @@ The project and zip file can be found [here](https://github.com/Neapolicy/Averag
 
 tba
 
-## Features
- - Sounds
- - Hectic Gameplay, that requires good resource mangaement
- - A Complete GUI
-
 ### Sound Effects Sources
-TBA
-
-### Upcoming Features
-Start and Game Over screens
-<br>
-Timer added
-<br>
-Pothole Generation
+Chunkopops, Divinity of The Office, and Depression Nap makes up the music for start, gmae, and end screen, respectively

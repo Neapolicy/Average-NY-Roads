@@ -5,14 +5,15 @@ import java.awt.*;
 
 public class Scoreboard extends JLabel {
     public Scoreboard(String text, int x, int y, int width, int height){
+        super(text);
         Font font = new Font("Arial", Font.PLAIN, 30); // default
         this.setLayout(null);
         this.setFont(font);
-        this.setForeground(Color.BLUE); //font color
-        this.setText(text);
+        this.setForeground(Color.BLUE); // font color
         this.setBounds(x, y, width, height);
+        this.setHorizontalAlignment(JLabel.CENTER); // center text horizontally
+        this.setVerticalAlignment(JLabel.CENTER);   // center text vertically
     }
-
     public void updateScore(int score){
         this.setText("Current Score: " + score);
     }
@@ -34,5 +35,8 @@ public class Scoreboard extends JLabel {
     public boolean equals(Object o){
         return false;
     }
-
+    public void center(JLabel label){
+        label.setVerticalAlignment(JLabel.CENTER);
+        label.setHorizontalAlignment(JLabel.CENTER);
+    }
 }

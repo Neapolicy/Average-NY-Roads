@@ -24,15 +24,17 @@ public class Mainframe extends JFrame implements MouseListener {
     }
     public void checkGameState() throws IOException {
         if (Gamestate.state == Gamestate.gameStart) {
-            sound.play("car_screech", true); //replace with soundtrack
+            sound.play("start_music", true); //transition the music
             new Startscreen();
         }
         if (Gamestate.state == Gamestate.gameMiddle) {
-            sound.play("car_screech", true);
+            sound.stopSound();
+            sound.play("main_game", true);
             new MyFrame();
         }
         if (Gamestate.state == Gamestate.gameEnd) {
             frame.getContentPane().removeAll();
+            sound.play("end_music", false);
             new Endscreen(score, combo, time);
         }
     }

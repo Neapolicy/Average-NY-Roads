@@ -90,6 +90,9 @@ public class Sound implements Runnable
         line.drain();
         line.close();
     }
+    public void stopSound(){
+        if (line != null) line.stop();
+    }
 
     public void setLoopable(boolean b) {loopable = b;}
 

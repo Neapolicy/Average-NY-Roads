@@ -41,6 +41,8 @@ public class Sound implements Runnable
                     }
                 }
             }
+            System.out.println("lol");
+            line.stop();
         }
     }
 
@@ -92,6 +94,9 @@ public class Sound implements Runnable
     }
     public void stopSound(){
         if (line != null) line.stop();
+        else{
+            System.out.println(line);
+        }
     }
 
     public void setLoopable(boolean b) {loopable = b;}

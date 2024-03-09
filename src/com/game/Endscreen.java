@@ -1,4 +1,6 @@
-public class Endscreen extends Mainframe{
+package com.game;
+
+public class Endscreen extends Mainframe {
     private Sound sound = new Sound();
     public Endscreen(int score, int combo, int time) {
         sound.play("explosion", false);
@@ -7,12 +9,12 @@ public class Endscreen extends Mainframe{
         Scoreboard comboText = new Scoreboard("Highest Combo: " + combo, (int) (MyFrame.size.getWidth() / 2) - 100, (int) (MyFrame.size.getHeight() / 2), 1000, 100);
         Scoreboard timeText = new Scoreboard("Time Elapsed: " + time, (int) (MyFrame.size.getWidth() / 2) - 100, (int) (MyFrame.size.getHeight() / 2) + 100, 1000, 100);
 
-        frame.add(endText);
-        frame.add(scoreText);
-        frame.add(comboText);
-        frame.add(timeText);
+        Mainframe.frame.add(endText);
+        Mainframe.frame.add(scoreText);
+        Mainframe.frame.add(comboText);
+        Mainframe.frame.add(timeText);
 
-        refresh();
+        Mainframe.refresh();
     }
 
 }

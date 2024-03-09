@@ -1,3 +1,10 @@
+package com.game;
+
+import com.game.Bomb;
+import com.game.Car;
+import com.game.Gamestate;
+import com.game.Mainframe;
+
 import java.awt.*;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -10,7 +17,7 @@ public class MyFrame extends Mainframe implements Runnable { //make this in char
     public static ArrayList<Car> cars = new ArrayList<>();
     public static ArrayList<Pothole> potholes = new ArrayList<>();
     public static Dimension size = Toolkit.getDefaultToolkit().getScreenSize();
-    private Railroad railroad; // Create an instance of Railroad
+    private Railroad railroad; // Create an instance of com.game.Railroad
     private Scoreboard scoreInfo;
     private Scoreboard timeInfo;
     private Scoreboard comboInfo;

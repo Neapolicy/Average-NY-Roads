@@ -1,3 +1,8 @@
+package com.game;
+
+import com.game.Endscreen;
+import com.game.Gamestate;
+
 import javax.swing.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;

@@ -1,3 +1,9 @@
+package com.game;
+
+import com.game.Mainframe;
+import com.game.MyFrame;
+import com.game.Sound;
+
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;

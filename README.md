@@ -14,7 +14,7 @@ The project and zip file can be found [here](https://github.com/Neapolicy/Averag
 
 tba
 
-### Sound Effects Sources
+### com.game.Sound Effects Sources
 Chunkopops, Divinity of The Office, and Depression Nap makes up the music for start, gmae, and end screen, respectively
 <br>
 ### ** Any sounds that I haven't listed comes are stock sound effects **

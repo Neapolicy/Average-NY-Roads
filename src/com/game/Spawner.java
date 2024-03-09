@@ -1,3 +1,10 @@
+package com.game;
+
+import com.game.Car;
+import com.game.Gamestate;
+import com.game.MyFrame;
+import com.game.Pothole;
+
 import java.io.IOException;
 import java.util.Random;
 

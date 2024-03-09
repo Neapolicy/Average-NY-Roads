@@ -1,3 +1,5 @@
+package com.game;
+
 public enum Gamestate{
     gameStart, gameMiddle, gameEnd;
 

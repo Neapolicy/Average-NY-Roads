@@ -1,6 +1,6 @@
 package com.requirements;
 import java.util.ArrayList;
-public class FunFunTime { //this file only exists to meet the requirements of the project
+public class Alt { //this file only exists to meet the requirements of the project
     private ArrayList<Integer> array = new ArrayList<>();
     private ArrayList<Coin> coined = new ArrayList<>();
     private int[] arr = {9, 1, 3, 2, 6, 1};

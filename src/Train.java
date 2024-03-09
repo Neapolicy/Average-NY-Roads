@@ -8,7 +8,7 @@ public class Train extends JLabel implements Runnable{
     public static int timeLastSpawned;
     protected int offScreen;
     private Sound sound = new Sound();
-    public static double step = 20;
+    public static double step = 25;
     private Thread thread;
     public Train(int x, int y) throws IOException {
         ImageIcon icon = new ImageIcon(ImageIO.read(new File("ImageFiles/Images/train.png")));

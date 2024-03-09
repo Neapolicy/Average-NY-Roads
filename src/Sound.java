@@ -1,106 +1,74 @@
 import java.io.File;
 import java.io.IOException;
+import javax.sound.sampled.*;
 
-import javax.sound.sampled.AudioFormat;
-import javax.sound.sampled.AudioInputStream;
-import javax.sound.sampled.AudioSystem;
-import javax.sound.sampled.DataLine;
-import javax.sound.sampled.SourceDataLine;
-
-
-public class Sound implements Runnable
-{
+public class Sound implements Runnable {
     private String fileLocation;
     private volatile boolean loopable;
-    private volatile boolean safeGuard = true;
     private volatile SourceDataLine line;
     private Thread t1;
-    private int nBytesRead;
-    // https://stackoverflow.com/questions/23255162/looping-audio-on-separate-thread-in-java <- ripped from there, and modified a bit
-    public void play(String fileName, boolean loopable) //make sure to use the full file name maybe?
-    {
+    private volatile boolean stopRequested; // Flag to signal stop
+
+    public void play(String fileName, boolean loopable) {
         this.loopable = loopable;
         fileLocation = "SFX/Sounds/" + fileName + ".wav";
         t1 = new Thread(this);
         t1.start();
+        stopRequested = false;
     }
+
     @Override
-    public void run() //plays once
-    {
-        if (!loopable && safeGuard) { //when loopable is false, loopable here ironically is true
-            System.out.println("lol");
-            playSound(fileLocation);
-        }
-        else if (loopable){
-            while (loopable) {
-                System.out.println("lolz");
-                long startTime = System.nanoTime();
-
+    public void run() {
+        try {
+            do {
                 playSound(fileLocation);
-                long totalTime = System.nanoTime() - startTime;
-
-                if (totalTime < MyFrame.targetTime) {
-                    try {
-                        Thread.sleep((MyFrame.targetTime - totalTime) / 1000000);
-                    } catch (InterruptedException e) {
-                        throw new RuntimeException(e);
-                    }
-                }
+            } while (loopable && !stopRequested);
+        } finally {
+            if (line != null) {
+                line.stop();
+                line.close();
             }
         }
     }
 
-    private void playSound(String fileName)
-    {
+    private void playSound(String fileName) {
         File soundFile = new File(fileName);
-        AudioInputStream audioInputStream = null;
-        try
-        {
-            audioInputStream = AudioSystem.getAudioInputStream(soundFile);
-        }
-        catch (Exception e)
-        {
-            e.printStackTrace();
-        }
-        assert audioInputStream != null;
-        AudioFormat audioFormat = audioInputStream.getFormat();
-        DataLine.Info info = new DataLine.Info(SourceDataLine.class, audioFormat);
-        try
-        {
+
+        try (AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(soundFile)) {
+            AudioFormat audioFormat = audioInputStream.getFormat();
+            DataLine.Info info = new DataLine.Info(SourceDataLine.class, audioFormat);
+
             line = (SourceDataLine) AudioSystem.getLine(info);
             line.open(audioFormat);
-        }
-        catch (Exception e)
-        {
+            line.start();
+
+            int bytesRead;
+            byte[] buffer = new byte[128000];
+
+            while ((bytesRead = audioInputStream.read(buffer, 0, buffer.length)) != -1 && !stopRequested) {
+                line.write(buffer, 0, bytesRead);
+            }
+
+            line.drain();
+        } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
             e.printStackTrace();
         }
-        assert line != null;
-        line.start();
-        nBytesRead = 0;
-        byte[] abData = new byte[128000];
-        while (nBytesRead != -1)
-        {
-            try
-            {
-                nBytesRead = audioInputStream.read(abData, 0, abData.length);
-            }
-            catch (IOException e)
-            {
-                e.printStackTrace();
-            }
-            if (nBytesRead >= 0)
-            {
-                line.write(abData, 0, nBytesRead);
-            }
+    }
+
+    public void stopSound() {
+        stopRequested = true;
+        if (line != null) {
+            line.stop();
+            line.close();
         }
-        line.drain();
-        line.close();
     }
 
     public void setLoopable(boolean b) {
         loopable = b;
-        safeGuard = false;
     }
 
-    public void killThread() {t1.interrupt();}
+    public void killThread() {
+        stopSound();
+        t1.interrupt();
+    }
 }

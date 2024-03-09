@@ -28,12 +28,13 @@ public class Mainframe extends JFrame implements MouseListener {
             new Startscreen();
         }
         if (Gamestate.state == Gamestate.gameMiddle) {
-            sound.setLoopable(false);
+            sound.stopSound();
             sound.play("main_game", true);
             new MyFrame();
         }
         if (Gamestate.state == Gamestate.gameEnd) {
             frame.getContentPane().removeAll();
+            sound.stopSound();
             sound.play("end_music", false);
             new Endscreen(score, combo, time);
         }

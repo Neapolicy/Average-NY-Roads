@@ -98,7 +98,6 @@ public class MyFrame extends Mainframe implements Runnable { //make this in char
             if (bomb.getBombHitbox().intersects(cars.get(i).getCarHitbox())) {
                 frame.remove(cars.get(i));
                 cars.remove(cars.get(i));
-                sound.play("man_V_machine", false);
                 collision = true; //bombed a car, so a pothole won't spawn
             }
         }
@@ -106,8 +105,12 @@ public class MyFrame extends Mainframe implements Runnable { //make this in char
             potholes.add(new Pothole(bomb.getX(), bomb.getY())); //fix the thing where blowing up a car creates a pothole
         }
         collision = false;
-        sound.play("explosion", false);
+        playSounds();
         frame.remove(bomb);
+    }
+    public void playSounds(){
+        if (collision) sound.play("man_V_machine", false);
+        sound.play("explosion", false);
     }
 
     public void comboManager()  //always increases combo

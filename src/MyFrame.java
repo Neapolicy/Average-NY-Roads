@@ -145,6 +145,7 @@ public class MyFrame extends Mainframe implements Runnable { //make this in char
             case ' ' -> {
                 for (int i = 0; i < potholes.size(); i++)
                     if (player.getPlayerHitbox().intersects(potholes.get(i).getPotholeHitbox())) {
+                        sound.play("fill", false);
                         frame.remove(potholes.get(i));
                         potholes.remove(potholes.get(i));
                         timeLastFilled = s.getTimePassed();

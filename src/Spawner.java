@@ -29,12 +29,11 @@ public class Spawner implements Runnable{
     public void addPotholes() throws IOException {
         if (MyFrame.s.getTimePassed() % (MyFrame.countDowns[0] - MyFrame.s.getTimePassed() / 10) == 0 && MyFrame.s.getTimePassed() != 0 && Pothole.timeLastSpawned != MyFrame.s.getTimePassed()) //5 seconds to add a car is purely for testing purposes
         {
-            int timesGenerated;
             if (MyFrame.countDowns[0] < 3) MyFrame.countDowns[0] = 3;
-            timesGenerated = rand.nextInt(1, 4);
-            int y_axis = rand.nextInt(300, 600);
-            int x_axis = rand.nextInt(100, 600);
+            int timesGenerated = rand.nextInt(1, 4);
             for (int i = 0; i < timesGenerated; i++) {
+                int y_axis = rand.nextInt(300, 600);
+                int x_axis = rand.nextInt(100, 600);
                 MyFrame.potholes.add(new Pothole(x_axis, y_axis));
             }
             Pothole.timeLastSpawned = MyFrame.s.getTimePassed();

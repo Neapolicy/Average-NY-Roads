@@ -25,6 +25,8 @@ public class Mainframe extends JFrame implements MouseListener {
     public void checkGameState() throws IOException {
         if (Gamestate.state == Gamestate.gameStart) {
             sound.play("start_music", true); //transition the music
+            sound.setLoopable(false);
+            sound.stopSound();
             new Startscreen();
         }
         if (Gamestate.state == Gamestate.gameMiddle) {

@@ -12,8 +12,10 @@ public class Sound implements Runnable
 {
     private String fileLocation;
     private boolean loopable;
+    private boolean safeGuard = true;
     private SourceDataLine line;
     private Thread t1;
+    private int nBytesRead;
     // https://stackoverflow.com/questions/23255162/looping-audio-on-separate-thread-in-java <- ripped from there, and modified a bit
     public void play(String fileName, boolean loopable) //make sure to use the full file name maybe?
     {
@@ -25,9 +27,13 @@ public class Sound implements Runnable
     @Override
     public void run() //plays once
     {
-        if (!loopable) playSound(fileLocation);
-        else {
+        if (!loopable && safeGuard) { //when loopable is false, loopable here ironically is true
+            System.out.println("lol");
+            playSound(fileLocation);
+        }
+        else if (loopable){
             while (loopable) {
+                System.out.println("lolz");
                 long startTime = System.nanoTime();
 
                 playSound(fileLocation);
@@ -41,7 +47,6 @@ public class Sound implements Runnable
                     }
                 }
             }
-            System.out.println("lol");
             line.stop();
         }
     }
@@ -72,7 +77,7 @@ public class Sound implements Runnable
         }
         assert line != null;
         line.start();
-        int nBytesRead = 0;
+        nBytesRead = 0;
         byte[] abData = new byte[128000];
         while (nBytesRead != -1)
         {
@@ -92,11 +97,8 @@ public class Sound implements Runnable
         line.drain();
         line.close();
     }
-    public void stopSound(){
-        if (line != null) line.stop();
-        else{
-            System.out.println(line);
-        }
+    public void stopSound() {
+        nBytesRead = -1;
     }
 
     public void setLoopable(boolean b) {loopable = b;}

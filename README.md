@@ -17,4 +17,4 @@ tba
 ### Sound Effects Sources
 Chunkopops, Divinity of The Office, and Depression Nap makes up the music for start, gmae, and end screen, respectively
 <br>
-Any sounds that I haven't listed comes are stock sound effects
+--Any sounds that I haven't listed comes are stock sound effects--

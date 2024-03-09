@@ -17,6 +17,7 @@ public class MyFrame extends Mainframe implements Runnable { //make this in char
     private Road road; // Create an instance of road
     public static Stopwatch s;
     private Sound sound = new Sound();
+    private Sound bgMusic = new Sound();
     public static int[] car_locations = {300, 400, 500, 600};
     public static int[] countDowns = {7, 10};
     private int timeLastFilled;
@@ -24,6 +25,8 @@ public class MyFrame extends Mainframe implements Runnable { //make this in char
     private boolean collision = false; //make the frame public lol idk
 
     public MyFrame() throws IOException { //render the railroad and road first
+        bgMusic.setVolume(0.1);
+        bgMusic.play("main_game", true);
         gameStart();
     }
 
@@ -80,6 +83,7 @@ public class MyFrame extends Mainframe implements Runnable { //make this in char
                 setValues(player.getScore(), player.getCombo(), s.getTimePassed());
                 sound.play("car_screech", false);
                 checkGameState();
+                bgMusic.stopSound();
             }
             for (Pothole pothole : potholes) {
                 if (car.getCarHitbox().intersects(pothole.getPotholeHitbox())) {
@@ -88,29 +92,28 @@ public class MyFrame extends Mainframe implements Runnable { //make this in char
                     setValues(player.getScore(), player.getCombo(), s.getTimePassed());
                     sound.play("car_screech", false);
                     checkGameState();
+                    bgMusic.stopSound();
                 }
             }
         }
     }
 
     public void bombCollision() throws IOException {
-        for (int i = 0; i < cars.size(); i++) { //first check if bomb hit car, if true, then remove car
+        Sound bombs = new Sound();
+        for (int i = 0; i < cars.size(); i++) {
             if (bomb.getBombHitbox().intersects(cars.get(i).getCarHitbox())) {
                 frame.remove(cars.get(i));
                 cars.remove(cars.get(i));
-                collision = true; //bombed a car, so a pothole won't spawn
+                collision = true;
             }
         }
-        if (!collision) { //checks if you blew up a car, if you didn't, it will create a pothole
-            potholes.add(new Pothole(bomb.getX(), bomb.getY())); //fix the thing where blowing up a car creates a pothole
+        if (!collision) {
+            potholes.add(new Pothole(bomb.getX(), bomb.getY()));
         }
+        bombs.play("man_V_machine", false);
+        bombs.play("explosion", false);
         collision = false;
-        playSounds();
         frame.remove(bomb);
-    }
-    public void playSounds(){
-        if (collision) sound.play("man_V_machine", false);
-        sound.play("explosion", false);
     }
 
     public void comboManager()  //always increases combo

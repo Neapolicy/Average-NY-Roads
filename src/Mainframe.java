@@ -22,21 +22,20 @@ public class Mainframe extends JFrame implements MouseListener {
 
         checkGameState();
     }
-    public void checkGameState() throws IOException {
+    public void checkGameState() throws IOException { //depression nap, divinity of the office, and chunkopops from cruelty squad is where the sound comes from
         if (Gamestate.state == Gamestate.gameStart) {
             sound.play("start_music", true); //transition the music
             new Startscreen();
         }
         if (Gamestate.state == Gamestate.gameMiddle) {
             sound.stopSound();
-            sound.play("main_game", true);
             new MyFrame();
         }
         if (Gamestate.state == Gamestate.gameEnd) {
-            frame.getContentPane().removeAll();
             sound.stopSound();
-            sound.play("end_music", false);
-            new Endscreen(score, combo, time);
+            frame.getContentPane().removeAll();
+            sound.play("end_music", true);
+            SwingUtilities.invokeLater(() -> new Endscreen(score, combo, time));
         }
     }
 

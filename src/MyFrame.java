@@ -110,13 +110,12 @@ public class MyFrame extends Mainframe implements Runnable { //make this in char
         if (!collision) {
             potholes.add(new Pothole(bomb.getX(), bomb.getY()));
         }
-        bombs.play("man_V_machine", false);
-        bombs.play("explosion", false);
+        bombs.play("man_v_machine", false);
         collision = false;
         frame.remove(bomb);
     }
 
-    public void comboManager()  //always increases combo
+    public void comboManager()  //alwaays increases combo
     {
         player.increaseCombo();
         comboInfo.displayCombo(player.getCombo());

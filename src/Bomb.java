@@ -35,6 +35,7 @@ public class Bomb extends JLabel implements Runnable {
     @Override
     public void run() {
         sound.play("bomb_place", false);
+//        sound.play("explosion", false);
     } //this thing might result in me having to move key listener to myframe but idk lol
 
     public Box getBombHitbox() {

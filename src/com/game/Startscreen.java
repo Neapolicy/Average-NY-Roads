@@ -1,9 +1,4 @@
 package com.game;
-
-import com.game.Mainframe;
-import com.game.MyFrame;
-import com.game.Scoreboard;
-
 public class Startscreen extends Mainframe {
     public Startscreen(){
         Scoreboard titleCard = new Scoreboard("NY Simulator", (int) (MyFrame.size.getWidth() / 2) - 50, (int) (MyFrame.size.getHeight() / 2) - 400, 1000, 100);
@@ -20,5 +15,4 @@ public class Startscreen extends Mainframe {
 
         refresh(); //guarantees that the text for appear, because the start text aint guaranteed for reasons god knows why
     }
-
 }

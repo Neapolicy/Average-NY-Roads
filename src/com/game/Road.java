@@ -1,8 +1,5 @@
 package com.game;
 
-import com.game.Mainframe;
-import com.game.MyFrame;
-
 import javax.swing.*;
 import java.awt.*;
 

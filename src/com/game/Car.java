@@ -1,7 +1,5 @@
 package com.game;
 
-import com.game.Box;
-
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;

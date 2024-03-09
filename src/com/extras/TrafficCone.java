@@ -1,4 +1,4 @@
-package com.game;// com.game.TrafficCone.java
+package com.extras;// com.extras.TrafficCone.java
 import com.game.Box;
 
 import javax.imageio.ImageIO;

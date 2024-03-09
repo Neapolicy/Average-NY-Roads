@@ -1,10 +1,5 @@
 package com.game;
 
-import com.game.Bomb;
-import com.game.Car;
-import com.game.Gamestate;
-import com.game.Mainframe;
-
 import java.awt.*;
 import java.io.IOException;
 import java.util.ArrayList;

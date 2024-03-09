@@ -8,7 +8,7 @@ public class Train extends JLabel implements Runnable{
     public static int timeLastSpawned;
     protected int offScreen;
     private Sound sound = new Sound();
-    public static double step = 40;
+    public static double step = 20;
     private Thread thread;
     public Train(int x, int y) throws IOException {
         ImageIcon icon = new ImageIcon(ImageIO.read(new File("ImageFiles/Images/train.png")));
@@ -35,7 +35,7 @@ public class Train extends JLabel implements Runnable{
     }
 
     public void playSound() {
-        sound.play("Gun_FIre", true);
+        sound.play("train_horn", true);
     }
 
     @Override

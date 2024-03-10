@@ -5,7 +5,9 @@ public class Endscreen extends Mainframe {
     public Endscreen(int score, int combo, int time) {
         int centerX = (int) (MyFrame.size.getWidth() / 2);
         int centerY = (int) (MyFrame.size.getHeight() / 2);
+
         sound.play("explosion", false);
+
         Scoreboard endText = new Scoreboard("Game Over!", centerX - 50, centerY - 200, 1000, 100);
         Scoreboard scoreText = new Scoreboard("Total Score: " + score, centerX - 100, centerY - 100, 1000, 100);
         Scoreboard comboText = new Scoreboard("Highest Combo: " + combo, centerX - 100, centerY, 1000, 100);

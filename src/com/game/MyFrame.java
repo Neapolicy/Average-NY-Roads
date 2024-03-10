@@ -76,7 +76,6 @@ public class MyFrame extends Mainframe implements Runnable { //make this in char
         for (Car car : cars) {
             if (player.getPlayerHitbox().intersects(car.getCarHitbox())) {
                 Gamestate.state = Gamestate.gameEnd;
-                frame.removeKeyListener(player);
                 setValues(player.getScore(), player.getCombo(), s.getTimePassed());
                 sound.play("car_screech", false);
                 checkGameState();
@@ -85,7 +84,6 @@ public class MyFrame extends Mainframe implements Runnable { //make this in char
             for (Pothole pothole : potholes) {
                 if (car.getCarHitbox().intersects(pothole.getPotholeHitbox())) {
                     Gamestate.state = Gamestate.gameEnd;
-                    frame.removeKeyListener(player);
                     setValues(player.getScore(), player.getCombo(), s.getTimePassed());
                     sound.play("car_screech", false);
                     checkGameState();

@@ -12,7 +12,13 @@ The project and zip file can be found [here](https://github.com/Neapolicy/Averag
 
 ## Game Description
 
-tba
+Your task is simple, fill in potholes!
+<br> 
+It really shouldn't be that hard, right?
+<br>
+Your employer provided you a bomb to clear out any pesky cars that might come too close to you or the potholes
+<br>
+And should a car collide with a pothole, you'll be fired immedietly
 
 ### com.game.Sound Effects Sources
 Chunkopops, Divinity of The Office, and Depression Nap makes up the music for start, gmae, and end screen, respectively

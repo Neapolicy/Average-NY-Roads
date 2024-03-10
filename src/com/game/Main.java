@@ -8,5 +8,4 @@ public class Main
         Mainframe main = new Mainframe();
         main.start();
     }
-
 }

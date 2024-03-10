@@ -156,6 +156,7 @@ public class MyFrame extends Mainframe implements Runnable { //make this in char
                     }
             }
         }
+        refresh();
         player.resetKeyCode();
     }
 
@@ -167,7 +168,6 @@ public class MyFrame extends Mainframe implements Runnable { //make this in char
             try {
                 timeInfo.displayTime(s.getTimePassed()); //updates time counter
                 gameLoop();
-                refresh();
 
                 frame.add(road);
                 frame.add(railroad);
@@ -186,5 +186,4 @@ public class MyFrame extends Mainframe implements Runnable { //make this in char
             }
         }
     }
-
 }

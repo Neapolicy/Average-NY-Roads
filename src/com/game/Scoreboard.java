@@ -4,9 +4,9 @@ import javax.swing.*;
 import java.awt.*;
 
 public class Scoreboard extends JLabel {
+    private Font font = new Font("Arial", Font.PLAIN, 30); // default
     public Scoreboard(String text, int x, int y, int width, int height){
         super(text);
-        Font font = new Font("Arial", Font.PLAIN, 30); // default
         this.setLayout(null);
         this.setFont(font);
         this.setForeground(Color.BLUE); // font color
@@ -25,18 +25,19 @@ public class Scoreboard extends JLabel {
         this.setText("Current Time: " + time);
     }
     public void changeFont(String fontType, int size, Color color){ //keeping this just in case
-        Font font = new Font(fontType, Font.PLAIN, size); // default
+        font = new Font(fontType, Font.PLAIN, size); // default
         this.setFont(font);
         this.setForeground(color); //font color
+    }
+    public void boldFont(String fontType, int size, Color color){
+        font = new Font(fontType, Font.BOLD, size);
+        this.setFont(font);
+        this.setForeground(color);
     }
     public String toString(){
         return "professional gambler";
     }
     public boolean equals(Object o){
         return false;
-    }
-    public void center(JLabel label){
-        label.setVerticalAlignment(JLabel.CENTER);
-        label.setHorizontalAlignment(JLabel.CENTER);
     }
 }

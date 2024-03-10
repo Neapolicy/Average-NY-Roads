@@ -11,11 +11,9 @@ public class MyFrame extends Mainframe implements Runnable { //make this in char
     private Player player;
     public static ArrayList<Car> cars = new ArrayList<>();
     public static ArrayList<Pothole> potholes = new ArrayList<>();
+    private ArrayList<Scoreboard> trackers = new ArrayList<>();
     public static Dimension size = Toolkit.getDefaultToolkit().getScreenSize();
     private Railroad railroad; // Create an instance of com.game.Railroad
-    private Scoreboard scoreInfo;
-    private Scoreboard timeInfo;
-    private Scoreboard comboInfo;
     private Road road; // Create an instance of road
     public static Stopwatch s;
     private Sound sound = new Sound();
@@ -37,15 +35,16 @@ public class MyFrame extends Mainframe implements Runnable { //make this in char
         road = new Road();
         s = new Stopwatch();
         railroad = new Railroad();
-        scoreInfo = new Scoreboard("Current Score: 0", 100, (int) (size.getHeight() / 2) + 150, 500, 200);
-        comboInfo = new Scoreboard("Current Combo: 0", 100, (int) (size.getHeight() / 2) + 200, 500, 200);
-        timeInfo = new Scoreboard("Current Time: 0", 100, (int) (size.getHeight() / 2) + 250, 500, 200);
+        trackers.add(new Scoreboard("Current Score: 0", (int) (size.getWidth() - 2010), (int) (size.getHeight() / 2) + 150, 500, 200));
+        trackers.add(new Scoreboard("Current Combo: 0", (int) (size.getWidth() - 2000), (int) (size.getHeight() / 2) + 200, 500, 200));
+        trackers.add(new Scoreboard("Current Time: 0", (int) (size.getWidth() - 2015), (int) (size.getHeight() / 2) + 250, 500, 200));
 
         frame.addKeyListener(player);
 
-        frame.add(scoreInfo); //text
-        frame.add(comboInfo);
-        frame.add(timeInfo);
+        for (Scoreboard scores : trackers) {
+            scores.changeFont("Calibri", 30, new Color(255, 255, 255));
+            frame.add(scores);
+        }
 
         frame.getContentPane().setBackground(new Color(0, 102, 0));
         new Spawner();
@@ -120,14 +119,14 @@ public class MyFrame extends Mainframe implements Runnable { //make this in char
     public void comboManager()  //alwaays increases combo
     {
         player.increaseCombo();
-        comboInfo.displayCombo(player.getCombo());
+        trackers.get(1).displayCombo(player.getCombo());
         player.increaseScore(s.getTimePassed());
     }
 
     public void resetCombo() {
         if (s.getTimePassed() - timeLastFilled > 4) {
             player.resetCombo();
-            comboInfo.displayCombo(0);
+            trackers.get(1).displayCombo(0);
         }
     }
 
@@ -152,7 +151,7 @@ public class MyFrame extends Mainframe implements Runnable { //make this in char
                         potholes.remove(potholes.get(i));
                         timeLastFilled = s.getTimePassed();
                         comboManager();
-                        scoreInfo.updateScore(player.getScore());
+                        trackers.get(0).updateScore(player.getScore());
                     }
             }
         }
@@ -166,7 +165,7 @@ public class MyFrame extends Mainframe implements Runnable { //make this in char
             long startTime = System.nanoTime();
             //do stuff per frame below
             try {
-                timeInfo.displayTime(s.getTimePassed()); //updates time counter
+                trackers.get(2).displayTime(s.getTimePassed()); //updates time counter
                 gameLoop();
 
                 frame.add(road);

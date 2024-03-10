@@ -21,6 +21,7 @@ public class Mainframe extends JFrame implements MouseListener {
 
         frame.setVisible(true);
         frame.addMouseListener(this);
+        sound.setVolume(.3);
 
         checkGameState();
     }

@@ -35,7 +35,6 @@ public class Car extends JLabel implements Runnable{
     {
         this.setLocation((int) (this.getX() - step), this.getY());
         carHitbox.setLocation(this.getX(), this.getY());
-        if (step == 0) killSound(false);
         if (this.getX() < 0){this.remove(this);} 
     }
 

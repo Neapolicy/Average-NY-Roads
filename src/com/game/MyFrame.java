@@ -3,6 +3,7 @@ package com.game;
 import java.awt.*;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.ConcurrentModificationException;
 
 public class MyFrame extends Mainframe implements Runnable { //make this in charge on handling of placing images
     public static int targetFPS = 60;
@@ -72,14 +73,10 @@ public class MyFrame extends Mainframe implements Runnable { //make this in char
             }
         }
     }
-    public void silenceCars(){
-        for (Car car : cars)
-            car.killSound(false);
-    }
+
     public void checkCollision() throws IOException { //refer to the hitbox instead
         for (Car car : cars) {
             if (player.getPlayerHitbox().intersects(car.getCarHitbox())) {
-                silenceCars();
                 Gamestate.state = Gamestate.gameEnd;
                 setValues(player.getScore(), player.getCombo(), s.getTimePassed());
                 sound.play("car_screech", false);
@@ -88,7 +85,6 @@ public class MyFrame extends Mainframe implements Runnable { //make this in char
             }
             for (Pothole pothole : potholes) {
                 if (car.getCarHitbox().intersects(pothole.getPotholeHitbox())) {
-                    silenceCars();
                     Gamestate.state = Gamestate.gameEnd;
                     setValues(player.getScore(), player.getCombo(), s.getTimePassed());
                     sound.play("car_screech", false);
@@ -116,7 +112,7 @@ public class MyFrame extends Mainframe implements Runnable { //make this in char
         frame.remove(bomb);
     }
 
-    public void comboManager()  //alwaays increases combo
+    public void comboManager()  //always increases combo
     {
         player.increaseCombo();
         trackers.get(1).displayCombo(player.getCombo());

@@ -31,5 +31,4 @@ public class Endscreen extends Mainframe {
 
         refresh();
     }
-
 }

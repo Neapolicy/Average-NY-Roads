@@ -19,8 +19,6 @@ public class MyFrame extends Mainframe implements Runnable { //make this in char
     public static Stopwatch s;
     private Sound sound = new Sound();
     private Sound bgMusic = new Sound();
-    public static int[] car_locations = {300, 400, 500, 600};
-    public static int[] countDowns = {7, 10};
     private int timeLastFilled;
     private int lastBomb;
     private boolean collision = false; //make the frame public lol idk

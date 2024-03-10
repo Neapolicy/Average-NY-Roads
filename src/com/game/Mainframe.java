@@ -35,6 +35,7 @@ public class Mainframe extends JFrame implements MouseListener {
             new MyFrame();
         }
         if (Gamestate.state == Gamestate.gameEnd) {
+            frame.addMouseListener(this);
             sound.stopSound();
             frame.getContentPane().removeAll();
             sound.play("end_music", true);
@@ -55,6 +56,11 @@ public class Mainframe extends JFrame implements MouseListener {
     @Override
     public void mouseClicked(MouseEvent e) {
         if (Gamestate.state == Gamestate.gameStart){
+            Gamestate.state = Gamestate.gameMiddle;
+            frame.getContentPane().removeAll();
+            frame.removeMouseListener(this);
+        }
+        else if (Gamestate.state == Gamestate.gameEnd){
             Gamestate.state = Gamestate.gameMiddle;
             frame.getContentPane().removeAll();
             frame.removeMouseListener(this);

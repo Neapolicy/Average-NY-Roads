@@ -12,11 +12,13 @@ public class Endscreen extends Mainframe {
         Scoreboard scoreText = new Scoreboard("Total Score: " + score, centerX - 500, centerY - 100, 1000, 100);
         Scoreboard comboText = new Scoreboard("Highest Combo: " + combo, centerX - 500, centerY, 1000, 100);
         Scoreboard timeText = new Scoreboard("Time Elapsed: " + time, centerX - 500, centerY + 100, 1000, 100);
+        Scoreboard restart = new Scoreboard("Click Anywhere to Restart", centerX - 500, centerY + 200, 1000, 100);
 
-        Mainframe.frame.add(endText);
-        Mainframe.frame.add(scoreText);
-        Mainframe.frame.add(comboText);
-        Mainframe.frame.add(timeText);
+        frame.add(endText);
+        frame.add(scoreText);
+        frame.add(comboText);
+        frame.add(timeText);
+        frame.add(restart);
 
         refresh();
     }

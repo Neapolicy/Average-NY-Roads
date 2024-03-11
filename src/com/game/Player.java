@@ -19,7 +19,7 @@ public class Player extends JLabel implements KeyListener {
     private boolean down;
     private boolean left;
     private boolean right;
-    private int step = 5;
+    private int step = 8;
     private com.game.Box playerHitbox; //https://stackoverflow.com/questions/40252221/java-how-to-use-an-object-from-one-mouselistener-to-another-class cheque it out idk
 
     public Player() throws IOException {
@@ -97,7 +97,6 @@ public class Player extends JLabel implements KeyListener {
                 setIcon("player_right");
             }
         }
-        run();
     }
 
     public char getKeyCode() {

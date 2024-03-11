@@ -38,7 +38,7 @@ public class Spawner implements Runnable{
             for (int i = 0; i < timesGenerated; i++) {
                 int y_axis = rand.nextInt(360, 600);
                 int x_axis = rand.nextInt(100, 600);
-                MyFrame.potholes.add(new Pothole(x_axis, y_axis));
+                MyFrame.potholes.add(new Pothole(x_axis, y_axis, false));
             }
             Pothole.timeLastSpawned = MyFrame.s.getTimePassed();
         }

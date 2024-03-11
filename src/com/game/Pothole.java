@@ -10,12 +10,14 @@ public class Pothole extends JLabel { //shouldn't be that hard hopefully??
     private com.game.Box potholeHitbox;
     private ImageIcon icon;
     public static int timeLastSpawned;
+    private boolean bombMade;
 
-    public Pothole(int x, int y) throws IOException {
+    public Pothole(int x, int y, boolean bombMade) throws IOException {
         icon = new ImageIcon(ImageIO.read(new File("ImageFiles/Images/pothole.png")));
         Image image = icon.getImage();
         Image newimg = image.getScaledInstance(50, 50, Image.SCALE_SMOOTH);
         icon = new ImageIcon(newimg);
+        this.bombMade = bombMade;
         setIcon(icon);
         setLocation(x, y);
         Mainframe.frame.add(this);
@@ -31,5 +33,7 @@ public class Pothole extends JLabel { //shouldn't be that hard hopefully??
     public Box getPotholeHitbox() {
         return potholeHitbox;
     }
-
+    public boolean getBombMade(){
+        return bombMade;
+    }
 }

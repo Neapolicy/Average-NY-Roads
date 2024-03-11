@@ -103,18 +103,20 @@ public class MyFrame extends Mainframe implements Runnable { //make this in char
             }
         }
         if (!collision) {
-            potholes.add(new Pothole(bomb.getX(), bomb.getY()));
+            potholes.add(new Pothole(bomb.getX(), bomb.getY(), true));
         }
         bombs.play("man_v_machine", false);
         collision = false;
         frame.remove(bomb);
     }
 
-    public void comboManager()  //always increases combo
+    public void comboManager(boolean bombMade)  //always increases combo
     {
-        player.increaseCombo();
-        trackers.get(1).displayCombo(player.getCombo());
-        player.increaseScore(s.getTimePassed());
+        if(!bombMade){
+            player.increaseCombo();
+            trackers.get(1).displayCombo(player.getCombo());
+            player.increaseScore(s.getTimePassed());
+        }
     }
 
     public void resetCombo() {
@@ -141,10 +143,10 @@ public class MyFrame extends Mainframe implements Runnable { //make this in char
                 for (int i = 0; i < potholes.size(); i++)
                     if (player.getPlayerHitbox().intersects(potholes.get(i).getPotholeHitbox())) {
                         sound.play("fill", false);
+                        comboManager(potholes.get(i).getBombMade());
                         frame.remove(potholes.get(i));
                         potholes.remove(potholes.get(i));
                         timeLastFilled = s.getTimePassed();
-                        comboManager();
                         trackers.get(0).updateScore(player.getScore());
                     }
             }

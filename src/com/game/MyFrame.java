@@ -76,7 +76,7 @@ public class MyFrame extends Mainframe implements Runnable { //make this in char
         for (Car car : cars) {
             if (player.getPlayerHitbox().intersects(car.getCarHitbox())) {
                 Gamestate.state = Gamestate.gameEnd;
-                setValues(player.getScore(), player.getCombo(), s.getTimePassed());
+                setValues(player.getScore(), player.getHighestCombo(), s.getTimePassed());
                 sound.play("car_screech", false);
                 checkGameState();
                 bgMusic.stopSound();

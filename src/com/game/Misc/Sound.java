@@ -1,4 +1,4 @@
-package com.game;
+package com.game.Misc;
 
 import java.io.File;
 import java.io.IOException;

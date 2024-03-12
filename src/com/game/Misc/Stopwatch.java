@@ -1,4 +1,4 @@
-package com.game;
+package com.game.Misc;
 
 public class Stopwatch implements Runnable { //just tracks the time ig
     private int gameTime;

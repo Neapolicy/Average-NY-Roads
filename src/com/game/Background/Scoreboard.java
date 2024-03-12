@@ -1,4 +1,4 @@
-package com.game;
+package com.game.Background;
 
 import javax.swing.*;
 import java.awt.*;

@@ -1,4 +1,7 @@
-package com.game;
+package com.game.Screens;
+
+import com.game.Background.Scoreboard;
+import com.game.Misc.Sound;
 
 import java.awt.*;
 

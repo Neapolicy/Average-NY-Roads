@@ -1,4 +1,8 @@
-package com.game;
+package com.game.Entities;
+
+import com.game.Misc.Box;
+import com.game.Screens.Mainframe;
+import com.game.Screens.MyFrame;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -20,7 +24,7 @@ public class Player extends JLabel implements KeyListener {
     private boolean left;
     private boolean right;
     private int step = 10;
-    private com.game.Box playerHitbox; //https://stackoverflow.com/questions/40252221/java-how-to-use-an-object-from-one-mouselistener-to-another-class cheque it out idk
+    private Box playerHitbox; //https://stackoverflow.com/questions/40252221/java-how-to-use-an-object-from-one-mouselistener-to-another-class cheque it out idk
 
     public Player() throws IOException {
         setIcon("player_right");
@@ -28,7 +32,7 @@ public class Player extends JLabel implements KeyListener {
         Dimension size = Toolkit.getDefaultToolkit().getScreenSize();
         this.setBounds((int) size.getWidth() / 2, (int) size.getHeight() / 2, icon.getIconWidth(), icon.getIconHeight());
         this.setOpaque(false);
-        playerHitbox = new com.game.Box(this.getX(), this.getY(), 50, 50);
+        playerHitbox = new Box(this.getX(), this.getY(), 50, 50);
         Mainframe.frame.add(this);
     }
 

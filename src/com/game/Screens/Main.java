@@ -1,4 +1,4 @@
-package com.game;
+package com.game.Screens;
 
 import java.io.IOException;
 

@@ -1,4 +1,6 @@
-package com.game;
+package com.game.Screens;
+
+import com.game.Misc.Sound;
 
 import javax.swing.*;
 import java.awt.event.MouseEvent;

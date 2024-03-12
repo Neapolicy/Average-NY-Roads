@@ -1,4 +1,10 @@
-package com.game;
+package com.game.Misc;
+
+import com.game.Entities.Car;
+import com.game.Entities.Pothole;
+import com.game.Entities.Train;
+import com.game.Screens.Gamestate;
+import com.game.Screens.MyFrame;
 
 import java.io.IOException;
 import java.util.Random;

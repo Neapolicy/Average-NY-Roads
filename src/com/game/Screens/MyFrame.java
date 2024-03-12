@@ -1,9 +1,19 @@
-package com.game;
+package com.game.Screens;
+
+import com.game.Background.Road;
+import com.game.Background.Scoreboard;
+import com.game.Entities.Bomb;
+import com.game.Entities.Car;
+import com.game.Entities.Player;
+import com.game.Entities.Pothole;
+import com.game.Background.Railroad;
+import com.game.Misc.Sound;
+import com.game.Misc.Spawner;
+import com.game.Misc.Stopwatch;
 
 import java.awt.*;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.ConcurrentModificationException;
 
 public class MyFrame extends Mainframe implements Runnable { //make this in charge on handling of placing images
     public static int targetFPS = 60;
@@ -14,7 +24,7 @@ public class MyFrame extends Mainframe implements Runnable { //make this in char
     public static ArrayList<Pothole> potholes = new ArrayList<>();
     private ArrayList<Scoreboard> trackers = new ArrayList<>();
     public static Dimension size = Toolkit.getDefaultToolkit().getScreenSize();
-    private Railroad railroad; // Create an instance of com.game.Railroad
+    private Railroad railroad; // Create an instance of com.game.Background.Railroad
     private Road road; // Create an instance of road
     public static Stopwatch s;
     private Sound sound = new Sound();

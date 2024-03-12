@@ -1,5 +1,5 @@
 package com.extras;// com.extras.TrafficCone.java
-import com.game.Box;
+import com.game.Misc.Box;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -9,7 +9,7 @@ import java.io.IOException;
 
 public class TrafficCone extends JLabel {
     public static int conesPlaced;
-    private com.game.Box coneHitbox;
+    private Box coneHitbox;
 
     public TrafficCone() throws IOException {
         ImageIcon icon = new ImageIcon(ImageIO.read(new File("ImageFiles/Images/cone.png")));
@@ -29,7 +29,7 @@ public class TrafficCone extends JLabel {
                 case "right" -> this.setBounds(x + coneSize, y, coneSize, coneSize);
             }
             this.setOpaque(true);
-            coneHitbox = new com.game.Box(this.getX(), this.getY(), this.getWidth(), this.getHeight());
+            coneHitbox = new Box(this.getX(), this.getY(), this.getWidth(), this.getHeight());
     }
 
     public Box getConeHitbox() {return coneHitbox;}

@@ -1,4 +1,8 @@
-package com.game;
+package com.game.Screens;
+
+import com.game.Background.Scoreboard;
+import com.game.Screens.Mainframe;
+import com.game.Screens.MyFrame;
 
 import java.awt.*;
 

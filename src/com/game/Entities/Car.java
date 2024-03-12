@@ -1,4 +1,9 @@
-package com.game;
+package com.game.Entities;
+
+import com.game.Misc.Box;
+import com.game.Screens.Mainframe;
+import com.game.Screens.MyFrame;
+import com.game.Misc.Sound;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -9,7 +14,7 @@ import java.io.IOException;
 public class Car extends JLabel implements Runnable{
     public static int timeLastSpawned;
     protected int offScreen;
-    private com.game.Box carHitbox;
+    private Box carHitbox;
     private Sound sound = new Sound();
     private double step = 10;
     public static double speed = 10;
@@ -24,7 +29,7 @@ public class Car extends JLabel implements Runnable{
 
         this.setBounds(x, y, icon.getIconWidth(), icon.getIconHeight()); //spawn offscreen
         this.setOpaque(false);
-        carHitbox = (new com.game.Box(this.getX(), this.getY(), this.getWidth(), this.getHeight()));
+        carHitbox = (new Box(this.getX(), this.getY(), this.getWidth(), this.getHeight()));
         playSound();
         thread = new Thread(this);
         thread.start();

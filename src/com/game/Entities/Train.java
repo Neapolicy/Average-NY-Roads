@@ -1,8 +1,8 @@
-package com.game;
+package com.game.Entities;
 
-import com.game.Mainframe;
-import com.game.MyFrame;
-import com.game.Sound;
+import com.game.Screens.Mainframe;
+import com.game.Screens.MyFrame;
+import com.game.Misc.Sound;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;

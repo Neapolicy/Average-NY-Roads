@@ -1,4 +1,4 @@
-package com.game;
+package com.game.Screens;
 
 public enum Gamestate{
     gameStart, gameMiddle, gameEnd;

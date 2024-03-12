@@ -1,4 +1,7 @@
-package com.game;
+package com.game.Entities;
+
+import com.game.Misc.Box;
+import com.game.Screens.Mainframe;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -7,7 +10,7 @@ import java.io.File;
 import java.io.IOException;
 
 public class Pothole extends JLabel { //shouldn't be that hard hopefully??
-    private com.game.Box potholeHitbox;
+    private Box potholeHitbox;
     private ImageIcon icon;
     public static int timeLastSpawned;
     private boolean bombMade;
@@ -27,7 +30,7 @@ public class Pothole extends JLabel { //shouldn't be that hard hopefully??
     public void setLocation(int x, int y) {
         this.setOpaque(false);
         this.setBounds(x, y, icon.getIconWidth(), icon.getIconHeight());
-        potholeHitbox = new com.game.Box(this.getX(), this.getY(), 50, 50);
+        potholeHitbox = new Box(this.getX(), this.getY(), 50, 50);
     }
 
     public Box getPotholeHitbox() {

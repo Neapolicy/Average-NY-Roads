@@ -8,4 +8,10 @@ public class Main
         Mainframe main = new Mainframe();
         main.start();
     }
+    public String toString(){
+        return "main";
+    }
+    public boolean equals(Object other){
+        return super.equals(other);
+    }
 }

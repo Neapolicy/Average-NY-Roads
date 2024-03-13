@@ -39,4 +39,10 @@ public class Pothole extends JLabel { //shouldn't be that hard hopefully??
     public boolean getBombMade(){
         return bombMade;
     }
+    public String toString(){
+        return "pothole";
+    }
+    public boolean equals(Object other){
+        return super.equals(other);
+    }
 }

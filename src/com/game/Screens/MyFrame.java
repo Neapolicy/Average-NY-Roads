@@ -38,7 +38,6 @@ public class MyFrame extends Mainframe implements Runnable { //make this in char
         bgMusic.play("main_game", true);
         gameStart();
     }
-
     public void gameStart() throws IOException {
         player = new Player();
         road = new Road();
@@ -61,7 +60,6 @@ public class MyFrame extends Mainframe implements Runnable { //make this in char
         Thread thread = new Thread(this);
         thread.start();
     }
-
     public void gameLoop() throws IOException {
         if (Gamestate.state != Gamestate.gameEnd) { //loop causes program to freeze
             long startTime = System.nanoTime();
@@ -81,10 +79,11 @@ public class MyFrame extends Mainframe implements Runnable { //make this in char
             }
         }
     }
-
     public void checkCollision() throws IOException { //refer to the hitbox instead
         for (Car car : cars) {
             if (player.getPlayerHitbox().intersects(car.getCarHitbox())) {
+                frame.remove(railroad);
+                frame.remove(road);
                 Gamestate.state = Gamestate.gameEnd;
                 setValues(player.getScore(), player.getHighestCombo(), s.getTimePassed());
                 sound.play("car_screech", false);
@@ -93,6 +92,8 @@ public class MyFrame extends Mainframe implements Runnable { //make this in char
             }
             for (Pothole pothole : potholes) {
                 if (car.getCarHitbox().intersects(pothole.getPotholeHitbox())) {
+                    frame.remove(railroad);
+                    frame.remove(road);
                     Gamestate.state = Gamestate.gameEnd;
                     setValues(player.getScore(), player.getCombo(), s.getTimePassed());
                     sound.play("car_screech", false);
@@ -102,7 +103,6 @@ public class MyFrame extends Mainframe implements Runnable { //make this in char
             }
         }
     }
-
     public void bombCollision() throws IOException {
         Sound bombs = new Sound();
         for (int i = 0; i < cars.size(); i++) {
@@ -119,7 +119,6 @@ public class MyFrame extends Mainframe implements Runnable { //make this in char
         collision = false;
         frame.remove(bomb);
     }
-
     public void comboManager(boolean bombMade)  //always increases combo
     {
         if(!bombMade){
@@ -128,14 +127,12 @@ public class MyFrame extends Mainframe implements Runnable { //make this in char
             player.increaseScore(s.getTimePassed());
         }
     }
-
     public void resetCombo() {
         if (s.getTimePassed() - timeLastFilled > 4) {
             player.resetCombo();
             trackers.get(1).displayCombo(0);
         }
     }
-
     public void userKeyInput() throws IOException { //current bug: bombs don't display after cone placement
         switch (player.getKeyCode()) //will be necessary once i do the pothole fixing
         {
@@ -164,7 +161,6 @@ public class MyFrame extends Mainframe implements Runnable { //make this in char
         refresh();
         player.resetKeyCode();
     }
-
     @Override
     public void run() {
         while (Gamestate.state != Gamestate.gameEnd) {
@@ -190,5 +186,11 @@ public class MyFrame extends Mainframe implements Runnable { //make this in char
                 }
             }
         }
+    }
+    public String toString(){
+        return "myframe";
+    }
+    public boolean equals(Object other){
+        return super.equals(other);
     }
 }

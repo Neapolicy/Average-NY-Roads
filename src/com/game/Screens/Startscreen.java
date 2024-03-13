@@ -30,6 +30,12 @@ public class Startscreen extends Mainframe {
         frame.add(endText);
         frame.add(clickInfo);
 
-        refresh(); //guarentees text appears
+        refresh(); //guarantees text appears
+    }
+    public String toString(){
+        return "startscreen";
+    }
+    public boolean equals(Object other){
+        return super.equals(other);
     }
 }

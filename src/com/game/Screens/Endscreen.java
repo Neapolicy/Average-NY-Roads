@@ -8,8 +8,7 @@ import java.awt.*;
 public class Endscreen extends Mainframe {
     private Sound sound = new Sound();
     public Endscreen(int score, int combo, int time) {
-        MyFrame.cars.clear();
-        MyFrame.potholes.clear();
+        frame.getContentPane().removeAll();
         int centerX = (int) (MyFrame.size.getWidth() / 2);
         int centerY = (int) (MyFrame.size.getHeight() / 2);
 

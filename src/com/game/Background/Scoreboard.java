@@ -35,9 +35,9 @@ public class Scoreboard extends JLabel {
         this.setForeground(color);
     }
     public String toString(){
-        return "professional gambler";
+        return "scoreboard";
     }
-    public boolean equals(Object o){
-        return false;
+    public boolean equals(Object other){
+        return super.equals(other);
     }
 }

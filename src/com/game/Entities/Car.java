@@ -80,8 +80,6 @@ public class Car extends JLabel implements Runnable{
         killThreads();
     }
 
-    public void killSound(boolean b){sound.setLoopable(b);}
-
     public void killThreads() {
         sound.killThread();
         killThread();
@@ -89,5 +87,10 @@ public class Car extends JLabel implements Runnable{
     }
 
     public void killThread(){thread.interrupt();}
-
+    public String toString(){
+        return "car";
+    }
+    public boolean equals(Object other){
+        return super.equals(other);
+    }
 }

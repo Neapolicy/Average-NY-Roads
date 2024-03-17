@@ -35,4 +35,10 @@ public class Endscreen extends Mainframe {
 
         refresh();
     }
+    public String toString(){
+        return "endscreen";
+    }
+    public boolean equals(Object other){
+        return super.equals(other);
+    }
 }

@@ -34,5 +34,10 @@ public class Road extends JPanel{
         super.setSize(width, height);
         repaint();  // Trigger a repaint to update the displayed image
     }
-
+    public String toString(){
+        return "road";
+    }
+    public boolean equals(Object other){
+        return super.equals(other);
+    }
 }

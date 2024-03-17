@@ -81,5 +81,10 @@ public class Train extends JLabel implements Runnable{
     }
 
     public void killThread(){thread.interrupt();}
-
+    public String toString(){
+        return "train";
+    }
+    public boolean equals(Object other){
+        return super.equals(other);
+    }
 }

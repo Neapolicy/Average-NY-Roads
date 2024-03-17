@@ -161,4 +161,10 @@ public class Player extends JLabel implements KeyListener {
         if (this.getY() < 350) this.setLocation(this.getX(), 360); //top
         if (this.getY() > MyFrame.size.getHeight() - 430) this.setLocation(this.getX(), (int) MyFrame.size.getHeight() - 430); //bottom
     }
+    public String toString(){
+        return "player";
+    }
+    public boolean equals(Object other){
+        return super.equals(other);
+    }
 }

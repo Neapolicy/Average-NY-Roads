@@ -92,7 +92,7 @@ public class MyFrame extends Mainframe implements Runnable { //make this in char
                 sound.play("car_screech", false);
                 checkGameState();
                 bgMusic.stopSound();
-                break;
+
             }
             for (Pothole pothole : potholes) {
                 if (car.getCarHitbox().intersects(pothole.getPotholeHitbox())) {
@@ -103,7 +103,7 @@ public class MyFrame extends Mainframe implements Runnable { //make this in char
                     sound.play("car_screech", false);
                     checkGameState();
                     bgMusic.stopSound();
-                    break;
+
                 }
             }
         }
